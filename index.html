@@ -328,12 +328,6 @@ button.gray,.gray{
 #logoutUser{width:auto!important;min-height:34px!important;padding:5px 10px!important}
 .admin-only.hidden{display:none!important}
 
-#authGate{position:fixed;inset:0;z-index:50000;display:flex;align-items:center;justify-content:center;background:#0b1016;padding:18px}
-#authGate.hidden{display:none!important}
-#authGate .auth-card{width:min(460px,100%);background:#202935;border:2px solid #4f9bff;border-radius:18px;padding:20px;box-shadow:0 12px 34px rgba(0,0,0,.5)}
-#authStatusBox{padding:10px;border:1px solid #4b5a6c;border-radius:10px;background:#17202b;margin:10px 0}
-.auth-config-missing{border-color:#e6212a!important}
-
 /* v24 portrait-friendly swipeable bottom tabs */
 #globalNav{
   position:fixed!important;
@@ -408,30 +402,20 @@ body{padding-bottom:88px!important}
 #accountDetailBody .account-card::after{display:none}
 </style>
 
-<script src="./auth-config.js"></script>
-<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 </head>
 <body>
 
-<div id="authGate" class="hidden">
-  <div class="auth-card">
+<div id="pinGate" class="hidden">
+  <div class="pin-card">
     <h2>Res-Com Company Access</h2>
-    <p class="small">Use your company phone number to sign in, or create a new company login.</p>
-
-    <label>Company Phone Number</label>
-    <input id="authPhoneHint" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 555-5555">
-
-    <button class="orange" id="authLoginButton" type="button">LOG IN</button>
-    <button class="outline" id="authCreateButton" type="button">CREATE COMPANY ACCOUNT</button>
-    <button class="outline" id="authForgotButton" type="button">FORGOT PASSWORD</button>
-    <button class="outline" id="authPasskeyInfo" type="button">FACE ID / PASSKEY HELP</button>
-
-    <div id="authStatusBox"></div>
-    <p class="small">Your phone number is the company login identifier. Auth0 securely handles passwords, password resets, phone verification, and passkeys.</p>
+    <p>Enter the 4-digit company PIN to continue.</p>
+    <input id="companyPinEntry" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" placeholder="••••">
+    <button class="orange" id="unlockCompany" type="button">UNLOCK RES-COM</button>
+    <p id="pinMessage" class="small"></p>
   </div>
 </div>
 <div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v25.0 • UPDATED Aug 17, 2026 5:46 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v26.0 • UPDATED Aug 17, 2026 5:57 PM</span></p></header>
 <div id="signedUserBar" class="hidden">
   <span id="signedUserText"></span>
   <button class="gray" id="logoutUser" type="button">LOG OUT</button>
@@ -539,13 +523,10 @@ body{padding-bottom:88px!important}
 
     
     <div class="manual-section">
-      <h3>Company Login, Phone Number, Passwords & Face ID</h3>
-      <p>When the app first opens, choose <b>LOG IN</b> or <b>CREATE COMPANY ACCOUNT</b>.</p>
-      <p>Each employee uses their <b>company phone number</b> as the login identifier. Auth0 stores the secure password and can verify the phone number by OTP when phone verification is enabled.</p>
-      <p><b>Create Company Account</b> opens the Auth0 signup screen. Use the same company phone number that is saved in the Res-Com Company User profile.</p>
-      <p><b>Forgot Password</b> is handled through Auth0 after entering the phone-number identifier.</p>
-      <p>When Auth0 passkeys are enabled, supported iPhones can use Face ID to approve passkey sign-in. Face ID biometric data stays on the iPhone.</p>
-      <p>The signed-in phone number is matched to the Airtable Company Users table for Technician Name and Admin/Technician role.</p>
+      <h3>Company Access</h3>
+      <p>For now, Res-Com uses the 4-digit company PIN instead of individual passwords, phone-number login, password reset, or Face ID.</p>
+      <p>Enter the company PIN when the app opens or when a protected equipment QR is opened.</p>
+      <p>Company User profiles remain available for technician names and Admin/Technician organization.</p>
     </div>
 <div class="manual-section" id="m-start">
       <h3>1. Getting Started</h3>
@@ -666,10 +647,7 @@ body{padding-bottom:88px!important}
     <button class="gray" id="clearToken" type="button">Remove Token From This Device</button>
     
     <hr>
-    <div class="unit">
-      <h3>Auth0 Login Status</h3>
-      <div id="authConfigStatus" class="small"></div>
-      <button class="outline" id="testAuthConfig" type="button">CHECK AUTH0 CONFIG</button>
+    <button class="outline" id="testAuthConfig" type="button">CHECK AUTH0 CONFIG</button>
     </div>
     <h3>Device Token Setup</h3><p class="small"><b>New device setup:</b> paste the company Airtable token once, tap SAVE TOKEN TO THIS DEVICE, then VERIFY TOKEN ON THIS DEVICE. After that, the device remembers it.</p>
     <p class="small">Save and verify the Airtable token on this phone or iPad. Each device keeps its own saved copy.</p>
@@ -685,17 +663,21 @@ body{padding-bottom:88px!important}
       <input id="buttonSoundsToggle" type="checkbox" style="width:auto">
     </label>
     <p class="small">Plays a short click when you tap app buttons. Saved separately on each device.</p>
-<h3>Company Login Security</h3>
-    <p class="small">Individual passwords, password reset, and Face ID/passkeys are handled by Auth0. Employee passwords are not stored in Airtable.</p>
-    <button class="outline" id="manageLoginButton" type="button">SIGN IN / SWITCH USER</button>
-
+<h3>Company QR PIN</h3>
+    <p class="small">For now, Res-Com uses the simple 4-digit company PIN.</p>
+    <label>New 4-Digit PIN</label>
+    <input id="newCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*" placeholder="4 digits">
+    <label>Confirm New PIN</label>
+    <input id="confirmCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*" placeholder="4 digits">
+    <button class="orange" id="changeCompanyPin" type="button">CHANGE COMPANY PIN</button>
+    <button class="gray" id="lockAppNow" type="button">LOCK APP NOW</button>
 <p class="small">The token is stored only in this device's browser storage. Do not put the token in the GitHub source files.</p>
     <hr>
     
     <hr class="admin-only hidden">
     <div id="companyUsersAdmin" class="admin-only hidden">
       <h3>Company Users</h3>
-      <p class="small">Admins can add Res-Com employee profiles here. Passwords, password resets, and passkeys are managed by Auth0.</p>
+      <p class="small">Admins can add Res-Com employee profiles here for technician names and roles.</p>
       <label>Employee Email (optional)</label><input id="newUserEmail" type="email" placeholder="employee@company.com">
       <label>Technician Name</label><input id="newUserName" placeholder="Employee name">
       <label>Role</label><select id="newUserRole"><option>Technician</option><option>Admin</option></select>
@@ -722,6 +704,14 @@ body{padding-bottom:88px!important}
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 26.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 5:57 PM</p>
+      <p>• Temporarily removed Auth0, phone-number login, individual passwords, password reset, and Face ID/passkeys.</p>
+      <p>• Restored the simpler 4-digit Res-Com company PIN.</p>
+      <p>• Kept clickable/editable Accounts, swipeable bottom tabs, Manual, and Patch Notes.</p>
+      <p>• Updated the in-app Manual to match the current login system.</p>
+    </div>
     <div class="unit">
       <h3>Version 25.0</h3>
       <p><b>Released:</b> Aug 17, 2026 5:46 PM</p>
@@ -951,8 +941,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="25.0";
-const APP_BUILD="Aug 17, 2026 5:46 PM";
+const APP_VERSION="26.0";
+const APP_BUILD="Aug 17, 2026 5:57 PM";
 
 const PIN_HASH_KEY="rescom_company_pin_hash_v1";
 const PIN_UNLOCK_KEY="rescom_company_unlocked_v1";
@@ -1059,120 +1049,19 @@ function playTapSound(){
 
 
 
-const CURRENT_USER_KEY="rescom_current_company_user_v2";
-let auth0Client=null;
 
+const CURRENT_USER_KEY="rescom_current_company_user_simple_v1";
 function currentUser(){try{return JSON.parse(localStorage.getItem(CURRENT_USER_KEY)||"null")}catch(e){return null}}
 function saveCurrentUser(u){localStorage.setItem(CURRENT_USER_KEY,JSON.stringify(u));applyCurrentUserUI()}
 function clearCurrentUser(){localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI()}
-function authConfig(){return window.RESCOM_AUTH0||{}}
-function authConfigReady(){
-  const c=authConfig();
-  return !!(c.domain&&c.clientId&&!String(c.domain).includes("YOUR_")&&!String(c.clientId).includes("YOUR_"));
-}
-function authRedirectUri(){return location.origin+location.pathname}
-
-function normalizePhone(v){
-  const raw=String(v||"").trim();
-  const digits=raw.replace(/\D/g,"");
-  if(digits.length===10)return "+1"+digits;
-  if(digits.length===11&&digits.startsWith("1"))return "+"+digits;
-  if(raw.startsWith("+")&&digits.length>=10)return "+"+digits;
-  return raw;
-}
-function phoneDisplay(v){
-  const p=normalizePhone(v),d=p.replace(/\D/g,"");
-  if(d.length===11&&d.startsWith("1"))return `(${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`;
-  return v||"";
-}
-
-async function initAuth0(){
-  if(!authConfigReady())return null;
-  if(auth0Client)return auth0Client;
-  const c=authConfig();
-  auth0Client=await auth0.createAuth0Client({
-    domain:c.domain,
-    clientId:c.clientId,
-    cacheLocation:"localstorage",
-    useRefreshTokens:true,
-    authorizationParams:{redirect_uri:authRedirectUri(),scope:"openid profile email phone"}
-  });
-  return auth0Client;
-}
 function applyCurrentUserUI(){
   const u=currentUser(),bar=document.getElementById("signedUserBar"),text=document.getElementById("signedUserText");
-  if(u){bar?.classList.remove("hidden");if(text)text.textContent=`${u.name||u.email} • ${phoneDisplay(u.phone||"")} • ${u.role||"Technician"}`}
+  if(u){bar?.classList.remove("hidden");if(text)text.textContent=`${u.name||"Res-Com User"} • ${u.role||"Technician"}`}
   else{bar?.classList.add("hidden");if(text)text.textContent=""}
   document.querySelectorAll(".admin-only").forEach(el=>el.classList.toggle("hidden",!(u&&u.role==="Admin")));
 }
-function showAuthGate(message=""){
-  const g=document.getElementById("authGate");if(!g)return;g.classList.remove("hidden");
-  const box=document.getElementById("authStatusBox");
-  if(!box)return;
-  if(!authConfigReady()){
-    box.classList.add("auth-config-missing");
-    box.innerHTML="<b>Auth0 setup needed.</b><br>Enter the Auth0 Domain and Client ID in auth-config.js.";
-  }else{
-    box.classList.remove("auth-config-missing");
-    box.textContent=message||"Sign in with your individual Res-Com company account.";
-  }
-  const ph=document.getElementById("authPhoneHint");
-  if(ph&&!ph.value)ph.value=phoneDisplay(localStorage.getItem("rescom_last_login_phone_v1")||"");
-}
-function hideAuthGate(){document.getElementById("authGate")?.classList.add("hidden")}
-async function authLogin(){
-  if(!authConfigReady()){showAuthGate();return}
-  const phone=normalizePhone(document.getElementById("authPhoneHint")?.value||"");
-  if(!phone){alert("Enter your company phone number.");return}
-  localStorage.setItem("rescom_last_login_phone_v1",phone);
-  try{
-    const c=await initAuth0();
-    await c.loginWithRedirect({
-      authorizationParams:{
-        redirect_uri:authRedirectUri(),
-        login_hint:phone,
-        prompt:"login"
-      }
-    });
-  }catch(err){showAuthGate("Login failed: "+err.message)}
-}
-async function authLogout(){
-  clearCurrentUser();
-  try{
-    const c=await initAuth0();
-    if(c)await c.logout({logoutParams:{returnTo:authRedirectUri()}});
-    else location.reload();
-  }catch(e){location.reload()}
-}
-
-async function authCreateAccount(){
-  if(!authConfigReady()){showAuthGate();return}
-  const phone=normalizePhone(document.getElementById("authPhoneHint")?.value||"");
-  if(phone)localStorage.setItem("rescom_last_login_phone_v1",phone);
-  try{
-    const c=await initAuth0();
-    await c.loginWithRedirect({
-      authorizationParams:{
-        redirect_uri:authRedirectUri(),
-        login_hint:phone||undefined,
-        prompt:"login",
-        screen_hint:"signup"
-      }
-    });
-  }catch(err){showAuthGate("Account creation failed: "+err.message)}
-}
-
-async function authForgotPassword(){
-  if(!authConfigReady()){showAuthGate();return}
-  const phone=normalizePhone(prompt("Enter your Res-Com company phone number:")||"");
-  if(!phone)return;
-  alert("Password reset is handled on the Auth0 Universal Login screen. Tap LOG IN, enter your phone number, then choose the password reset option shown by Auth0.");
-  const el=document.getElementById("authPhoneHint");if(el)el.value=phone;
-}
-function showPasskeyHelp(){
-  alert("Face ID is used by your iPhone to approve an Auth0 passkey. On the Auth0 login screen, choose or enroll a passkey. Your Face ID biometric data stays on the iPhone.");
-}
 async function allCompanyUsers(){
+  if(!token())return [];
   let offset="",out=[];
   do{
     const p=new URLSearchParams({pageSize:"100"});if(offset)p.set("offset",offset);
@@ -1180,74 +1069,18 @@ async function allCompanyUsers(){
   }while(offset);
   return out;
 }
-async function findCompanyUserByPhone(phone){
-  const p=new URLSearchParams({filterByFormula:`{Phone}='${formulaEscape(normalizePhone(phone))}'`,maxRecords:"1"});
-  const d=await api(COMPANY_USERS_TABLE+"?"+p.toString());return d.records?.[0]||null;
-}
-async function findCompanyUserByEmail(email){
-  if(!email)return null;
-  const p=new URLSearchParams({filterByFormula:`LOWER({Email})='${formulaEscape(String(email).toLowerCase())}'`,maxRecords:"1"});
-  const d=await api(COMPANY_USERS_TABLE+"?"+p.toString());return d.records?.[0]||null;
-}
 function companyUserFromRecord(r){
   const f=r?.fields||{};
-  return {recordId:r?.id||"",email:f["Email"]||"",name:f["Technician Name"]||f["Email"]||"",role:f["Role"]||"Technician",active:f["Active"]!==false,phone:f["Phone"]||""};
+  return {recordId:r?.id||"",email:f["Email"]||"",name:f["Technician Name"]||f["Email"]||"Res-Com User",role:f["Role"]||"Technician",active:f["Active"]!==false,phone:f["Phone"]||""};
 }
-async function finishAuthenticatedUser(authUser){
-  const phone=normalizePhone(authUser?.phone_number||localStorage.getItem("rescom_last_login_phone_v1")||"");
-  const email=String(authUser?.email||"").trim().toLowerCase();
-  if(!phone)throw new Error("Your Auth0 account does not contain a phone number.");
-
-  if(!token()){
-    const supplied=prompt("This device needs the Res-Com Airtable token once. Paste it now:");
-    if(!supplied)throw new Error("Airtable token required on this device.");
-    localStorage.setItem(TOKEN,String(supplied).trim());
-  }
-
-  const users=await allCompanyUsers();
-  let record=users.find(r=>normalizePhone(r.fields?.["Phone"]||"")===phone)||null;
-  if(!record&&email)record=users.find(r=>String(r.fields?.["Email"]||"").toLowerCase()===email)||null;
-
-  if(!record&&users.length===0){
-    const name=String(authUser?.name||authUser?.nickname||phoneDisplay(phone)).trim();
-    const fallbackEmail=email||`phone-${phone.replace(/\D/g,"")}@rescom.local`;
-    const fields={[U.email]:fallbackEmail,[U.name]:name,[U.role]:"Admin",[U.active]:true,[U.phone]:phone};
-    const out=await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
-    record=out.records?.[0]||null;
-  }else if(!record){
-    const name=String(authUser?.name||authUser?.nickname||phoneDisplay(phone)).trim();
-    const fallbackEmail=email||`phone-${phone.replace(/\D/g,"")}@rescom.local`;
-    const fields={[U.email]:fallbackEmail,[U.name]:name,[U.role]:"Technician",[U.active]:true,[U.phone]:phone};
-    const out=await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
-    record=out.records?.[0]||null;
-  }
-
-  if(!record)throw new Error("Could not create or match your Res-Com Company User.");
-  const u=companyUserFromRecord(record);
-  u.phone=phone;
-  if(!u.active)throw new Error("This Res-Com Company User is inactive.");
-  saveCurrentUser(u);
-  localStorage.setItem("rescom_last_login_phone_v1",phone);
-  hideAuthGate();
-  renderTechnicians();
-  return u;
-}
-async function bootstrapAuth(){
-  applyCurrentUserUI();
-  if(!authConfigReady()){showAuthGate("Auth0 setup needed.");return false}
+async function ensureSimpleCompanyUser(){
+  if(currentUser())return currentUser();
   try{
-    const c=await initAuth0();
-    if(location.search.includes("code=")&&location.search.includes("state=")){
-      await c.handleRedirectCallback();
-      history.replaceState({},"",location.pathname);
-    }
-    if(!(await c.isAuthenticated())){clearCurrentUser();showAuthGate();return false}
-    const authUser=await c.getUser();
-    await finishAuthenticatedUser(authUser);
-    return true;
-  }catch(err){
-    clearCurrentUser();showAuthGate("Login error: "+err.message);return false;
-  }
+    const users=await allCompanyUsers();
+    const rec=users.find(r=>(r.fields?.["Role"]||"")==="Admin"&&r.fields?.["Active"]!==false)||users.find(r=>r.fields?.["Active"]!==false);
+    if(rec){const u=companyUserFromRecord(rec);saveCurrentUser(u);return u}
+  }catch(e){}
+  const u={email:"",name:"Res-Com Technician",role:"Admin",active:true,phone:""};saveCurrentUser(u);return u;
 }
 async function createCompanyUserFromForm(){
   const me=currentUser();if(!me||me.role!=="Admin"){alert("Admin access required.");return}
@@ -1255,14 +1088,12 @@ async function createCompanyUserFromForm(){
   const name=($("newUserName")?.value||"").trim();
   const role=$("newUserRole")?.value||"Technician";
   const phone=($("newUserPhone")?.value||"").trim();
-  if(!name||!normalizePhone(phone)){alert("Enter technician name and company phone number.");return}
+  if(!name){alert("Enter technician name.");return}
   try{
-    if(await findCompanyUserByPhone(phone)){alert("That company phone number already exists.");return}
-    const fields={[U.email]:email||`phone-${normalizePhone(phone).replace(/\D/g,"")}@rescom.local`,[U.name]:name,[U.role]:role,[U.active]:true,[U.phone]:normalizePhone(phone)};
+    const fields={[U.email]:email||`user-${Date.now()}@rescom.local`,[U.name]:name,[U.role]:role,[U.active]:true,[U.phone]:phone||null};
     await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
     $("newUserEmail").value="";$("newUserName").value="";$("newUserPhone").value="";
-    await renderCompanyUsers();setStatus("synced","✓ COMPANY USER PROFILE CREATED");
-    alert("Company User profile created. The employee can now tap CREATE COMPANY ACCOUNT and sign up using this same phone number.");
+    await renderCompanyUsers();setStatus("synced","✓ COMPANY USER CREATED");
   }catch(err){alert("Could not create Company User: "+err.message)}
 }
 async function renderCompanyUsers(){
@@ -1271,12 +1102,6 @@ async function renderCompanyUsers(){
     const users=await allCompanyUsers();
     box.innerHTML=users.length?users.map(r=>{const u=companyUserFromRecord(r);return `<div class="tech-chip"><span>${esc(u.name)}<br><small>${esc(u.email)} • ${esc(u.role)}${u.active?"":" • INACTIVE"}</small></span></div>`}).join(""):"<p class='small'>No company users.</p>";
   }catch(err){box.innerHTML=`<p class="small">Could not load users: ${esc(err.message)}</p>`}
-}
-async function testAuthConfig(){
-  const box=$("authConfigStatus");
-  if(!authConfigReady()){if(box)box.textContent="Auth0 Domain / Client ID are not configured in auth-config.js.";return}
-  try{await initAuth0();if(box)box.textContent="Auth0 configuration loaded: "+authConfig().domain}
-  catch(err){if(box)box.textContent="Auth0 configuration error: "+err.message}
 }
 
 const $=id=>document.getElementById(id);
@@ -2003,7 +1828,7 @@ window.historyForm=function(kind){
 }
 window.openUnit=async function(id){
   const clean=(id||"").trim().toUpperCase();
-  if(!currentUser()){pendingProtectedUnit=clean;showAuthGate("Sign in to open this equipment.");return}
+  if(!isCompanyUnlocked()){pendingProtectedUnit=clean;showPinGate("Enter company PIN to open this equipment.");return}
   currentId=clean;let u=await loadUnit(clean);
   if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u);
 }
@@ -2093,13 +1918,11 @@ safeOn("testHistory","click",async()=>{
   }
 });
 safeOn("checkUpdate","click",checkForAppUpdate);
-safeOn("authLoginButton","click",authLogin);
-safeOn("authCreateButton","click",authCreateAccount);
-safeOn("authForgotButton","click",authForgotPassword);
-safeOn("authPasskeyInfo","click",showPasskeyHelp);
-safeOn("logoutUser","click",authLogout);
-safeOn("manageLoginButton","click",authLogout);
-safeOn("testAuthConfig","click",testAuthConfig);
+safeOn("unlockCompany","click",unlockCompany);
+safeOn("companyPinEntry","keydown",e=>{if(e.key==="Enter")unlockCompany()});
+safeOn("changeCompanyPin","click",changeCompanyPin);
+safeOn("lockAppNow","click",()=>{sessionStorage.removeItem(PIN_UNLOCK_KEY);showPinGate("App locked.");});
+
 
 safeOn("createCompanyUser","click",createCompanyUserFromForm);
 safeOn("refreshCompanyUsers","click",renderCompanyUsers);
@@ -2249,10 +2072,15 @@ renderList();
 if(token())flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");
 const qp=new URLSearchParams(location.search);
 const requested=qp.get("unit")||qp.get("equipment");
-(async()=>{
-  const ok=await bootstrapAuth();
-  if(ok&&requested)openUnit(requested.trim().toUpperCase());
-})();
+applyCurrentUserUI();
+ensureSimpleCompanyUser();
+if(requested){
+  const rid=requested.trim().toUpperCase();
+  if(isCompanyUnlocked())openUnit(rid);
+  else{pendingProtectedUnit=rid;showPinGate("Enter company PIN to open this equipment.");}
+}else if(!isCompanyUnlocked()){
+  showPinGate();
+}
 
 
 

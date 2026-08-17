@@ -1,5 +1,5 @@
 {
-  "version": "25.0",
-  "build": "Aug 17, 2026 5:46 PM",
-  "notes": "Phone-number company login/signup, clickable Accounts, Patch Notes bottom tab, and updated in-app Manual."
+  "version": "26.0",
+  "build": "Aug 17, 2026 5:57 PM",
+  "notes": "Auth0/phone login removed for now; simple company PIN restored."
 }
