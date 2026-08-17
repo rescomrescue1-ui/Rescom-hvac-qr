@@ -1,21 +1,35 @@
-RES-COM HVAC QR v16.0 — BLACK THEME + QR HANDOFF
+RES-COM HVAC QR v17.0 — HIGH CONTRAST + TYPEABLE EQUIPMENT TYPE
 
-THEME
-- No orange buttons anywhere.
-- Black app background.
-- Dark charcoal cards.
-- Blue primary actions.
-- Red destructive/accent actions.
-- White text.
+VISIBILITY
+- Dark gray app background instead of near-black.
+- Service-history entries are dark gray, not white.
+- Bright white text.
+- Strong blue borders and buttons.
+- Form fields are light with dark text for easy reading on phones.
 
-QR BEHAVIOR
-- If the equipment URL is opened while the installed Home Screen app is already running as a standalone PWA, it opens the equipment record directly.
-- If an iPhone Camera scan opens the QR in Safari, v16 shows a Res-Com QR handoff screen with the Equipment ID and an OPEN EQUIPMENT RECORD HERE button.
-- iOS does not provide a reliable web-only way for a Safari QR link to force-launch an installed PWA.
+EQUIPMENT TYPE
+The Equipment Type field is now typeable and gives suggestions:
+- Gas Furnace
+- Air Handler
+- Condenser
+- Heat Pump
+- AC Coil
+- Air Filter
+- Bypass Humidifier
+- Power Humidifier
+- Steam Humidifier
+- External Hot Water Coil
+- Ductless Split
+- Hot Water Heater
+- Indirect Hot Water Maker
+- Tankless Water Heater
+- Combi
+- Other
 
-TO GET TRUE CAMERA -> RES-COM APP OPENING
-Res-Com would need to become a native iPhone/Android app with universal/app links.
+You can also type a custom equipment type.
 
-IMPORTANT
-Keep the SAME GitHub Pages URL so existing QR labels remain valid.
-Upload all files including version.json and service-worker.js.
+AIRTABLE
+A new Equipment Type (Custom) text field has been created and is used by the app for typed values.
+The original Airtable Equipment Type select remains for compatibility.
+
+Keep the SAME GitHub Pages URL so existing printed QR labels remain valid.

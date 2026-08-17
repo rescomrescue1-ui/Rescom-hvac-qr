@@ -206,10 +206,57 @@ button.danger,.danger,.red{
 hr{border-color:#273241!important}
 a{color:#75adff!important}
 
+
+/* v17 visibility fix */
+html,body{background:#11151b!important;color:#ffffff!important}
+body{background:linear-gradient(180deg,#11151b 0%,#171d25 100%)!important}
+.card,.unit,.entry{
+  background:#222a35!important;
+  color:#ffffff!important;
+  border:2px solid #4b5a6c!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.34)!important;
+}
+.entry{
+  border-left:6px solid #2f7ee2!important;
+}
+.entry *,.unit *,.card *{color:inherit}
+.entry .small,.unit .small,.card .small,.photo-note{color:#d5dde7!important}
+input,select,textarea{
+  background:#f7f9fc!important;
+  color:#111820!important;
+  border:2px solid #6e7d90!important;
+}
+input::placeholder,textarea::placeholder{color:#677484!important}
+datalist option{color:#111820!important;background:#ffffff!important}
+button.orange,.orange{
+  background:#1167d8!important;
+  color:#ffffff!important;
+  border:2px solid #5fa0ff!important;
+}
+button.outline,.outline{
+  background:#18212c!important;
+  color:#ffffff!important;
+  border:2px solid #4f9bff!important;
+}
+button.dark,.dark{
+  background:#2c3542!important;
+  color:#ffffff!important;
+  border:2px solid #667386!important;
+}
+button.gray,.gray{
+  background:#3a4554!important;
+  color:#ffffff!important;
+  border:2px solid #778497!important;
+}
+#globalNav{background:#0c1015!important}
+#globalNav button{background:#243040!important;color:#ffffff!important}
+#globalNav button.homeNav{background:#1167d8!important}
+.photo-grid img{border:2px solid #718096!important}
+
 </style>
 </head>
 <body><div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v16.0 • UPDATED Aug 17, 2026 4:28 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v17.0 • UPDATED Aug 17, 2026 4:41 PM</span></p></header>
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
@@ -285,6 +332,15 @@ a{color:#75adff!important}
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 17.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 4:41 PM</p>
+      <p>• Rebuilt the phone colors for stronger contrast and readability.</p>
+      <p>• Service-history cards are now dark gray with bright white text and blue borders.</p>
+      <p>• Equipment Type is now a tap-and-type field instead of a locked dropdown.</p>
+      <p>• Added your full standard equipment-type suggestion list.</p>
+      <p>• Custom equipment types are saved to a new Airtable text field.</p>
+    </div>
     <div class="unit">
       <h3>Version 16.0</h3>
       <p><b>Released:</b> Aug 17, 2026 4:28 PM</p>
@@ -398,7 +454,7 @@ const HIST_TABLE="tblbkLz1D5cq0hguG";
 const F={
   unit:"fldcDPyAU4s2AhB18", type:"fld2KTFkYciRP0ZiA", mfr:"fldCvK4MhC4P0tpw5",
   model:"fld54UT8f0suWOC19", serial:"fldKsiWMvnKcP83tj", loc:"fldxmUQvjqedkGNln",
-  notes:"fldypRObFBssilOiV", thermo:"fldPal2V0joJfDhX6", install:"fldKXOJftbH6HYZal", photos:"fldNnM4hwoK2A6nqB", site:"fldZ5o0xl0EEJKo5V", warranty:"fldsqY7KB3c5pdk4o", due:"fldEhoxGoK9bTCYnq", archived:"fldXdG47AH3ox2sah"
+  notes:"fldypRObFBssilOiV", thermo:"fldPal2V0joJfDhX6", install:"fldKXOJftbH6HYZal", photos:"fldNnM4hwoK2A6nqB", site:"fldZ5o0xl0EEJKo5V", warranty:"fldsqY7KB3c5pdk4o", due:"fldEhoxGoK9bTCYnq", archived:"fldXdG47AH3ox2sah", customType:"fldnfWRqTlTq0mEQp"
 };
 const H={
   id:"fldku7k6Fb5bHbkwj", equipment:"fldkTvYSmQfbZJ2CQ", date:"fldZ88VWvLVA0ch9z",
@@ -422,8 +478,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="16.0";
-const APP_BUILD="Aug 17, 2026 4:28 PM";
+const APP_VERSION="17.0";
+const APP_BUILD="Aug 17, 2026 4:41 PM";
 const $=id=>document.getElementById(id);
 function safeOn(id,event,handler){
   const el=$(id);
@@ -620,7 +676,7 @@ async function findRemoteEquipment(id){
 function fromRecord(r){
   const f=r.fields||{};
   return {id:f["Unit ID"]||"",assigned:true,recordId:r.id,unit:f["Unit ID"]||"",
-    type:f["Equipment Type"]||"",mfr:f["Manufacturer"]||"",model:f["Model Number"]||"",
+    type:f["Equipment Type (Custom)"]||f["Equipment Type"]||"",mfr:f["Manufacturer"]||"",model:f["Model Number"]||"",
     serial:f["Serial Number"]||"",location:f["Location"]||"",thermo:f["Thermostat Location(s)"]||"",
     site:f["Customer / Site Name"]||"",install:f["Install Date"]||"",warranty:f["Warranty Expiration"]||"",
     due:f["Next Maintenance Due"]||"",archived:!!f["Archived"],photos:f["Equipment Photos"]||[],
@@ -671,7 +727,10 @@ async function saveEquipment(u){
   try{
     const existing=await findRemoteEquipment(u.id);
     const fields={
-      [F.unit]:u.id,[F.type]:u.type,[F.mfr]:u.mfr,[F.model]:u.model,[F.serial]:u.serial,
+      [F.unit]:u.id,
+      [F.type]:(["Gas Furnace", "Air Handler", "Condenser", "Heat Pump", "AC Coil", "Air Filter", "Bypass Humidifier", "Power Humidifier", "Steam Humidifier", "External Hot Water Coil", "Ductless Split", "Hot Water Heater", "Indirect Hot Water Maker", "Tankless Water Heater", "Combi", "Other"].includes(u.type)?u.type:"Other"),
+      [F.customType]:u.type||"",
+      [F.mfr]:u.mfr,[F.model]:u.model,[F.serial]:u.serial,
       [F.loc]:u.location,[F.thermo]:u.thermo,[F.site]:u.site||"",[F.install]:u.install||null,
       [F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.notes]:u.notes
     };
@@ -802,7 +861,11 @@ function setupForm(u){
   $("detail").innerHTML=`<div class="card"><button class="gray" data-home type="button">← HOME</button><span class="badge pending">NEW QR</span>
   <h2>${u.assigned?"Edit Equipment":"Set Up This Equipment"}</h2>
   <div class="grid">
-    <div><label>Equipment Type</label><select id="f_type"><option>Gas Furnace</option><option>Boiler</option><option>Air Handler</option><option>Condenser</option><option>Heat Pump</option><option>Other</option></select></div>
+    <div><label>Equipment Type</label>
+      <input id="f_type" list="equipmentTypeOptions" value="${esc(u.type||"")}" placeholder="Tap to choose or type your own">
+      <datalist id="equipmentTypeOptions"><option value="Gas Furnace"></option><option value="Air Handler"></option><option value="Condenser"></option><option value="Heat Pump"></option><option value="AC Coil"></option><option value="Air Filter"></option><option value="Bypass Humidifier"></option><option value="Power Humidifier"></option><option value="Steam Humidifier"></option><option value="External Hot Water Coil"></option><option value="Ductless Split"></option><option value="Hot Water Heater"></option><option value="Indirect Hot Water Maker"></option><option value="Tankless Water Heater"></option><option value="Combi"></option><option value="Other"></option></datalist>
+      <div class="small">Tap the field for suggestions, or type any equipment type.</div>
+    </div>
     <div><label>Customer / Site Name</label><input id="f_site" value="${esc(u.site||"")}" placeholder="Customer, building, property..."></div><div><label>Location</label><input id="f_loc" value="${esc(u.location||"")}" placeholder="Basement, attic, roof..."></div>
     <div><label>Manufacturer</label><input id="f_mfr" value="${esc(u.mfr||"")}"></div>
     <div><label>Model Number</label><input id="f_model" value="${esc(u.model||"")}"></div>
@@ -815,11 +878,10 @@ function setupForm(u){
   ${photoGrid(u.photos)}
   <button class="orange" id="saveSetup">SAVE EQUIPMENT</button>
   <div class="small mono">${esc(u.id)}</div></div>`;
-  $("f_type").value=u.type||"Gas Furnace";
   bindHome();
   $("saveSetup").onclick=async()=>{
     const b=$("saveSetup");b.disabled=true;b.textContent="SAVING...";
-    Object.assign(u,{assigned:true,type:$("f_type").value,site:$("f_site").value.trim(),location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),
+    Object.assign(u,{assigned:true,type:$("f_type").value.trim()||"Other",site:$("f_site").value.trim(),location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),
       model:$("f_model").value.trim(),serial:$("f_serial").value.trim(),thermo:$("f_thermo").value.trim(),install:$("f_install").value,
       warranty:$("f_warranty").value,due:$("f_due").value,notes:$("f_notes").value.trim()});
     const files=$("f_photos").files;
