@@ -1,24 +1,26 @@
-RES-COM HVAC QR v5 — PERMANENT QR / SHARED EQUIPMENT FIX
+RES-COM HVAC QR v6 — BRANDING + NAVIGATION FIX
 
-IMPORTANT CHANGES
-1. A new blank QR is registered in Airtable immediately when it is created.
-   The QR Unit ID no longer depends on one phone's local storage.
-2. The Home screen refreshes the shared equipment list from Airtable.
-   Existing equipment returns after app updates and on other authorized devices.
-3. Old QR links using either ?unit= or the older ?equipment= format are accepted.
-4. The unreliable Scan From Photo feature was removed.
-5. In-app scanning is attempted only on browsers that support QR BarcodeDetector.
-   On iPhone/iPad, the reliable method is the normal Camera app:
-   point Camera at the Res-Com QR and tap the banner. It opens the exact unit.
+NEW
+- Res-Com blue / navy / white / red color scheme.
+- Res-Com mascot used as the app icon and header logo.
+- Universal Home navigation handler works from every screen.
+- Added a persistent bottom navigation bar: Home / Equipment / Settings.
+- Home navigation no longer depends on each tab having its own working button code.
+- Permanent Airtable QR registration and shared equipment behavior from v5 remains.
 
-DO NOT CHANGE THE GITHUB PAGES URL/REPOSITORY PATH.
-Existing printed QR labels contain that web address. Keeping the same hosted URL keeps the labels valid.
+UPDATE
+Replace the existing GitHub Pages files with all files in this package.
+Especially replace:
+- index.html
+- icon-192.png
+- icon-512.png
+- manifest.webmanifest
+- service-worker.js
 
-UPDATE GITHUB
-Replace all current app files with the contents of this package.
-Especially replace index.html and service-worker.js.
+IMPORTANT
+Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
 
-AFTER DEPLOYMENT
+AFTER UPLOADING
 Open the GitHub Pages site in Safari and refresh.
-Then fully close and reopen the Home Screen app.
-If a device still has the old cached version, remove only the Home Screen shortcut and add it again from the SAME GitHub Pages URL.
+Then fully close and reopen the installed Home Screen app.
+If the old icon or old colors remain, remove the Home Screen shortcut and add it again from the SAME Safari URL.
