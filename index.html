@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f97316">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Res-Com QR">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Res-Com HVAC QR</title>
+<style>
+*{box-sizing:border-box}
+:root{--orange:#f97316;--bg:#f3f4f6;--ink:#1f2937;--muted:#6b7280;--line:#d1d5db}
+html,body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);min-height:100%}
+header{background:var(--orange);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 18px 18px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:24px} header p{margin:5px 0 0;font-size:14px}
+main{max-width:760px;margin:auto;padding:16px 16px calc(30px + env(safe-area-inset-bottom))}
+.card{background:white;border-radius:16px;padding:18px;margin:0 0 15px;box-shadow:0 2px 12px #00000012}
+h2,h3{margin-top:0}
+button,.btn{display:block;width:100%;min-height:52px;border:0;border-radius:12px;padding:13px 16px;margin:10px 0;font-weight:700;font-size:17px;text-align:center;text-decoration:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.orange{background:var(--orange);color:white}.dark{background:#111827;color:white}.gray{background:#e5e7eb;color:#111827}.outline{background:#fff;border:2px solid var(--orange);color:#c2410c}.red{background:#fee2e2;color:#991b1b}
+input,textarea,select{width:100%;font-size:17px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#fff;margin:6px 0 13px}
+textarea{min-height:100px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid>*{min-width:0}
+@media(max-width:650px){.grid{grid-template-columns:1fr}}
+.hidden{display:none!important}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#ffedd5;color:#9a3412;font-weight:700;font-size:12px}
+.unit{border:1px solid #e5e7eb;padding:14px;border-radius:12px;margin:10px 0}
+.entry{border-left:5px solid var(--orange);background:#fafafa;padding:12px;margin:10px 0;border-radius:8px}
+.small{font-size:13px;color:var(--muted)} .center{text-align:center}
+#qrbox{display:flex;justify-content:center;align-items:center;min-height:270px;padding:12px;background:#fff}
+#label{max-width:360px;margin:auto;border:3px solid #111;padding:16px;text-align:center;background:#fff}
+#label h2{margin:4px 0 8px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
+.notice{background:#fff7ed;border:1px solid #fdba74;padding:12px;border-radius:10px}
+.install{background:#eff6ff;border:1px solid #93c5fd;padding:12px;border-radius:10px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+@media print{
+ body *{visibility:hidden!important}
+ #printArea,#printArea *{visibility:visible!important}
+ #printArea{position:absolute;left:0;top:0;width:3in}
+ header{display:none!important}
+}
+</style>
+</head>
+<body>
+<header><h1>Res-Com HVAC QR</h1><p>QR first • equipment info second • service history stays with the unit</p></header>
+<main>
+  <div id="fileWarning" class="card notice hidden">
+    <b>This copy is being opened as a file.</b>
+    <p>For iPhone/iPad buttons, offline storage, Home Screen installation, and QR links to work correctly, this app must be opened from its HTTPS web address.</p>
+  </div>
+
+  <section id="home">
+    <div class="card">
+      <span class="badge">QR-FIRST WORKFLOW</span>
+      <h2 style="margin-top:10px">Start with a blank QR</h2>
+      <p>Create the QR before entering any equipment information. Print the label, put it on the unit, then scan it to set up that equipment.</p>
+      <button class="orange" id="createBlank">Create Blank QR Label</button>
+      <button class="dark" id="openById">Open Equipment by ID</button>
+    </div>
+
+    <div class="card">
+      <h2>Equipment on this device</h2>
+      <div id="unitList"></div>
+    </div>
+
+    <div class="card">
+      <h2>Device backup</h2>
+      <p class="small">Because equipment history is stored on this device, use backup/merge to move or combine records between your iPad and iPhone.</p>
+      <button class="gray" id="exportBtn">Export Backup</button>
+      <label class="btn gray" for="importFile">Merge Backup</label>
+      <input id="importFile" class="hidden" type="file" accept="application/json,.json">
+    </div>
+
+    <div class="card install">
+      <b>Install on iPhone/iPad</b>
+      <p class="small">Open the hosted app in Safari → Share → Add to Home Screen. After the first visit, the app shell is cached for offline use.</p>
+    </div>
+  </section>
+
+  <section id="labelScreen" class="hidden">
+    <div class="card">
+      <button class="gray" data-home>← Home</button>
+      <h2>Blank Equipment QR</h2>
+      <p>Print this label and attach it to one piece of equipment. Enter the equipment information only after scanning this QR.</p>
+      <div id="printArea">
+        <div id="label">
+          <h2>RES-COM HVAC</h2>
+          <div><b>Equipment Service History</b></div>
+          <div id="qrbox"></div>
+          <div class="mono" id="labelId"></div>
+          <p><b>Scan to set up / service this equipment</b></p>
+        </div>
+      </div>
+      <button class="orange" id="printBtn">Print QR Label</button>
+      <button class="outline" id="setupNow">Set Up This Equipment Now</button>
+    </div>
+  </section>
+
+  <section id="detailScreen" class="hidden">
+    <div id="detail"></div>
+  </section>
+</main>
+
+<script src="qrcode.min.js"></script>
+<script>
+const KEY="rescom_hvac_qr_v1";
+let currentId=null;
+
+const $=id=>document.getElementById(id);
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
+function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function uid(){
+  const r=crypto.getRandomValues(new Uint32Array(2));
+  return "RC-"+r[0].toString(36).toUpperCase().padStart(6,"0")+"-"+r[1].toString(36).toUpperCase().padStart(6,"0");
+}
+function esc(s){const d=document.createElement("div");d.textContent=s??"";return d.innerHTML}
+function show(which){
+  ["home","labelScreen","detailScreen"].forEach(x=>$(x).classList.add("hidden"));
+  $(which).classList.remove("hidden");
+  scrollTo(0,0);
+}
+function appURL(id){
+  const u=new URL(location.href);
+  u.search="";
+  u.hash="";
+  u.searchParams.set("unit",id);
+  return u.toString();
+}
+function getUnit(id){return load().find(x=>x.id===id)}
+function upsert(u){
+  const a=load(), i=a.findIndex(x=>x.id===u.id);
+  if(i>=0)a[i]=u; else a.push(u);
+  save(a);
+}
+function ensureBlank(id){
+  let u=getUnit(id);
+  if(!u){
+    u={id,assigned:false,unit:"",type:"",mfr:"",model:"",serial:"",location:"",thermo:"",notes:"",
+       services:[],tuneups:[],parts:[],created:new Date().toISOString()};
+    upsert(u);
+  }
+  return u;
+}
+function renderList(){
+  const a=load();
+  if(!a.length){$("unitList").innerHTML="<p class='small'>No QR equipment records on this device yet.</p>";return}
+  $("unitList").innerHTML=a.slice().reverse().map(u=>`
+    <div class="unit">
+      <b>${u.assigned?esc(u.unit||u.type||"Equipment"):"Unassigned QR"}</b>
+      ${u.assigned?`<div class="small">${esc(u.type)} ${u.location?"• "+esc(u.location):""}</div>`:"<div class='small'>Ready to be attached and set up</div>"}
+      <div class="small mono">${esc(u.id)}</div>
+      <button class="outline" onclick="openUnit('${u.id}')">Open</button>
+    </div>`).join("");
+}
+function makeQR(id){
+  $("qrbox").innerHTML="";
+  new QRCode($("qrbox"),{text:appURL(id),width:240,height:240,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+  $("labelId").textContent=id;
+}
+function newBlank(){
+  const id=uid();
+  ensureBlank(id); currentId=id; makeQR(id); show("labelScreen"); renderList();
+}
+function setupForm(u){
+  $("detail").innerHTML=`
+  <div class="card">
+    <button class="gray" data-home>← Home</button>
+    <span class="badge">UNASSIGNED QR</span>
+    <h2 style="margin-top:10px">Set Up This Equipment</h2>
+    <p>This QR is ready. Enter the equipment information now.</p>
+    <div class="grid">
+      <div><label>Equipment / Unit #</label><input id="f_unit" value="${esc(u.unit)}" placeholder="Furnace #1"></div>
+      <div><label>Type of Unit</label><input id="f_type" value="${esc(u.type)}" placeholder="Furnace, Condenser, Boiler..."></div>
+      <div><label>Manufacturer</label><input id="f_mfr" value="${esc(u.mfr)}"></div>
+      <div><label>Model #</label><input id="f_model" value="${esc(u.model)}"></div>
+      <div><label>Serial #</label><input id="f_serial" value="${esc(u.serial)}"></div>
+      <div><label>Location</label><input id="f_location" value="${esc(u.location)}" placeholder="Basement, Attic..."></div>
+    </div>
+    <label>Thermostat Location(s)</label><textarea id="f_thermo">${esc(u.thermo)}</textarea>
+    <label>Equipment Notes</label><textarea id="f_notes">${esc(u.notes)}</textarea>
+    <button class="orange" id="saveSetup">Save Equipment</button>
+    <div class="small mono">${esc(u.id)}</div>
+  </div>`;
+  bindHome();
+  $("saveSetup").onclick=()=>{
+    u.unit=$("f_unit").value.trim(); u.type=$("f_type").value.trim(); u.mfr=$("f_mfr").value.trim();
+    u.model=$("f_model").value.trim(); u.serial=$("f_serial").value.trim(); u.location=$("f_location").value.trim();
+    u.thermo=$("f_thermo").value.trim(); u.notes=$("f_notes").value.trim(); u.assigned=true;
+    upsert(u); renderList(); renderDetail(u);
+  };
+}
+function entryHTML(arr,kind){
+  if(!arr?.length)return "<p class='small'>No history recorded yet.</p>";
+  return arr.slice().reverse().map(x=>`<div class="entry"><b>${esc(x.date)} — ${esc(x.title||kind)}</b>
+    ${x.tech?`<div><b>Tech:</b> ${esc(x.tech)}</div>`:""}<p>${esc(x.notes||"")}</p></div>`).join("");
+}
+function renderDetail(u){
+  currentId=u.id;
+  $("detail").innerHTML=`
+  <div class="card">
+    <button class="gray" data-home>← Home</button>
+    <span class="badge">QR LOCKED TO THIS UNIT</span>
+    <h2 style="margin-top:10px">${esc(u.unit||u.type||"Equipment")}</h2>
+    <p><b>Type:</b> ${esc(u.type)}</p><p><b>Manufacturer:</b> ${esc(u.mfr)}</p>
+    <p><b>Model:</b> ${esc(u.model)}</p><p><b>Serial:</b> ${esc(u.serial)}</p>
+    <p><b>Location:</b> ${esc(u.location)}</p><p><b>Thermostat:</b> ${esc(u.thermo)}</p>
+    <p><b>Equipment Notes:</b> ${esc(u.notes)}</p><div class="small mono">${esc(u.id)}</div>
+    <button class="outline" id="showLabel">Show / Reprint QR Label</button>
+  </div>
+  <div class="card">
+    <h2>Add History</h2>
+    <button class="orange" onclick="historyForm('service')">+ Service Call</button>
+    <button class="orange" onclick="historyForm('tuneup')">+ Tune-Up / Preventive Maintenance</button>
+    <button class="orange" onclick="historyForm('part')">+ Parts Replacement</button>
+    <div id="entryForm"></div>
+  </div>
+  <div class="card"><h2>Service Call History</h2>${entryHTML(u.services,"Service Call")}</div>
+  <div class="card"><h2>Tune-Up History</h2>${entryHTML(u.tuneups,"Tune-Up")}</div>
+  <div class="card"><h2>Parts Replacement History</h2>${entryHTML(u.parts,"Part Replacement")}</div>`;
+  bindHome();
+  $("showLabel").onclick=()=>{makeQR(u.id);show("labelScreen")};
+  show("detailScreen");
+}
+window.historyForm=function(kind){
+  const titles={service:"Service Call",tuneup:"Tune-Up / Preventive Maintenance",part:"Parts Replacement"};
+  $("entryForm").innerHTML=`
+  <div class="unit">
+    <h3>${titles[kind]}</h3>
+    <label>Date</label><input id="h_date" type="date" value="${new Date().toISOString().slice(0,10)}">
+    <label>Technician(s)</label><input id="h_tech">
+    <label>${kind==="part"?"Part / Component":"Work Type"}</label><input id="h_title" placeholder="${kind==="part"?"Blower motor, capacitor...":titles[kind]}">
+    <label>Notes / Work Performed</label><textarea id="h_notes"></textarea>
+    <button class="orange" id="saveHist">Save ${titles[kind]}</button>
+  </div>`;
+  $("saveHist").onclick=()=>{
+    const a=load(), u=a.find(x=>x.id===currentId); if(!u)return;
+    const entry={id:uid(),date:$("h_date").value,tech:$("h_tech").value.trim(),title:$("h_title").value.trim()||titles[kind],notes:$("h_notes").value.trim(),created:new Date().toISOString()};
+    if(kind==="service")u.services.push(entry); if(kind==="tuneup")u.tuneups.push(entry); if(kind==="part")u.parts.push(entry);
+    save(a); renderDetail(u);
+  };
+}
+window.openUnit=function(id){
+  const u=ensureBlank(id); currentId=id; if(u.assigned)renderDetail(u); else {setupForm(u);show("detailScreen")}
+}
+function bindHome(){document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>{history.replaceState({},"",location.pathname);renderList();show("home")})}
+
+$("createBlank").onclick=newBlank;
+$("printBtn").onclick=()=>window.print();
+$("setupNow").onclick=()=>openUnit(currentId);
+$("openById").onclick=()=>{
+  const id=prompt("Enter the Res-Com Equipment ID from the QR label:");
+  if(id)openUnit(id.trim().toUpperCase());
+};
+document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>{renderList();show("home")});
+
+$("exportBtn").onclick=()=>{
+  const blob=new Blob([JSON.stringify({app:"Res-Com HVAC QR",version:1,exported:new Date().toISOString(),units:load()},null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="ResCom_HVAC_QR_Backup_"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);
+};
+$("importFile").onchange=async e=>{
+  const f=e.target.files[0]; if(!f)return;
+  try{
+    const data=JSON.parse(await f.text()), incoming=Array.isArray(data)?data:data.units;
+    if(!Array.isArray(incoming))throw 0;
+    const map=new Map(load().map(u=>[u.id,u]));
+    incoming.forEach(n=>{
+      const o=map.get(n.id);
+      if(!o){map.set(n.id,n);return}
+      // Prefer populated equipment fields; merge histories by entry id.
+      ["assigned","unit","type","mfr","model","serial","location","thermo","notes"].forEach(k=>{
+        if((n[k]!==undefined && n[k]!=="" && n[k]!==false) && (!o[k] || k==="assigned"))o[k]=n[k];
+      });
+      ["services","tuneups","parts"].forEach(k=>{
+        const all=[...(o[k]||[]),...(n[k]||[])], seen=new Set();
+        o[k]=all.filter(x=>{const key=x.id||JSON.stringify(x);if(seen.has(key))return false;seen.add(key);return true});
+      });
+    });
+    save([...map.values()]);renderList();alert("Backup merged successfully.");
+  }catch(err){alert("That backup file could not be read.");}
+  e.target.value="";
+};
+
+if(location.protocol==="file:")$("fileWarning").classList.remove("hidden");
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+}
+renderList();
+const requested=new URLSearchParams(location.search).get("unit");
+if(requested)openUnit(requested);
+</script>
+</body>
+</html>
