@@ -1,27 +1,21 @@
-RES-COM HVAC QR v15.0 — FIELD SERVICE FEATURES
+RES-COM HVAC QR v16.0 — BLACK THEME + QR HANDOFF
 
-NEW
-- Archive Equipment / Restore Equipment.
-- Archived units are hidden from the active list by default but keep all Airtable history.
-- Show Archived Equipment checkbox.
-- Customer / Site Name.
-- Warranty Expiration.
-- Next Maintenance Due.
-- Home-screen maintenance summary.
-- Overdue and due-within-30-days badges.
-- Technician dropdown for service history.
-- Technician manager in Settings.
-- Technician names found in cloud history are automatically remembered on the device.
+THEME
+- No orange buttons anywhere.
+- Black app background.
+- Dark charcoal cards.
+- Blue primary actions.
+- Red destructive/accent actions.
+- White text.
 
-AIRTABLE
-New Equipment fields are already created:
-- Customer / Site Name
-- Warranty Expiration
-- Next Maintenance Due
-- Archived
+QR BEHAVIOR
+- If the equipment URL is opened while the installed Home Screen app is already running as a standalone PWA, it opens the equipment record directly.
+- If an iPhone Camera scan opens the QR in Safari, v16 shows a Res-Com QR handoff screen with the Equipment ID and an OPEN EQUIPMENT RECORD HERE button.
+- iOS does not provide a reliable web-only way for a Safari QR link to force-launch an installed PWA.
 
-Permanent Delete Equipment remains available for true deletion.
-Archive is the recommended choice for replaced or retired equipment.
+TO GET TRUE CAMERA -> RES-COM APP OPENING
+Res-Com would need to become a native iPhone/Android app with universal/app links.
 
-Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
+IMPORTANT
+Keep the SAME GitHub Pages URL so existing QR labels remain valid.
 Upload all files including version.json and service-worker.js.

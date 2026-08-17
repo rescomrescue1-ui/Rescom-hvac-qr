@@ -107,15 +107,126 @@ header{
 .tech-chip{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;margin:6px 0;border:1px solid #ccd5df;border-radius:10px;background:#f8fafc}
 .tech-chip button{min-height:34px!important;width:auto!important;padding:4px 10px!important}
 
+
+:root{
+  --rescom-bg:#05070a!important;
+  --rescom-card:#0e131a!important;
+  --rescom-card2:#151c25!important;
+  --rescom-blue:#1167d8!important;
+  --rescom-blue-dark:#0a3f8d!important;
+  --rescom-red:#e6212a!important;
+  --rescom-white:#ffffff!important;
+  --rescom-muted:#aeb9c7!important;
+  --rescom-border:#273241!important;
+}
+html,body{
+  background:#05070a!important;
+  color:#ffffff!important;
+}
+body{
+  background:linear-gradient(180deg,#05070a 0%,#090d13 100%)!important;
+}
+header{
+  background:linear-gradient(135deg,#05070a,#0a1830)!important;
+  color:#ffffff!important;
+  border-bottom:4px solid #e6212a!important;
+}
+.card,.unit{
+  background:#0e131a!important;
+  color:#ffffff!important;
+  border:1px solid #273241!important;
+  box-shadow:0 6px 18px rgba(0,0,0,.38)!important;
+}
+.card h1,.card h2,.card h3,.unit h1,.unit h2,.unit h3,
+label,b,strong,p,span,div{
+  color:inherit;
+}
+.small,.photo-note{
+  color:#aeb9c7!important;
+}
+input,select,textarea{
+  background:#111821!important;
+  color:#ffffff!important;
+  border:1px solid #3a4657!important;
+}
+input::placeholder,textarea::placeholder{
+  color:#7f8b99!important;
+}
+button.orange,.orange{
+  background:linear-gradient(135deg,#0a3f8d,#1167d8)!important;
+  color:#ffffff!important;
+  border:1px solid #2f7ee2!important;
+}
+button.dark,.dark{
+  background:#151c25!important;
+  color:#ffffff!important;
+  border:1px solid #354253!important;
+}
+button.gray,.gray{
+  background:#242d39!important;
+  color:#ffffff!important;
+  border:1px solid #3d4958!important;
+}
+button.outline,.outline{
+  background:#0e131a!important;
+  color:#75adff!important;
+  border:2px solid #1167d8!important;
+}
+button.danger,.danger,.red{
+  background:linear-gradient(135deg,#a91118,#e6212a)!important;
+  color:#ffffff!important;
+  border:1px solid #ef4b52!important;
+}
+#globalNav{
+  background:#05070a!important;
+  border-top:3px solid #e6212a!important;
+}
+#globalNav button{
+  background:#111821!important;
+  color:#ffffff!important;
+  border:1px solid #354253!important;
+}
+#globalNav button.homeNav{
+  background:#1167d8!important;
+}
+#updateBanner{
+  background:#1167d8!important;
+  color:#ffffff!important;
+  border-color:#ffffff!important;
+}
+#appVersionBadge{
+  background:#0e131a!important;
+  color:#75adff!important;
+  border-color:#e6212a!important;
+}
+.photo-picker{
+  background:#111821!important;
+  border-color:#354253!important;
+}
+hr{border-color:#273241!important}
+a{color:#75adff!important}
+
 </style>
 </head>
 <body><div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v15.0 • UPDATED Aug 17, 2026 4:18 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v16.0 • UPDATED Aug 17, 2026 4:28 PM</span></p></header>
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
   <button id="settingsBtn" class="gray" style="width:auto;min-height:40px;padding:8px 12px;margin:0" type="button">Settings</button>
 </div>
+
+
+<section id="qrHandoff" class="hidden">
+  <div class="card">
+    <h2>Res-Com Equipment QR Detected</h2>
+    <div id="handoffUnit" class="unit"></div>
+    <p>This QR was opened from the phone Camera. iPhone opens web QR links in Safari instead of switching directly into an installed Home Screen web app.</p>
+    <button class="orange" id="handoffOpenRecord" type="button">OPEN EQUIPMENT RECORD HERE</button>
+    <button class="outline" id="handoffCopyId" type="button">COPY EQUIPMENT ID</button>
+    <p class="small">For direct Camera → installed app opening, Res-Com needs to be packaged as a native app with universal/app links.</p>
+  </div>
+</section>
 
 <section id="home">
   <div class="card">
@@ -174,6 +285,15 @@ header{
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 16.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 4:28 PM</p>
+      <p>• Removed all orange button styling.</p>
+      <p>• Changed the full app background to black with dark cards.</p>
+      <p>• Primary buttons are now Res-Com blue; destructive actions stay red.</p>
+      <p>• Added a dedicated QR handoff screen when a Camera scan opens in Safari.</p>
+      <p>• Installed Home Screen app still opens QR-linked equipment directly when launched with the equipment link.</p>
+    </div>
     <div class="unit">
       <h3>Version 15.0</h3>
       <p><b>Released:</b> Aug 17, 2026 4:18 PM</p>
@@ -288,9 +408,22 @@ const H={
 const LOCAL="rescom_shared_local_v2", TOKEN="rescom_airtable_pat", QUEUE="rescom_sync_queue_v2";
 let currentId=null,currentRecordId=null;
 
+let pendingQRUnit=null;
+function isStandaloneApp(){
+  return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone===true;
+}
+function showQRHandoff(id){
+  pendingQRUnit=id;
+  const box=$("handoffUnit");
+  if(box)box.innerHTML=`<b>Equipment ID</b><div class="mono">${esc(id)}</div>`;
+  show("qrHandoff");
+  window.scrollTo(0,0);
+}
 
-const APP_VERSION="15.0";
-const APP_BUILD="Aug 17, 2026 4:18 PM";
+
+
+const APP_VERSION="16.0";
+const APP_BUILD="Aug 17, 2026 4:28 PM";
 const $=id=>document.getElementById(id);
 function safeOn(id,event,handler){
   const el=$(id);
@@ -934,6 +1067,18 @@ safeOn("testHistory","click",async()=>{
 });
 safeOn("checkUpdate","click",checkForAppUpdate);
 
+safeOn("handoffOpenRecord","click",()=>{if(pendingQRUnit)openUnit(pendingQRUnit)});
+safeOn("handoffCopyId","click",async()=>{
+  if(!pendingQRUnit)return;
+  try{
+    await navigator.clipboard.writeText(pendingQRUnit);
+    alert("Equipment ID copied: "+pendingQRUnit);
+  }catch(e){
+    prompt("Copy this Equipment ID:",pendingQRUnit);
+  }
+});
+
+
 safeOn("addTechnician","click",()=>{
   const i=$("techNameInput");if(!i)return;
   const n=i.value.trim();if(!n){alert("Enter a technician name.");return}
@@ -1029,7 +1174,13 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){
 window.addEventListener("online",()=>flushQueue());window.addEventListener("offline",()=>setStatus("offline","OFFLINE — SAVING LOCALLY"));
 renderList();
 if(token())flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");
-const qp=new URLSearchParams(location.search);const requested=qp.get("unit")||qp.get("equipment");if(requested)openUnit(requested.trim().toUpperCase());
+const qp=new URLSearchParams(location.search);
+const requested=qp.get("unit")||qp.get("equipment");
+if(requested){
+  const rid=requested.trim().toUpperCase();
+  if(isStandaloneApp())openUnit(rid);
+  else showQRHandoff(rid);
+}
 
 
 
