@@ -1,22 +1,27 @@
-RES-COM HVAC QR v13.0 — CAMERA QR + PATCH NOTES
+RES-COM HVAC QR v15.0 — FIELD SERVICE FEATURES
 
-CHANGES
-- Removed the unreliable in-app QR scanner.
-- Technicians now use the normal phone/iPad Camera app to scan Res-Com QR labels.
-- The QR website banner opens the exact equipment record in the Res-Com app.
-- Added PATCH NOTES inside Settings and in the bottom navigation.
-- Bottom navigation is now Home / Equipment / Settings / Patch Notes.
-- Device Token Setup remains available in Settings.
-- App update/version indicator remains.
+NEW
+- Archive Equipment / Restore Equipment.
+- Archived units are hidden from the active list by default but keep all Airtable history.
+- Show Archived Equipment checkbox.
+- Customer / Site Name.
+- Warranty Expiration.
+- Next Maintenance Due.
+- Home-screen maintenance summary.
+- Overdue and due-within-30-days badges.
+- Technician dropdown for service history.
+- Technician manager in Settings.
+- Technician names found in cloud history are automatically remembered on the device.
 
-IMPORTANT
+AIRTABLE
+New Equipment fields are already created:
+- Customer / Site Name
+- Warranty Expiration
+- Next Maintenance Due
+- Archived
+
+Permanent Delete Equipment remains available for true deletion.
+Archive is the recommended choice for replaced or retired equipment.
+
 Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
-
-UPLOAD
-Upload all files from this package to the same GitHub repository, including:
-- index.html
-- service-worker.js
-- version.json
-- manifest.webmanifest
-- icons
-- qrcode.min.js
+Upload all files including version.json and service-worker.js.
