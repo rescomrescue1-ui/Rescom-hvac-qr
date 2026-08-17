@@ -1,5 +1,5 @@
 
-const CACHE = "rescom-qr-history-home-v9";
+const CACHE = "rescom-qr-scanner-history-v10";
 const ASSETS = ["./","./index.html","./manifest.webmanifest","./qrcode.min.js","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));

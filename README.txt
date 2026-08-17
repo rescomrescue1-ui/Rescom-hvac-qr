@@ -1,20 +1,25 @@
-RES-COM HVAC QR v9 — HOME + CLOUD HISTORY FIX
+RES-COM HVAC QR v10 — SCANNER + HISTORY REBUILD
 
 FIXED
-- Service history now loads from Airtable using the equipment Unit ID.
-- Existing Airtable history displays on phones/tablets after the unit is opened.
-- Added REFRESH HISTORY FROM CLOUD button on Equipment Details.
-- Rebuilt Home navigation around one universal goHome() function.
-- Added permanent bottom navigation: Home / Equipment / Settings.
-- Install Date, Equipment Photos, and Service Photos from v8 remain.
+- Replaced browser BarcodeDetector scanner with jsQR camera decoding.
+- Same QR decoding method is used for live camera and Scan From Photo.
+- Designed to work on iPhone, iPad, Android, and desktop browsers with camera access.
+- Service history no longer relies on an Airtable linked-record formula.
+- The app fetches history records and matches the actual Airtable linked equipment record ID.
+- Equipment detail screen shows how many cloud history records were loaded.
+- REFRESH HISTORY FROM CLOUD gives a visible error if Airtable history cannot be read.
+- Settings includes TEST CLOUD HISTORY for troubleshooting.
 
 IMPORTANT
-Use the SAME GitHub repository and SAME GitHub Pages URL.
-Do not create a new site address, or existing printed QR labels will no longer point to the app.
+Keep the SAME GitHub Pages URL so existing QR labels keep working.
 
-TEST AFTER UPDATE
-1. Open the app.
-2. Open RC-1BECSGR-1MQG3NT.
-3. Its Airtable service history should appear.
-4. Tap REFRESH HISTORY FROM CLOUD if needed.
-5. Test HOME from Settings, Equipment Details, Add History, and QR screens.
+AFTER UPDATING
+1. Replace files in the same GitHub repository.
+2. Wait for GitHub Pages deployment.
+3. Open the site in Safari and refresh.
+4. Fully close/reopen the Home Screen app.
+5. If v10 is still not shown, remove the Home Screen shortcut and add it again from the same URL.
+
+SCANNER
+Camera access must be allowed.
+If live scan struggles, use SCAN QR FROM PHOTO with a sharp photo where the entire QR is visible.
