@@ -58,23 +58,39 @@ body{padding-bottom:78px!important}
 #globalNav button.homeNav{background:#e6212a!important}
 @media print{#globalNav{display:none!important}body{padding-bottom:0!important}}
 
+
+#appVersionBadge{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:6px;padding:5px 9px;border-radius:999px;
+  background:#ffffff;color:#0b4ea2;font-weight:800;font-size:12px;
+  border:2px solid #e6212a
+}
+#updateBanner{
+  position:fixed;top:10px;left:50%;transform:translateX(-50%);
+  z-index:20000;max-width:92%;padding:12px 16px;border-radius:12px;
+  background:#0b4ea2;color:white;font-weight:800;text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,.25);border:3px solid #fff
+}
+#updateBanner.updated{background:#148447}
+#updateBanner.available{background:#e6212a;cursor:pointer}
+
 </style>
 </head>
-<body>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets</p></header>
+<body><div id="updateBanner" class="updated hidden"></div>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v11.0 • UPDATED Aug 17, 2026 3:58 PM</span></p></header>
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
-  <button id="settingsBtn" class="gray" style="width:auto;min-height:40px;padding:8px 12px;margin:0">Settings</button>
+  <button id="settingsBtn" class="gray" style="width:auto;min-height:40px;padding:8px 12px;margin:0" type="button">Settings</button>
 </div>
 
 <section id="home">
   <div class="card">
     <h2>QR First</h2>
     <p>Create the QR, print it, put it on one unit, then scan it to enter the equipment information.</p>
-    <button class="orange" id="scanQrBtn">SCAN EQUIPMENT QR</button>
-    <button class="orange" id="createBlank">Create Blank QR Label</button>
-    <button class="dark" id="openById">Open Equipment by ID</button>
+    <button class="orange" id="scanQrBtn" type="button">SCAN EQUIPMENT QR</button>
+    <button class="orange" id="createBlank" type="button">Create Blank QR Label</button>
+    <button class="dark" id="openById" type="button">Open Equipment by ID</button>
   </div>
   <div class="card"><h2>Equipment on this device</h2><div id="unitList"></div></div>
 </section>
@@ -87,9 +103,11 @@ body{padding-bottom:78px!important}
     <p class="small"><b>Recommended token access:</b> only the “Res-Com Equipment Service Records” base, with <b>data.records:read</b> and <b>data.records:write</b>.</p>
     <label>Airtable Personal Access Token</label>
     <input id="tokenInput" type="password" autocomplete="off" placeholder="pat...">
-    <button class="orange" id="saveToken">Save Connection</button>
-    <button class="outline" id="testToken">Test Connection</button>
-    <button class="gray" id="clearToken">Remove Token From This Device</button>
+    <button class="orange" id="saveToken" type="button">Save Connection</button>
+    <button class="outline" id="testToken" type="button">Test Connection</button>
+<button class="outline" id="testHistory" type="button">TEST CLOUD HISTORY</button>
+<button class="dark" id="checkUpdate" type="button">CHECK FOR APP UPDATE</button>
+    <button class="gray" id="clearToken" type="button">Remove Token From This Device</button>
     <p class="small">The token is stored only in this device's browser storage. Do not put the token in the GitHub source files.</p>
   </div>
 </section>
@@ -117,8 +135,8 @@ body{padding-bottom:78px!important}
       <div id="qrbox"></div><div id="labelId" class="mono"></div>
       <p><b>Scan to set up / service this equipment</b></p>
     </div></div>
-    <button class="orange" id="printBtn">Print QR Label</button>
-    <button class="outline" id="setupNow">Set Up This Equipment Now</button>
+    <button class="orange" id="printBtn" type="button">Print QR Label</button>
+    <button class="outline" id="setupNow" type="button">Set Up This Equipment Now</button>
   </div>
 </section>
 
@@ -133,7 +151,7 @@ document.addEventListener("click", async (e)=>{
     e.stopPropagation();
     await stopScanner();
     history.replaceState({},"",location.pathname);
-    renderList();
+    markVersionSeen();renderList();
     show("home");
     window.scrollTo(0,0);
   }
@@ -157,7 +175,46 @@ const H={
 const LOCAL="rescom_shared_local_v2", TOKEN="rescom_airtable_pat", QUEUE="rescom_sync_queue_v2";
 let currentId=null,currentRecordId=null;
 
+
+const APP_VERSION="11.0";
+const APP_BUILD="Aug 17, 2026 3:58 PM";
 const $=id=>document.getElementById(id);
+function safeOn(id,event,handler){
+  const el=$(id);
+  if(!el){console.warn("Missing UI control:",id);return false}
+  el.addEventListener(event,handler);
+  return true;
+}
+function showUpdateBanner(text,kind="updated",persist=false){
+  const b=$("updateBanner");if(!b)return;
+  b.textContent=text;b.className=kind;
+  if(!persist)setTimeout(()=>{b.classList.add("hidden")},4500);
+}
+function markVersionSeen(){
+  const key="rescom_last_seen_version";
+  const last=localStorage.getItem(key);
+  if(last!==APP_VERSION){
+    localStorage.setItem(key,APP_VERSION);
+    showUpdateBanner("✓ APP UPDATED — v"+APP_VERSION+" • "+APP_BUILD,"updated");
+  }
+}
+async function checkForAppUpdate(){
+  try{
+    const res=await fetch("./version.json?ts="+Date.now(),{cache:"no-store"});
+    if(!res.ok)throw new Error("Could not read version file");
+    const v=await res.json();
+    if(String(v.version)!==APP_VERSION){
+      showUpdateBanner("UPDATE AVAILABLE — v"+v.version+" • TAP HERE TO RELOAD","available",true);
+      const b=$("updateBanner");
+      b.onclick=()=>location.reload(true);
+      return;
+    }
+    showUpdateBanner("✓ THIS DEVICE IS ON THE LATEST APP — v"+APP_VERSION,"updated");
+  }catch(err){
+    alert("Could not check for an app update. Check internet connection and try again.");
+  }
+}
+
 function esc(s){const d=document.createElement("div");d.textContent=s??"";return d.innerHTML}
 function loadLocal(){try{return JSON.parse(localStorage.getItem(LOCAL)||"[]")}catch(e){return[]}}
 function saveLocal(a){localStorage.setItem(LOCAL,JSON.stringify(a))}
@@ -651,35 +708,79 @@ async function scanImageFile(file){
   }
 }
 
-$("scanQrBtn").addEventListener("click", startScanner);
-$("closeScanner").addEventListener("click", async()=>{await stopScanner();renderList();show("home");window.scrollTo(0,0)});
-$("photoScanBtn").addEventListener("click", ()=>$("photoScanInput").click());
-$("photoScanInput").addEventListener("change", e=>scanImageFile(e.target.files && e.target.files[0]));
-$("createBlank").onclick=newBlank;$("printBtn").onclick=()=>window.print();$("setupNow").onclick=()=>openUnit(currentId);
-$("openById").onclick=()=>{const id=prompt("Enter Res-Com Equipment ID:");if(id)openUnit(id.trim().toUpperCase())};
-$("settingsBtn").onclick=()=>{$("tokenInput").value=token();show("settings")};
-$("saveToken").onclick=async()=>{localStorage.setItem(TOKEN,$("tokenInput").value.trim());setStatus("pending","CHECKING...");try{await findRemoteEquipment("__TEST__");setStatus("synced","✓ CONNECTED");alert("Airtable connection saved.");flushQueue()}catch(e){setStatus("offline","CONNECTION ERROR");alert("Could not connect. Check the token and its Airtable permissions.")}};
-$("testToken").onclick=async()=>{try{await findRemoteEquipment("__TEST__");alert("Connection is working.");setStatus("synced","✓ CONNECTED")}catch(e){alert("Connection failed. Check the token and permissions.");setStatus("offline","CONNECTION ERROR")}};
-$("clearToken").onclick=()=>{localStorage.removeItem(TOKEN);$("tokenInput").value="";setStatus("pending","SHARED SAVE NOT CONNECTED")};
 
-$("testHistory").onclick=async()=>{
+safeOn("scanQrBtn","click",startScanner);
+safeOn("closeScanner","click",async()=>{await stopScanner();renderList();show("home");window.scrollTo(0,0)});
+safeOn("photoScanBtn","click",()=>{const i=$("photoScanInput");if(i)i.click()});
+safeOn("photoScanInput","change",e=>scanImageFile(e.target.files&&e.target.files[0]));
+safeOn("createBlank","click",newBlank);
+safeOn("printBtn","click",()=>window.print());
+safeOn("setupNow","click",()=>openUnit(currentId));
+safeOn("openById","click",()=>{const id=prompt("Enter Res-Com Equipment ID:");if(id)openUnit(id.trim().toUpperCase())});
+safeOn("settingsBtn","click",()=>{if($("tokenInput"))$("tokenInput").value=token();show("settings")});
+safeOn("saveToken","click",async()=>{
+  localStorage.setItem(TOKEN,$("tokenInput").value.trim());
+  setStatus("pending","CHECKING...");
   try{
-    const units=loadLocal().filter(x=>x.recordId||x.assigned);
+    await findRemoteEquipment("__TEST__");
+    setStatus("synced","✓ CONNECTED");
+    alert("Airtable connection saved.");
+    await flushQueue();
+  }catch(e){
+    setStatus("offline","CONNECTION ERROR");
+    alert("Could not connect. Check the token and its Airtable permissions.");
+  }
+});
+safeOn("testToken","click",async()=>{
+  try{
+    await findRemoteEquipment("__TEST__");
+    alert("Connection is working.");
+    setStatus("synced","✓ CONNECTED");
+  }catch(e){
+    alert("Connection failed. Check the token and permissions.");
+    setStatus("offline","CONNECTION ERROR");
+  }
+});
+safeOn("clearToken","click",()=>{
+  localStorage.removeItem(TOKEN);
+  if($("tokenInput"))$("tokenInput").value="";
+  setStatus("pending","SHARED SAVE NOT CONNECTED");
+});
+safeOn("testHistory","click",async()=>{
+  try{
+    setStatus("pending","TESTING CLOUD HISTORY...");
+    const units=loadLocal().filter(x=>x.assigned);
     if(!units.length)throw new Error("Open an equipment record first.");
     const u=units[units.length-1];
     const r=await findRemoteEquipment(u.id);
     if(!r)throw new Error("Equipment not found in Airtable.");
     const h=await remoteHistory(r.id);
-    alert("Cloud history connection is working. Found "+h.length+" history record(s) for "+u.id+".");
+    alert("Cloud history is working. Found "+h.length+" history record(s) for "+u.id+".");
     setStatus("synced","✓ CLOUD HISTORY WORKING");
   }catch(err){
     alert("Cloud history test failed: "+err.message);
     setStatus("offline","CLOUD HISTORY ERROR");
   }
-};
+});
+safeOn("checkUpdate","click",checkForAppUpdate);
 
 
-if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  navigator.serviceWorker.register("./service-worker.js?appv="+APP_VERSION).then(reg=>{
+    reg.update().catch(()=>{});
+    reg.addEventListener("updatefound",()=>{
+      const w=reg.installing;
+      if(!w)return;
+      w.addEventListener("statechange",()=>{
+        if(w.state==="installed" && navigator.serviceWorker.controller){
+          showUpdateBanner("APP UPDATE INSTALLED — TAP HERE TO RELOAD","available",true);
+          const b=$("updateBanner");if(b)b.onclick=()=>location.reload();
+        }
+      });
+    });
+  }).catch(()=>{});
+}
+
 window.addEventListener("online",()=>flushQueue());window.addEventListener("offline",()=>setStatus("offline","OFFLINE — SAVING LOCALLY"));
 renderList();
 if(token())flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");

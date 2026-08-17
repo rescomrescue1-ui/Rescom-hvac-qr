@@ -1,6 +1,6 @@
 
-const CACHE = "rescom-qr-scanner-history-v10";
-const ASSETS = ["./","./index.html","./manifest.webmanifest","./qrcode.min.js","./icon-192.png","./icon-512.png"];
+const CACHE = "rescom-qr-v11-buttons-update";
+const ASSETS = ["./","./index.html","./version.json","./manifest.webmanifest","./qrcode.min.js","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
@@ -13,9 +13,15 @@ self.addEventListener("activate", e => {
 });
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
-  e.respondWith(fetch(e.request).then(resp => {
-    const copy = resp.clone();
-    caches.open(CACHE).then(c => c.put(e.request, copy));
-    return resp;
-  }).catch(() => caches.match(e.request).then(r => r || caches.match("./index.html"))));
+  const url=new URL(e.request.url);
+  const isFresh=e.request.mode==="navigate" || url.pathname.endsWith("/index.html") || url.pathname.endsWith("/version.json");
+  if(isFresh){
+    e.respondWith(fetch(e.request,{cache:"no-store"}).then(resp=>{
+      const copy=resp.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return resp;
+    }).catch(()=>caches.match(e.request).then(r=>r||caches.match("./index.html"))));
+  }else{
+    e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request).then(resp=>{
+      const copy=resp.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return resp;
+    })));
+  }
 });

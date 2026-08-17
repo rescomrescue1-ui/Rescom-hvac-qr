@@ -1,25 +1,22 @@
-RES-COM HVAC QR v10 — SCANNER + HISTORY REBUILD
+RES-COM HVAC QR v11.0 — BUTTON + UPDATE INDICATOR FIX
+
+WHAT WAS WRONG
+A new JavaScript control was being attached to a button that was not actually present in the HTML.
+That threw an error during app startup and stopped later startup code from running.
 
 FIXED
-- Replaced browser BarcodeDetector scanner with jsQR camera decoding.
-- Same QR decoding method is used for live camera and Scan From Photo.
-- Designed to work on iPhone, iPad, Android, and desktop browsers with camera access.
-- Service history no longer relies on an Airtable linked-record formula.
-- The app fetches history records and matches the actual Airtable linked equipment record ID.
-- Equipment detail screen shows how many cloud history records were loaded.
-- REFRESH HISTORY FROM CLOUD gives a visible error if Airtable history cannot be read.
-- Settings includes TEST CLOUD HISTORY for troubleshooting.
+- Added the missing TEST CLOUD HISTORY control.
+- Static buttons now use safe event binding so ONE missing button cannot crash the whole app.
+- Permanent APP v11.0 badge is visible in the app.
+- First launch after an update shows: APP UPDATED.
+- Settings now has CHECK FOR APP UPDATE.
+- If the service worker detects a newer deployed build, the app shows an UPDATE AVAILABLE banner.
+- index.html and version.json are fetched network-first so phones are less likely to stay stuck on an old build.
+- Existing scanner, history, photos, install date, and Airtable features remain.
+
+BUILD
+Aug 17, 2026 3:58 PM
 
 IMPORTANT
-Keep the SAME GitHub Pages URL so existing QR labels keep working.
-
-AFTER UPDATING
-1. Replace files in the same GitHub repository.
-2. Wait for GitHub Pages deployment.
-3. Open the site in Safari and refresh.
-4. Fully close/reopen the Home Screen app.
-5. If v10 is still not shown, remove the Home Screen shortcut and add it again from the same URL.
-
-SCANNER
-Camera access must be allowed.
-If live scan struggles, use SCAN QR FROM PHOTO with a sharp photo where the entire QR is visible.
+Upload version.json along with the other files.
+Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
