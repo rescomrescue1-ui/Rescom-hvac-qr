@@ -1,5 +1,5 @@
 {
-  "version": "20.0",
-  "build": "Aug 17, 2026 5:00 PM",
-  "notes": "Accounts, account email reminders groundwork, and QR copy/paste handoff."
+  "version": "21.0",
+  "build": "Aug 17, 2026 5:19 PM",
+  "notes": "In-app manual, technician visibility fix, and create/search Accounts."
 }

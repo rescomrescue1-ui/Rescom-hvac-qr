@@ -34,7 +34,7 @@ button, input, select, textarea { touch-action: manipulation; }
 button { min-height:52px; cursor:pointer; -webkit-tap-highlight-color:rgba(0,0,0,.08); }
 .hidden { display:none !important; }
 
-.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
 .photo-grid a{display:block}
 .photo-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;border:1px solid #cbd5e1}
 .photo-picker{border:2px dashed #9db0c6;border-radius:12px;padding:12px;background:#f7faff;margin:10px 0}
@@ -45,7 +45,7 @@ button { min-height:52px; cursor:pointer; -webkit-tap-highlight-color:rgba(0,0,0
 body{padding-bottom:78px!important}
 #globalNav{
   position:fixed;left:0;right:0;bottom:0;z-index:10000;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
   padding:8px max(8px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));
   background:#071521;border-top:3px solid #e6212a;
   box-shadow:0 -2px 12px rgba(0,0,0,.25)
@@ -269,6 +269,56 @@ button.gray,.gray{
   font-weight:800!important
 }
 
+
+/* v21 technician visibility */
+.tech-chip{
+  background:#202935!important;
+  border:2px solid #4f9bff!important;
+  color:#ffffff!important;
+  min-height:52px!important;
+}
+.tech-chip span{
+  color:#ffffff!important;
+  font-weight:800!important;
+  font-size:16px!important;
+}
+.tech-chip button{
+  background:#3a4554!important;
+  color:#ffffff!important;
+  border:2px solid #778497!important;
+}
+
+/* Accounts */
+.account-card{
+  background:#202935!important;
+  border:2px solid #4b5a6c!important;
+  color:#ffffff!important;
+  border-radius:14px;
+  padding:12px;
+  margin:10px 0;
+}
+.account-card b,.account-card div{color:#ffffff!important}
+.account-card .small{color:#d5dde7!important}
+
+/* Manual */
+.manual-nav{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin:10px 0 16px;
+}
+.manual-section{
+  background:#202935!important;
+  border:2px solid #4b5a6c!important;
+  border-radius:14px;
+  padding:14px;
+  margin:12px 0;
+  color:#ffffff!important;
+}
+.manual-section h3{color:#75adff!important;margin-top:0}
+.manual-section p,.manual-section li{color:#ffffff!important}
+.manual-section .small{color:#d5dde7!important}
+
 </style>
 </head>
 <body>
@@ -282,7 +332,7 @@ button.gray,.gray{
   </div>
 </div>
 <div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v20.0 • UPDATED Aug 17, 2026 5:00 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v21.0 • UPDATED Aug 17, 2026 5:19 PM</span></p></header>
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
@@ -321,13 +371,140 @@ button.gray,.gray{
 </section>
 
 
+
 <section id="accountsScreen" class="hidden">
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Accounts</h2>
-    <p class="small">Customer accounts are stored in Airtable and can be linked to multiple pieces of equipment.</p>
-    <button class="outline" id="refreshAccounts" type="button">REFRESH ACCOUNTS</button>
+    <p class="small">Create and manage customer/company accounts. Equipment can be linked to an account so the same email and phone can be used across multiple units.</p>
+
+    <div class="unit">
+      <h3>Create Account</h3>
+      <label>Account Name</label>
+      <input id="newAccountName" placeholder="Customer or company name">
+      <label>Email</label>
+      <input id="newAccountEmail" type="email" placeholder="customer@example.com">
+      <label>Phone</label>
+      <input id="newAccountPhone" type="tel" placeholder="Phone number">
+      <label>Notes</label>
+      <textarea id="newAccountNotes" placeholder="Account notes"></textarea>
+      <button class="orange" id="createAccount" type="button">CREATE ACCOUNT</button>
+    </div>
+
+    <div class="grid">
+      <button class="outline" id="refreshAccounts" type="button">REFRESH ACCOUNTS</button>
+      <input id="accountSearch" type="search" placeholder="Search accounts">
+    </div>
     <div id="accountsList"></div>
+  </div>
+</section>
+
+
+
+<section id="manualScreen" class="hidden">
+  <div class="card">
+    <button class="gray" data-home type="button">← HOME</button>
+    <h2>Res-Com App Manual</h2>
+    <p class="small">New-user guide for the Res-Com HVAC QR Service History app.</p>
+
+    <div class="manual-nav">
+      <button class="outline manualJump" type="button" data-target="m-start">Getting Started</button>
+      <button class="outline manualJump" type="button" data-target="m-token">Airtable Token</button>
+      <button class="outline manualJump" type="button" data-target="m-qr">QR Workflow</button>
+      <button class="outline manualJump" type="button" data-target="m-service">Service History</button>
+      <button class="outline manualJump" type="button" data-target="m-accounts">Accounts</button>
+      <button class="outline manualJump" type="button" data-target="m-help">Troubleshooting</button>
+    </div>
+
+    <div class="manual-section" id="m-start">
+      <h3>1. Getting Started</h3>
+      <p>The Res-Com app tracks each piece of HVAC equipment by a permanent Unit ID and QR code. Equipment, service history, photos, customer accounts, warranty dates, and maintenance dates are shared through Airtable.</p>
+      <p><b>New device:</b> open the Res-Com app, enter the company PIN, then open Settings and save the Airtable token to that device.</p>
+    </div>
+
+    <div class="manual-section">
+      <h3>2. Company PIN</h3>
+      <p>The 4-digit company PIN protects equipment records from casual access. The current default PIN is <b>2468</b>. It can be changed in Settings.</p>
+      <p>The PIN is different from the Airtable token. The PIN unlocks the app. The Airtable token authorizes cloud access.</p>
+    </div>
+
+    <div class="manual-section" id="m-token">
+      <h3>3. What the Airtable Token Is</h3>
+      <p>The Airtable token is a private digital key. It allows the Res-Com app to read and write the company Airtable database over the internet.</p>
+      <p><b>Internet = connection.</b> Wi-Fi or cellular data gives the phone internet access.</p>
+      <p><b>Token = permission.</b> The token proves the app is authorized to use the Res-Com Airtable records.</p>
+      <p>To connect a new device: Settings → paste token → SAVE TOKEN TO THIS DEVICE → VERIFY TOKEN ON THIS DEVICE.</p>
+      <p class="small">Do not put the token in GitHub source code, QR labels, customer emails, or public documents.</p>
+    </div>
+
+    <div class="manual-section">
+      <h3>4. Online and Offline</h3>
+      <p>When the phone is online and the token is valid, equipment and history sync with Airtable. Without internet, cloud records cannot refresh and photos cannot upload.</p>
+    </div>
+
+    <div class="manual-section" id="m-qr">
+      <h3>5. Opening Equipment From a QR</h3>
+      <ol>
+        <li>Scan the equipment QR with the normal phone Camera app.</li>
+        <li>Safari opens the Res-Com QR page.</li>
+        <li>Tap <b>COPY EQUIPMENT ID</b>.</li>
+        <li>Open the installed Res-Com Home Screen app.</li>
+        <li>Tap <b>PASTE EQUIPMENT ID</b>.</li>
+        <li>Enter the company PIN if requested.</li>
+        <li>The equipment record opens.</li>
+      </ol>
+      <p class="small">iPhone Camera normally opens web QR links in Safari. That is why the copy/paste handoff is used.</p>
+    </div>
+
+    <div class="manual-section">
+      <h3>6. Creating New Equipment</h3>
+      <ol>
+        <li>Tap Create Blank QR Label.</li>
+        <li>Print and place the QR on one unit.</li>
+        <li>Open the Unit ID through the QR workflow.</li>
+        <li>Enter account, equipment type, manufacturer, model, serial, location, dates, notes, and photos.</li>
+        <li>Save and confirm cloud sync.</li>
+      </ol>
+      <p>Equipment Type can be selected from suggestions or typed manually.</p>
+    </div>
+
+    <div class="manual-section" id="m-accounts">
+      <h3>7. Accounts</h3>
+      <p>Accounts store customer/company contact information. Tap <b>ACCOUNTS</b> from the bottom bar to create a new account.</p>
+      <p>An account can include Name, Email, Phone, and Notes. Multiple equipment records can belong to the same account.</p>
+      <p>Account Email is used for warranty and maintenance reminder emails.</p>
+    </div>
+
+    <div class="manual-section" id="m-service">
+      <h3>8. Service History</h3>
+      <p>Open an equipment record and add one of these entries: Service Call, Tune-Up / Preventive Maintenance, or Parts Replacement.</p>
+      <p>Select the technician, enter notes, parts information when needed, and add service photos.</p>
+    </div>
+
+    <div class="manual-section">
+      <h3>9. Warranty and Maintenance</h3>
+      <p>Enter Warranty Expiration and Next Maintenance Due on each equipment record. Automated daily checks can email the Account Email when either date is due.</p>
+    </div>
+
+    <div class="manual-section">
+      <h3>10. Archive vs Delete</h3>
+      <p><b>Archive</b> hides retired/replaced equipment but keeps its history. <b>Delete</b> permanently removes the equipment and its linked history.</p>
+      <p>Use Archive for normal retired equipment.</p>
+    </div>
+
+    <div class="manual-section">
+      <h3>11. App Updates</h3>
+      <p>Settings includes CHECK FOR APP UPDATE and Patch Notes. Keep the same GitHub Pages web address so existing printed QR labels continue to work.</p>
+    </div>
+
+    <div class="manual-section" id="m-help">
+      <h3>12. Troubleshooting</h3>
+      <p><b>No cloud history:</b> check internet, verify the Airtable token, then refresh history.</p>
+      <p><b>QR opens Safari:</b> copy the Equipment ID, open the app, tap Paste Equipment ID.</p>
+      <p><b>Photos will not upload:</b> confirm internet and Airtable connection.</p>
+      <p><b>Technician names missing:</b> refresh the app and make sure you are on the current version.</p>
+      <p><b>Old app version:</b> use Check for App Update, close/reopen the Home Screen app, or re-add it from the same website URL.</p>
+    </div>
   </div>
 </section>
 
@@ -396,6 +573,16 @@ button.gray,.gray{
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 21.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 5:19 PM</p>
+      <p>• Added the complete New User Manual directly inside the app.</p>
+      <p>• Added MANUAL to the bottom navigation.</p>
+      <p>• Fixed technician names so they display as bright white text on dark cards.</p>
+      <p>• Accounts can now be created directly in the app.</p>
+      <p>• Added Account search.</p>
+      <p>• Added ACCOUNTS to the bottom navigation.</p>
+    </div>
     <div class="unit">
       <h3>Version 20.0</h3>
       <p><b>Released:</b> Aug 17, 2026 5:00 PM</p>
@@ -571,8 +758,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="20.0";
-const APP_BUILD="Aug 17, 2026 5:00 PM";
+const APP_VERSION="21.0";
+const APP_BUILD="Aug 17, 2026 5:19 PM";
 
 const PIN_HASH_KEY="rescom_company_pin_hash_v1";
 const PIN_UNLOCK_KEY="rescom_company_unlocked_v1";
@@ -739,7 +926,7 @@ function rememberTechsFromHistory(h){
 function renderTechnicians(){
   const box=$("technicianList");if(!box)return;
   const a=techs();
-  box.innerHTML=a.length?a.map(n=>`<div class="tech-chip"><span>${esc(n)}</span><button class="gray removeTech" type="button" data-tech="${esc(n)}">REMOVE</button></div>`).join(""):"<p class='small'>No technicians saved yet.</p>";
+  box.innerHTML=a.length?a.map(n=>`<div class="tech-chip"><span>${esc(n||"Unnamed Technician")}</span><button class="gray removeTech" type="button" data-tech="${esc(n)}">REMOVE</button></div>`).join(""):"<p class='small'>No technicians saved yet.</p>";
   box.querySelectorAll(".removeTech").forEach(b=>b.onclick=()=>removeTechName(b.dataset.tech));
 }
 function techSelectOptions(){
@@ -781,7 +968,7 @@ function uid(){const r=crypto.getRandomValues(new Uint32Array(2));return "RC-"+r
 function entryId(){return "SV-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
 function getLocal(id){return loadLocal().find(x=>x.id===id)}
 function upsertLocal(u){const a=loadLocal(),i=a.findIndex(x=>x.id===u.id);if(i>=0)a[i]=u;else a.push(u);saveLocal(a)}
-function show(id){["home","settings","scanner","labelScreen","detailScreen","patchNotes","qrHandoff","accountsScreen"].forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});const t=$(id);if(t)t.classList.remove("hidden");scrollTo(0,0)}
+function show(id){["home","settings","scanner","labelScreen","detailScreen","patchNotes","qrHandoff","accountsScreen","manualScreen"].forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});const t=$(id);if(t)t.classList.remove("hidden");scrollTo(0,0)}
 function appURL(id){const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("unit",id);return u.toString()}
 function setStatus(mode,text){
   const b=$("syncBadge");
@@ -910,18 +1097,49 @@ async function allAccounts(){
   }while(offset);
   return out;
 }
+
+async function createAccountFromForm(){
+  if(!token()){alert("Save the Airtable token on this device first.");return}
+  if(!navigator.onLine){alert("Creating an account requires an internet connection.");return}
+  const name=($("newAccountName")?.value||"").trim();
+  const email=($("newAccountEmail")?.value||"").trim();
+  const phone=($("newAccountPhone")?.value||"").trim();
+  const notes=($("newAccountNotes")?.value||"").trim();
+  if(!name){alert("Enter an Account Name.");return}
+  try{
+    const fields={[A.name]:name,[A.email]:email||null,[A.phone]:phone||null,[A.notes]:notes||""};
+    await api(ACCOUNTS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+    $("newAccountName").value="";
+    $("newAccountEmail").value="";
+    $("newAccountPhone").value="";
+    $("newAccountNotes").value="";
+    setStatus("synced","✓ ACCOUNT CREATED");
+    await renderAccounts();
+  }catch(err){
+    alert("Could not create account: "+err.message);
+  }
+}
+
 async function renderAccounts(){
   const box=$("accountsList");if(!box)return;
   if(!token()){box.innerHTML="<p class='small'>Save the Airtable token on this device to load accounts.</p>";return}
   try{
     box.innerHTML="<p class='small'>Loading accounts...</p>";
     const records=await allAccounts();
-    box.innerHTML=records.length?records.map(r=>{
+    const q=(($("accountSearch")?.value)||"").trim().toLowerCase();
+    const filtered=q?records.filter(r=>{
       const f=r.fields||{};
-      return `<div class="unit"><b>${esc(f["Account Name"]||"Unnamed Account")}</b>
+      return [f["Account Name"],f["Email"],f["Phone"],f["Notes"]].some(v=>String(v||"").toLowerCase().includes(q));
+    }):records;
+    box.innerHTML=filtered.length?filtered.map(r=>{
+      const f=r.fields||{};
+      return `<div class="account-card">
+        <b>${esc(f["Account Name"]||"Unnamed Account")}</b>
         <div class="small">${esc(f["Email"]||"No email")}</div>
-        <div class="small">${esc(f["Phone"]||"")}</div></div>`;
-    }).join(""):"<p class='small'>No accounts yet.</p>";
+        <div class="small">${esc(f["Phone"]||"No phone")}</div>
+        ${f["Notes"]?`<div class="small">${esc(f["Notes"])}</div>`:""}
+      </div>`;
+    }).join(""):"<p class='small'>No matching accounts.</p>";
   }catch(err){
     box.innerHTML=`<p class="small">Could not load accounts: ${esc(err.message)}</p>`;
   }
@@ -1369,6 +1587,14 @@ safeOn("pasteEquipmentId","click",pasteEquipmentId);
 safeOn("openAccounts","click",async()=>{show("accountsScreen");await renderAccounts()});
 safeOn("refreshAccounts","click",renderAccounts);
 
+safeOn("createAccount","click",createAccountFromForm);
+safeOn("accountSearch","input",renderAccounts);
+document.querySelectorAll(".manualJump").forEach(b=>b.addEventListener("click",()=>{
+  const target=document.getElementById(b.dataset.target);
+  if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+}));
+
+
 safeOn("settingsBtn","click",()=>{if($("tokenInput"))$("tokenInput").value=token();updateDeviceTokenStatus();renderTechnicians();initButtonSoundSetting();show("settings")});
 safeOn("saveToken","click",async()=>{
   localStorage.setItem(TOKEN,$("tokenInput").value.trim());updateDeviceTokenStatus();
@@ -1512,6 +1738,8 @@ async function handleGlobalNav(e){
   if(nav==="home" || btn.hasAttribute("data-home"))return navGoHome();
   if(nav==="equipment")return navGoEquipment();
   if(nav==="settings")return navGoSettings();
+  if(nav==="accounts"){show("accountsScreen");renderAccounts();window.scrollTo(0,0);return}
+  if(nav==="manual"){show("manualScreen");window.scrollTo(0,0);return}
   if(nav==="patchnotes"){show("patchNotes");window.scrollTo(0,0);return}
 }
 
@@ -1563,8 +1791,9 @@ if(requested){
 <nav id="globalNav" aria-label="Main navigation">
   <button class="homeNav" type="button" id="navHome" data-nav="home">🏠 HOME</button>
   <button type="button" id="navEquipment" data-nav="equipment">🧰 EQUIPMENT</button>
+  <button type="button" id="navAccounts" data-nav="accounts">👤 ACCOUNTS</button>
   <button type="button" id="navSettings" data-nav="settings">⚙️ SETTINGS</button>
-  <button type="button" id="navPatchNotes" data-nav="patchnotes">📝 PATCH NOTES</button>
+  <button type="button" id="navManual" data-nav="manual">📘 MANUAL</button>
 </nav>
 
 </body></html>

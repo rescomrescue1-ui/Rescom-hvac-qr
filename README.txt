@@ -1,27 +1,18 @@
-RES-COM HVAC QR v20.0 — ACCOUNTS + REMINDERS + QR COPY/PASTE
+RES-COM HVAC QR v21.0
 
-ACCOUNTS
-- Airtable Accounts table
-- Account Name
-- Email
-- Phone
-- Notes
-- Equipment links to an Account
-- Account Email is copied onto the Equipment row for reminder emails
-- Multiple pieces of equipment can share one Account
+NEW IN v21
+- Full New User Manual is built into the app.
+- MANUAL button added to the bottom navigation.
+- Technician names are now bright white on dark technician cards.
+- ACCOUNTS button added to bottom navigation.
+- Create Account form inside the app:
+  - Account Name
+  - Email
+  - Phone
+  - Notes
+- Account search added.
+- Account creation saves directly to the Airtable Accounts table.
 
-QR CAMERA WORKFLOW
-1. Scan the QR with the normal Camera app.
-2. Tap COPY EQUIPMENT ID.
-3. Open the installed Res-Com app.
-4. Tap PASTE EQUIPMENT ID.
-5. Enter the company PIN if requested.
-
-EMAIL REMINDERS
-Set up two Airtable automations:
-1. Warranty: daily scheduled trigger -> find Equipment where Warranty Expiration is today and Account Email is not empty -> send email to Account Email.
-2. Maintenance: daily scheduled trigger -> find Equipment where Next Maintenance Due is today and Account Email is not empty -> send email to Account Email.
-
-This runs from Airtable, so reminder emails can send even while the app is closed.
-
-Keep the SAME GitHub Pages URL so existing QR labels continue to work.
+IMPORTANT
+Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
+Upload all files, including version.json and service-worker.js.
