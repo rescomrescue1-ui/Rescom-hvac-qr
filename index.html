@@ -34,7 +34,7 @@ button, input, select, textarea { touch-action: manipulation; }
 button { min-height:52px; cursor:pointer; -webkit-tap-highlight-color:rgba(0,0,0,.08); }
 .hidden { display:none !important; }
 
-.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
 .photo-grid a{display:block}
 .photo-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;border:1px solid #cbd5e1}
 .photo-picker{border:2px dashed #9db0c6;border-radius:12px;padding:12px;background:#f7faff;margin:10px 0}
@@ -45,7 +45,7 @@ button { min-height:52px; cursor:pointer; -webkit-tap-highlight-color:rgba(0,0,0
 body{padding-bottom:78px!important}
 #globalNav{
   position:fixed;left:0;right:0;bottom:0;z-index:10000;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
   padding:8px max(8px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));
   background:#071521;border-top:3px solid #e6212a;
   box-shadow:0 -2px 12px rgba(0,0,0,.25)
@@ -74,10 +74,18 @@ body{padding-bottom:78px!important}
 #updateBanner.updated{background:#148447}
 #updateBanner.available{background:#e6212a;cursor:pointer}
 
+
+#globalNav,#globalNav *{pointer-events:auto!important}
+#globalNav button{
+  touch-action:manipulation!important;
+  -webkit-user-select:none!important;user-select:none!important;
+  cursor:pointer!important;
+}
+
 </style>
 </head>
 <body><div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v11.0 • UPDATED Aug 17, 2026 3:58 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v13.0 • UPDATED Aug 17, 2026 4:11 PM</span></p></header>
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
@@ -88,7 +96,7 @@ body{padding-bottom:78px!important}
   <div class="card">
     <h2>QR First</h2>
     <p>Create the QR, print it, put it on one unit, then scan it to enter the equipment information.</p>
-    <button class="orange" id="scanQrBtn" type="button">SCAN EQUIPMENT QR</button>
+    <button class="orange" id="scanQrBtn" type="button">OPEN QR SCAN INSTRUCTIONS</button>
     <button class="orange" id="createBlank" type="button">Create Blank QR Label</button>
     <button class="dark" id="openById" type="button">Open Equipment by ID</button>
   </div>
@@ -107,24 +115,73 @@ body{padding-bottom:78px!important}
     <button class="outline" id="testToken" type="button">Test Connection</button>
 <button class="outline" id="testHistory" type="button">TEST CLOUD HISTORY</button>
 <button class="dark" id="checkUpdate" type="button">CHECK FOR APP UPDATE</button>
+<button class="outline" id="openPatchNotes" type="button">PATCH NOTES</button>
     <button class="gray" id="clearToken" type="button">Remove Token From This Device</button>
-    <p class="small">The token is stored only in this device's browser storage. Do not put the token in the GitHub source files.</p>
+    
+    <hr>
+    <h3>Device Token Setup</h3>
+    <p class="small">Save and verify the Airtable token on this phone or iPad. Each device keeps its own saved copy.</p>
+    <div id="deviceTokenStatus" class="badge pending">TOKEN STATUS UNKNOWN</div>
+    <button class="orange" id="saveDeviceToken" type="button">SAVE TOKEN TO THIS DEVICE</button>
+    <button class="outline" id="verifyDeviceToken" type="button">VERIFY TOKEN ON THIS DEVICE</button>
+<p class="small">The token is stored only in this device's browser storage. Do not put the token in the GitHub source files.</p>
   </div>
 </section>
 
+
+
+
+<section id="patchNotes" class="hidden">
+  <div class="card">
+    <button class="gray" data-home type="button">← HOME</button>
+    <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 13.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 4:11 PM</p>
+      <p>• Removed the unreliable in-app QR scanner.</p>
+      <p>• QR labels now open equipment through the normal phone Camera app.</p>
+      <p>• Added Patch Notes inside the app.</p>
+      <p>• Kept Device Token Setup and shared Airtable equipment/history features.</p>
+    </div>
+    <div class="unit">
+      <h3>Version 12.0</h3>
+      <p>• Rebuilt Home / Equipment / Settings bottom navigation.</p>
+      <p>• Added Save Token To This Device and Verify Token On This Device.</p>
+    </div>
+    <div class="unit">
+      <h3>Version 11.0</h3>
+      <p>• Added visible app version and update indicator.</p>
+      <p>• Added Check For App Update.</p>
+      <p>• Improved button startup reliability.</p>
+    </div>
+    <div class="unit">
+      <h3>Earlier Versions</h3>
+      <p>• Added Airtable cloud equipment history.</p>
+      <p>• Added Install Date, Equipment Photos, and Service Photos.</p>
+      <p>• Added permanent QR equipment IDs.</p>
+    </div>
+  </div>
+</section>
 
 
 <section id="scanner" class="hidden">
   <div class="card">
-    <button class="gray" id="closeScanner" type="button">← HOME</button>
-    <h2>Scan Equipment QR</h2>
-    <p>Hold the QR label steady in front of the camera. Move closer until the QR fills most of the box.</p>
-    <video id="scanVideo" playsinline muted style="width:100%;max-width:620px;border-radius:12px;background:#111"></video>
-    <p id="scanMessage" class="small">Camera permission may be requested the first time. This scanner now uses the same QR decoder on iPhone, iPad, and Android.</p>
-    <button class="dark" id="photoScanBtn" type="button">SCAN QR FROM PHOTO</button>
-    <input id="photoScanInput" type="file" accept="image/*" capture="environment" class="hidden">
+    <button class="gray" data-home type="button">← HOME</button>
+    <h2>Open Equipment From QR</h2>
+    <p><b>Use the normal Camera app on your phone or iPad.</b></p>
+    <div class="unit">
+      <h3>How to open a Res-Com QR</h3>
+      <p>1. Leave the Res-Com app.</p>
+      <p>2. Open the regular Camera app.</p>
+      <p>3. Point the camera at the Res-Com equipment QR label.</p>
+      <p>4. Tap the Res-Com website banner that appears.</p>
+      <p>5. The equipment record will open in the Res-Com app.</p>
+    </div>
+    <button class="orange" id="backToApp" type="button">RETURN TO RES-COM APP</button>
+    <p class="small">There is no longer an in-app QR scanner. This avoids the camera/scanner problems we were seeing across different devices.</p>
   </div>
 </section>
+
 
 <section id="labelScreen" class="hidden">
   <div class="card">
@@ -176,8 +233,8 @@ const LOCAL="rescom_shared_local_v2", TOKEN="rescom_airtable_pat", QUEUE="rescom
 let currentId=null,currentRecordId=null;
 
 
-const APP_VERSION="11.0";
-const APP_BUILD="Aug 17, 2026 3:58 PM";
+const APP_VERSION="13.0";
+const APP_BUILD="Aug 17, 2026 4:11 PM";
 const $=id=>document.getElementById(id);
 function safeOn(id,event,handler){
   const el=$(id);
@@ -190,6 +247,30 @@ function showUpdateBanner(text,kind="updated",persist=false){
   b.textContent=text;b.className=kind;
   if(!persist)setTimeout(()=>{b.classList.add("hidden")},4500);
 }
+
+function updateDeviceTokenStatus(){
+  const el=$("deviceTokenStatus");
+  if(!el)return;
+  const t=token();
+  if(t){
+    el.className="badge synced";
+    el.textContent="✓ TOKEN SAVED ON THIS DEVICE";
+  }else{
+    el.className="badge pending";
+    el.textContent="TOKEN NOT SAVED ON THIS DEVICE";
+  }
+}
+function saveTokenToThisDevice(){
+  const input=$("tokenInput");
+  if(!input){alert("Token box is unavailable.");return}
+  const value=input.value.trim();
+  if(!value){alert("Paste the Airtable token first.");return}
+  localStorage.setItem(TOKEN,value);
+  updateDeviceTokenStatus();
+  setStatus("synced","✓ TOKEN SAVED ON THIS DEVICE");
+  alert("Token saved to this device.");
+}
+
 function markVersionSeen(){
   const key="rescom_last_seen_version";
   const last=localStorage.getItem(key);
@@ -577,149 +658,20 @@ async function goHome(){
 
 
 
-let scanStream=null;
-let scanLoopActive=false;
-let scanTimer=null;
 
-function unitIdFromScan(text){
-  const raw=(text||"").trim();
-  if(/^RC-[A-Z0-9]+-[A-Z0-9]+$/i.test(raw)) return raw.toUpperCase();
-  try{
-    const u=new URL(raw);
-    const id=u.searchParams.get("unit") || u.searchParams.get("equipment");
-    if(id && /^RC-[A-Z0-9]+-[A-Z0-9]+$/i.test(id)) return id.toUpperCase();
-  }catch(e){}
-  const m=raw.match(/RC-[A-Z0-9]+-[A-Z0-9]+/i);
-  return m ? m[0].toUpperCase() : null;
-}
-
-async function stopScanner(){
-  scanLoopActive=false;
-  if(scanTimer){clearTimeout(scanTimer);scanTimer=null}
-  if(scanStream){
-    scanStream.getTracks().forEach(t=>t.stop());
-    scanStream=null;
-  }
-  const v=$("scanVideo");
-  if(v)v.srcObject=null;
-}
-
-function decodeCanvasQR(canvas){
-  if(typeof jsQR!=="function")return null;
-  const ctx=canvas.getContext("2d",{willReadFrequently:true});
-  const img=ctx.getImageData(0,0,canvas.width,canvas.height);
-  return jsQR(img.data,img.width,img.height,{inversionAttempts:"attemptBoth"});
-}
-
+async function stopScanner(){ return; }
 async function startScanner(){
   show("scanner");
-  await stopScanner();
-  $("scanMessage").textContent="Starting camera...";
-  if(typeof jsQR!=="function"){
-    $("scanMessage").textContent="QR scanner did not load. Check internet connection, refresh the app, and try again.";
-    return;
-  }
-  try{
-    scanStream=await navigator.mediaDevices.getUserMedia({
-      video:{
-        facingMode:{ideal:"environment"},
-        width:{ideal:1280},
-        height:{ideal:720}
-      },
-      audio:false
-    });
-    const video=$("scanVideo");
-    video.srcObject=scanStream;
-    await video.play();
-    scanLoopActive=true;
-    $("scanMessage").textContent="Camera ready — fill the screen with the QR and hold steady.";
-
-    const canvas=document.createElement("canvas");
-    const ctx=canvas.getContext("2d",{willReadFrequently:true});
-
-    const loop=async()=>{
-      if(!scanLoopActive)return;
-      try{
-        if(video.readyState>=2 && video.videoWidth>0){
-          const maxW=900;
-          const scale=Math.min(1,maxW/video.videoWidth);
-          canvas.width=Math.max(320,Math.round(video.videoWidth*scale));
-          canvas.height=Math.max(240,Math.round(video.videoHeight*scale));
-          ctx.drawImage(video,0,0,canvas.width,canvas.height);
-          const code=decodeCanvasQR(canvas);
-          if(code && code.data){
-            const id=unitIdFromScan(code.data);
-            if(id){
-              $("scanMessage").textContent="QR found — opening equipment...";
-              await stopScanner();
-              openUnit(id);
-              return;
-            }else{
-              $("scanMessage").textContent="QR found, but it is not a Res-Com equipment QR.";
-            }
-          }
-        }
-      }catch(e){}
-      scanTimer=setTimeout(loop,180);
-    };
-    loop();
-  }catch(e){
-    $("scanMessage").textContent="Camera could not open. Allow camera access, then try again. You can also use SCAN QR FROM PHOTO.";
-  }
+  window.scrollTo(0,0);
 }
-
-async function scanImageFile(file){
-  if(!file)return;
-  $("scanMessage").textContent="Reading QR from photo...";
-  if(typeof jsQR!=="function"){
-    $("scanMessage").textContent="QR scanner did not load. Refresh the app and try again.";
-    return;
-  }
-  try{
-    const url=URL.createObjectURL(file);
-    const img=new Image();
-    await new Promise((resolve,reject)=>{
-      img.onload=resolve;img.onerror=reject;img.src=url;
-    });
-    const max=1800;
-    const scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
-    const canvas=document.createElement("canvas");
-    canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));
-    canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));
-    const ctx=canvas.getContext("2d",{willReadFrequently:true});
-    ctx.drawImage(img,0,0,canvas.width,canvas.height);
-    URL.revokeObjectURL(url);
-    const code=decodeCanvasQR(canvas);
-    if(!code || !code.data){
-      $("scanMessage").textContent="No QR found. Try a closer, sharper photo with the entire QR visible.";
-      return;
-    }
-    const id=unitIdFromScan(code.data);
-    if(!id){
-      $("scanMessage").textContent="QR found, but it is not a Res-Com equipment QR.";
-      return;
-    }
-    await stopScanner();
-    openUnit(id);
-  }catch(e){
-    $("scanMessage").textContent="Could not read that photo. Try another image.";
-  }finally{
-    $("photoScanInput").value="";
-  }
-}
-
-
 safeOn("scanQrBtn","click",startScanner);
-safeOn("closeScanner","click",async()=>{await stopScanner();renderList();show("home");window.scrollTo(0,0)});
-safeOn("photoScanBtn","click",()=>{const i=$("photoScanInput");if(i)i.click()});
-safeOn("photoScanInput","change",e=>scanImageFile(e.target.files&&e.target.files[0]));
 safeOn("createBlank","click",newBlank);
 safeOn("printBtn","click",()=>window.print());
 safeOn("setupNow","click",()=>openUnit(currentId));
 safeOn("openById","click",()=>{const id=prompt("Enter Res-Com Equipment ID:");if(id)openUnit(id.trim().toUpperCase())});
-safeOn("settingsBtn","click",()=>{if($("tokenInput"))$("tokenInput").value=token();show("settings")});
+safeOn("settingsBtn","click",()=>{if($("tokenInput"))$("tokenInput").value=token();updateDeviceTokenStatus();show("settings")});
 safeOn("saveToken","click",async()=>{
-  localStorage.setItem(TOKEN,$("tokenInput").value.trim());
+  localStorage.setItem(TOKEN,$("tokenInput").value.trim());updateDeviceTokenStatus();
   setStatus("pending","CHECKING...");
   try{
     await findRemoteEquipment("__TEST__");
@@ -742,7 +694,7 @@ safeOn("testToken","click",async()=>{
   }
 });
 safeOn("clearToken","click",()=>{
-  localStorage.removeItem(TOKEN);
+  localStorage.removeItem(TOKEN);updateDeviceTokenStatus();
   if($("tokenInput"))$("tokenInput").value="";
   setStatus("pending","SHARED SAVE NOT CONNECTED");
 });
@@ -764,6 +716,71 @@ safeOn("testHistory","click",async()=>{
 });
 safeOn("checkUpdate","click",checkForAppUpdate);
 
+safeOn("openPatchNotes","click",()=>{show("patchNotes");window.scrollTo(0,0)});
+safeOn("backToApp","click",()=>{show("home");window.scrollTo(0,0)});
+
+
+safeOn("saveDeviceToken","click",saveTokenToThisDevice);
+safeOn("verifyDeviceToken","click",async()=>{
+  try{
+    if(!token())throw new Error("No token is saved on this device.");
+    setStatus("pending","VERIFYING DEVICE TOKEN...");
+    await findRemoteEquipment("__TEST__");
+    updateDeviceTokenStatus();
+    setStatus("synced","✓ DEVICE TOKEN VERIFIED");
+    alert("This device token is working.");
+  }catch(err){
+    setStatus("offline","DEVICE TOKEN ERROR");
+    alert("Token verification failed on this device: "+err.message);
+  }
+});
+
+
+
+
+async function navGoHome(){
+  try{await stopScanner()}catch(e){}
+  try{history.replaceState({},"",location.pathname)}catch(e){}
+  try{renderList()}catch(e){}
+  show("home");
+  window.scrollTo(0,0);
+}
+async function navGoEquipment(){
+  try{await stopScanner()}catch(e){}
+  try{
+    setStatus("pending","LOADING SHARED EQUIPMENT...");
+    await refreshSharedEquipment();
+  }catch(e){
+    try{renderList()}catch(_){}
+  }
+  show("home");
+  window.scrollTo(0,0);
+}
+async function navGoSettings(){
+  try{await stopScanner()}catch(e){}
+  const ti=$("tokenInput");
+  if(ti)ti.value=token();
+  updateDeviceTokenStatus();
+  show("settings");
+  window.scrollTo(0,0);
+}
+let lastNavTap=0;
+async function handleGlobalNav(e){
+  const btn=e.target.closest&&e.target.closest("[data-nav],[data-home]");
+  if(!btn)return;
+  const now=Date.now();
+  if(now-lastNavTap<250){e.preventDefault();return}
+  lastNavTap=now;
+  e.preventDefault();
+  e.stopPropagation();
+  const nav=btn.dataset.nav;
+  if(nav==="home" || btn.hasAttribute("data-home"))return navGoHome();
+  if(nav==="equipment")return navGoEquipment();
+  if(nav==="settings")return navGoSettings();
+  if(nav==="patchnotes"){show("patchNotes");window.scrollTo(0,0);return}
+}
+document.addEventListener("pointerup",handleGlobalNav,true);
+document.addEventListener("click",handleGlobalNav,true);
 
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){
   navigator.serviceWorker.register("./service-worker.js?appv="+APP_VERSION).then(reg=>{
@@ -786,37 +803,15 @@ renderList();
 if(token())flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");
 const qp=new URLSearchParams(location.search);const requested=qp.get("unit")||qp.get("equipment");if(requested)openUnit(requested.trim().toUpperCase());
 
-document.addEventListener("click",function(e){
-  const home=e.target.closest&&e.target.closest("[data-home],#navHome");
-  if(home){
-    e.preventDefault();
-    e.stopPropagation();
-    goHome();
-    return;
-  }
-  const eq=e.target.closest&&e.target.closest("#navEquipment");
-  if(eq){
-    e.preventDefault();
-    e.stopPropagation();
-    (async()=>{try{await refreshSharedEquipment()}catch(err){} show("home");window.scrollTo(0,0)})();
-    return;
-  }
-  const st=e.target.closest&&e.target.closest("#navSettings");
-  if(st){
-    e.preventDefault();
-    e.stopPropagation();
-    $("tokenInput").value=token();
-    show("settings");
-    window.scrollTo(0,0);
-  }
-},true);
+
 
 </script>
 
 <nav id="globalNav" aria-label="Main navigation">
-  <button class="homeNav" type="button" id="navHome">🏠 HOME</button>
-  <button type="button" id="navEquipment">🧰 EQUIPMENT</button>
-  <button type="button" id="navSettings">⚙️ SETTINGS</button>
+  <button class="homeNav" type="button" id="navHome" data-nav="home">🏠 HOME</button>
+  <button type="button" id="navEquipment" data-nav="equipment">🧰 EQUIPMENT</button>
+  <button type="button" id="navSettings" data-nav="settings">⚙️ SETTINGS</button>
+  <button type="button" id="navPatchNotes" data-nav="patchnotes">📝 PATCH NOTES</button>
 </nav>
 
 </body></html>

@@ -1,5 +1,5 @@
 {
-  "version": "11.0",
-  "build": "Aug 17, 2026 3:58 PM",
-  "notes": "Button reliability, startup crash fix, visible app version/update indicator."
+  "version": "13.0",
+  "build": "Aug 17, 2026 4:11 PM",
+  "notes": "Removed in-app QR scanner; use normal Camera app. Added in-app Patch Notes."
 }
