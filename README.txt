@@ -1,26 +1,21 @@
-RES-COM HVAC QR v6 — BRANDING + NAVIGATION FIX
+RES-COM HVAC QR v8 — INSTALL DATE + CLOUD PHOTOS
 
 NEW
-- Res-Com blue / navy / white / red color scheme.
-- Res-Com mascot used as the app icon and header logo.
-- Universal Home navigation handler works from every screen.
-- Added a persistent bottom navigation bar: Home / Equipment / Settings.
-- Home navigation no longer depends on each tab having its own working button code.
-- Permanent Airtable QR registration and shared equipment behavior from v5 remains.
+- Install Date field on equipment setup/edit.
+- Edit Equipment / Install Date button for existing QR units.
+- Equipment Photos section.
+- Take a photo with the camera or choose from the photo library.
+- Equipment photos upload to the existing Airtable Equipment Photos field.
+- Service Photos can be added to Service Call, Tune-Up, and Parts Replacement entries.
+- Service photos upload to the new Airtable Service Photos field.
+- Photos already in Airtable display in the equipment/service history screens.
 
-UPDATE
-Replace the existing GitHub Pages files with all files in this package.
-Especially replace:
-- index.html
-- icon-192.png
-- icon-512.png
-- manifest.webmanifest
-- service-worker.js
+PHOTO NOTE
+Photo upload requires an internet connection. The app reduces image size before upload to improve reliability.
 
 IMPORTANT
 Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
 
-AFTER UPLOADING
-Open the GitHub Pages site in Safari and refresh.
-Then fully close and reopen the installed Home Screen app.
-If the old icon or old colors remain, remove the Home Screen shortcut and add it again from the SAME Safari URL.
+UPDATE
+Replace the current files in the same GitHub repository with all files in this package.
+Especially index.html and service-worker.js.
