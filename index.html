@@ -253,10 +253,36 @@ button.gray,.gray{
 #globalNav button.homeNav{background:#1167d8!important}
 .photo-grid img{border:2px solid #718096!important}
 
+
+#pinGate{
+  position:fixed;inset:0;z-index:30000;
+  display:flex;align-items:center;justify-content:center;
+  background:#0b1016;padding:20px;
+}
+#pinGate.hidden{display:none!important}
+#pinGate .pin-card{
+  width:min(420px,100%);background:#202935;border:2px solid #4f9bff;
+  border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.45)
+}
+#pinGate input{
+  font-size:30px!important;letter-spacing:12px!important;text-align:center!important;
+  font-weight:800!important
+}
+
 </style>
 </head>
-<body><div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v17.0 • UPDATED Aug 17, 2026 4:41 PM</span></p></header>
+<body>
+<div id="pinGate" class="hidden">
+  <div class="pin-card">
+    <h2>Res-Com Company Access</h2>
+    <p>Enter the 4-digit company PIN to use equipment QR records.</p>
+    <input id="companyPinEntry" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" placeholder="••••">
+    <button class="orange" id="unlockCompany" type="button">UNLOCK RES-COM</button>
+    <p id="pinMessage" class="small"></p>
+  </div>
+</div>
+<div id="updateBanner" class="updated hidden"></div>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v19.0 • UPDATED Aug 17, 2026 4:49 PM</span></p></header>
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
@@ -307,11 +333,29 @@ button.gray,.gray{
     <button class="gray" id="clearToken" type="button">Remove Token From This Device</button>
     
     <hr>
-    <h3>Device Token Setup</h3>
+    <h3>Device Token Setup</h3><p class="small"><b>New device setup:</b> paste the company Airtable token once, tap SAVE TOKEN TO THIS DEVICE, then VERIFY TOKEN ON THIS DEVICE. After that, the device remembers it.</p>
     <p class="small">Save and verify the Airtable token on this phone or iPad. Each device keeps its own saved copy.</p>
     <div id="deviceTokenStatus" class="badge pending">TOKEN STATUS UNKNOWN</div>
     <button class="orange" id="saveDeviceToken" type="button">SAVE TOKEN TO THIS DEVICE</button>
     <button class="outline" id="verifyDeviceToken" type="button">VERIFY TOKEN ON THIS DEVICE</button>
+    <hr>
+    
+    <hr>
+    <h3>App Sounds</h3>
+    <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <span>Button Sounds</span>
+      <input id="buttonSoundsToggle" type="checkbox" style="width:auto">
+    </label>
+    <p class="small">Plays a short click when you tap app buttons. Saved separately on each device.</p>
+<h3>Company QR PIN</h3>
+    <p class="small">This 4-digit PIN is required before equipment QR records can be opened on this device.</p>
+    <label>New 4-Digit PIN</label>
+    <input id="newCompanyPin" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="4 digits">
+    <label>Confirm New PIN</label>
+    <input id="confirmCompanyPin" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="4 digits">
+    <button class="dark" id="changeCompanyPin" type="button">CHANGE COMPANY PIN</button>
+    <button class="gray" id="lockAppNow" type="button">LOCK APP NOW</button>
+
 <p class="small">The token is stored only in this device's browser storage. Do not put the token in the GitHub source files.</p>
     <hr>
     <h3>Technicians</h3>
@@ -332,6 +376,22 @@ button.gray,.gray{
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 19.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 4:49 PM</p>
+      <p>• Added button tap sounds throughout the app.</p>
+      <p>• Added Button Sounds on/off toggle in Settings.</p>
+      <p>• Sound preference is saved separately on each phone or tablet.</p>
+    </div>
+    <div class="unit">
+      <h3>Version 18.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 4:47 PM</p>
+      <p>• Added a 4-digit company PIN gate for equipment QR records.</p>
+      <p>• Default company PIN is 2468.</p>
+      <p>• Added Change Company PIN and Lock App Now in Settings.</p>
+      <p>• Improved new-device token setup instructions.</p>
+      <p>• Airtable token is still kept out of the public app source for security.</p>
+    </div>
     <div class="unit">
       <h3>Version 17.0</h3>
       <p><b>Released:</b> Aug 17, 2026 4:41 PM</p>
@@ -440,7 +500,8 @@ document.addEventListener("click", async (e)=>{
     e.stopPropagation();
     await stopScanner();
     history.replaceState({},"",location.pathname);
-    markVersionSeen();renderList();
+    markVersionSeen();initButtonSoundSetting();
+renderList();
     show("home");
     window.scrollTo(0,0);
   }
@@ -478,8 +539,112 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="17.0";
-const APP_BUILD="Aug 17, 2026 4:41 PM";
+const APP_VERSION="19.0";
+const APP_BUILD="Aug 17, 2026 4:49 PM";
+
+const PIN_HASH_KEY="rescom_company_pin_hash_v1";
+const PIN_UNLOCK_KEY="rescom_company_unlocked_v1";
+const DEFAULT_PIN_HASH="a1fb4e703a9ef1fa4936801721ff285a97ac85330856674412e054892afe6972";
+let pendingProtectedUnit=null;
+
+async function sha256Text(text){
+  const data=new TextEncoder().encode(text);
+  const digest=await crypto.subtle.digest("SHA-256",data);
+  return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function companyPinHash(){
+  return localStorage.getItem(PIN_HASH_KEY)||DEFAULT_PIN_HASH;
+}
+function isCompanyUnlocked(){
+  return sessionStorage.getItem(PIN_UNLOCK_KEY)==="yes";
+}
+function showPinGate(message=""){
+  const g=document.getElementById("pinGate");
+  if(!g)return;
+  g.classList.remove("hidden");
+  const input=document.getElementById("companyPinEntry");
+  if(input)input.value="";
+  const msg=document.getElementById("pinMessage");
+  if(msg)msg.textContent=message;
+  setTimeout(()=>input?.focus(),60);
+}
+function hidePinGate(){
+  document.getElementById("pinGate")?.classList.add("hidden");
+}
+async function unlockCompany(){
+  const input=document.getElementById("companyPinEntry");
+  const pin=(input?.value||"").trim();
+  const msg=document.getElementById("pinMessage");
+  if(!/^\d{4}$/.test(pin)){
+    if(msg)msg.textContent="Enter exactly 4 digits.";
+    return;
+  }
+  const h=await sha256Text(pin);
+  if(h!==companyPinHash()){
+    if(msg)msg.textContent="Incorrect company PIN.";
+    return;
+  }
+  sessionStorage.setItem(PIN_UNLOCK_KEY,"yes");
+  hidePinGate();
+  if(msg)msg.textContent="";
+  const id=pendingProtectedUnit;
+  pendingProtectedUnit=null;
+  if(id)openUnit(id);
+}
+async function changeCompanyPin(){
+  const a=(document.getElementById("newCompanyPin")?.value||"").trim();
+  const b=(document.getElementById("confirmCompanyPin")?.value||"").trim();
+  if(!/^\d{4}$/.test(a)){alert("PIN must be exactly 4 digits.");return}
+  if(a!==b){alert("PIN entries do not match.");return}
+  localStorage.setItem(PIN_HASH_KEY,await sha256Text(a));
+  alert("Company PIN changed on this device.");
+  document.getElementById("newCompanyPin").value="";
+  document.getElementById("confirmCompanyPin").value="";
+}
+function lockCompanyNow(){
+  sessionStorage.removeItem(PIN_UNLOCK_KEY);
+  showPinGate("App locked.");
+}
+
+
+const BUTTON_SOUNDS_KEY="rescom_button_sounds_v1";
+let soundCtx=null;
+
+function buttonSoundsEnabled(){
+  const v=localStorage.getItem(BUTTON_SOUNDS_KEY);
+  return v===null ? true : v==="on";
+}
+function setButtonSoundsEnabled(on){
+  localStorage.setItem(BUTTON_SOUNDS_KEY,on?"on":"off");
+  const t=document.getElementById("buttonSoundsToggle");
+  if(t)t.checked=on;
+}
+function initButtonSoundSetting(){
+  const t=document.getElementById("buttonSoundsToggle");
+  if(t)t.checked=buttonSoundsEnabled();
+}
+function playTapSound(){
+  if(!buttonSoundsEnabled())return;
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC)return;
+    soundCtx=soundCtx||new AC();
+    if(soundCtx.state==="suspended")soundCtx.resume();
+    const now=soundCtx.currentTime;
+    const osc=soundCtx.createOscillator();
+    const gain=soundCtx.createGain();
+    osc.type="sine";
+    osc.frequency.setValueAtTime(520,now);
+    osc.frequency.exponentialRampToValueAtTime(390,now+0.045);
+    gain.gain.setValueAtTime(0.045,now);
+    gain.gain.exponentialRampToValueAtTime(0.0001,now+0.055);
+    osc.connect(gain);
+    gain.connect(soundCtx.destination);
+    osc.start(now);
+    osc.stop(now+0.06);
+  }catch(e){}
+}
+
 const $=id=>document.getElementById(id);
 function safeOn(id,event,handler){
   const el=$(id);
@@ -1054,7 +1219,13 @@ window.historyForm=function(kind){
   };
 }
 window.openUnit=async function(id){
-  currentId=id;let u=await loadUnit(id);
+  const clean=(id||"").trim().toUpperCase();
+  if(!isCompanyUnlocked()){
+    pendingProtectedUnit=clean;
+    showPinGate("Enter company PIN to open this equipment.");
+    return;
+  }
+  currentId=clean;let u=await loadUnit(clean);
   if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u);
 }
 function bindHome(){
@@ -1082,7 +1253,7 @@ safeOn("createBlank","click",newBlank);
 safeOn("printBtn","click",()=>window.print());
 safeOn("setupNow","click",()=>openUnit(currentId));
 safeOn("openById","click",()=>{const id=prompt("Enter Res-Com Equipment ID:");if(id)openUnit(id.trim().toUpperCase())});
-safeOn("settingsBtn","click",()=>{if($("tokenInput"))$("tokenInput").value=token();updateDeviceTokenStatus();renderTechnicians();show("settings")});
+safeOn("settingsBtn","click",()=>{if($("tokenInput"))$("tokenInput").value=token();updateDeviceTokenStatus();renderTechnicians();initButtonSoundSetting();show("settings")});
 safeOn("saveToken","click",async()=>{
   localStorage.setItem(TOKEN,$("tokenInput").value.trim());updateDeviceTokenStatus();
   setStatus("pending","CHECKING...");
@@ -1128,6 +1299,18 @@ safeOn("testHistory","click",async()=>{
   }
 });
 safeOn("checkUpdate","click",checkForAppUpdate);
+
+safeOn("buttonSoundsToggle","change",e=>{
+  setButtonSoundsEnabled(!!e.target.checked);
+  if(e.target.checked)playTapSound();
+});
+
+
+safeOn("unlockCompany","click",unlockCompany);
+safeOn("companyPinEntry","keydown",e=>{if(e.key==="Enter")unlockCompany()});
+safeOn("changeCompanyPin","click",changeCompanyPin);
+safeOn("lockAppNow","click",lockCompanyNow);
+
 
 safeOn("handoffOpenRecord","click",()=>{if(pendingQRUnit)openUnit(pendingQRUnit)});
 safeOn("handoffCopyId","click",async()=>{
@@ -1196,6 +1379,7 @@ async function navGoSettings(){
   if(ti)ti.value=token();
   updateDeviceTokenStatus();
   renderTechnicians();
+  initButtonSoundSetting();
   show("settings");
   window.scrollTo(0,0);
 }
@@ -1214,6 +1398,12 @@ async function handleGlobalNav(e){
   if(nav==="settings")return navGoSettings();
   if(nav==="patchnotes"){show("patchNotes");window.scrollTo(0,0);return}
 }
+
+document.addEventListener("pointerup",e=>{
+  const b=e.target.closest&&e.target.closest("button");
+  if(b && !b.disabled)playTapSound();
+},true);
+
 document.addEventListener("pointerup",handleGlobalNav,true);
 document.addEventListener("click",handleGlobalNav,true);
 
@@ -1240,8 +1430,14 @@ const qp=new URLSearchParams(location.search);
 const requested=qp.get("unit")||qp.get("equipment");
 if(requested){
   const rid=requested.trim().toUpperCase();
-  if(isStandaloneApp())openUnit(rid);
-  else showQRHandoff(rid);
+  if(isCompanyUnlocked()){
+    openUnit(rid);
+  }else{
+    pendingProtectedUnit=rid;
+    showPinGate("Enter company PIN to open this equipment.");
+  }
+}else if(!isCompanyUnlocked()){
+  showPinGate();
 }
 
 

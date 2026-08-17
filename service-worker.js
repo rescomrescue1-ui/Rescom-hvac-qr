@@ -1,5 +1,5 @@
 
-const CACHE = "rescom-qr-v17-contrast-types";
+const CACHE = "rescom-qr-v19-button-sounds";
 const ASSETS = ["./","./index.html","./version.json","./manifest.webmanifest","./qrcode.min.js","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
