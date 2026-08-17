@@ -1,5 +1,5 @@
 
-const CACHE = "rescom-qr-shared-v2";
+const CACHE = "rescom-qr-shared-v4";
 const ASSETS = ["./","./index.html","./manifest.webmanifest","./qrcode.min.js","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));

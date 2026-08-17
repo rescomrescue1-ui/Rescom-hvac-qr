@@ -29,6 +29,10 @@ textarea{min-height:105px}.hidden{display:none!important}.grid{display:grid;grid
 #label{max-width:360px;margin:auto;border:3px solid #111;padding:14px;text-align:center;background:#fff}
 .statusbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 @media print{body *{visibility:hidden!important}#printArea,#printArea *{visibility:visible!important}#printArea{position:absolute;left:0;top:0;width:3in}}
+
+button, input, select, textarea { touch-action: manipulation; }
+button { min-height:52px; cursor:pointer; -webkit-tap-highlight-color:rgba(0,0,0,.08); }
+.hidden { display:none !important; }
 </style>
 </head>
 <body>
@@ -43,6 +47,7 @@ textarea{min-height:105px}.hidden{display:none!important}.grid{display:grid;grid
   <div class="card">
     <h2>QR First</h2>
     <p>Create the QR, print it, put it on one unit, then scan it to enter the equipment information.</p>
+    <button class="orange" id="scanQrBtn">SCAN EQUIPMENT QR</button>
     <button class="orange" id="createBlank">Create Blank QR Label</button>
     <button class="dark" id="openById">Open Equipment by ID</button>
   </div>
@@ -51,7 +56,7 @@ textarea{min-height:105px}.hidden{display:none!important}.grid{display:grid;grid
 
 <section id="settings" class="hidden">
   <div class="card">
-    <button class="gray" data-home>← Home</button>
+    <button class="gray" data-home type="button">← HOME</button>
     <h2>Shared Saving Setup</h2>
     <p>This app uses your Res-Com Airtable base as the shared filing cabinet. Enter a restricted Airtable Personal Access Token once on each device.</p>
     <p class="small"><b>Recommended token access:</b> only the “Res-Com Equipment Service Records” base, with <b>data.records:read</b> and <b>data.records:write</b>.</p>
@@ -64,9 +69,23 @@ textarea{min-height:105px}.hidden{display:none!important}.grid{display:grid;grid
   </div>
 </section>
 
+
+
+<section id="scanner" class="hidden">
+  <div class="card">
+    <button class="gray" id="closeScanner" type="button">← HOME</button>
+    <h2>Scan Equipment QR</h2>
+    <p>Hold the QR label steady in front of the camera.</p>
+    <video id="scanVideo" playsinline muted style="width:100%;max-width:620px;border-radius:12px;background:#111"></video>
+    <p id="scanMessage" class="small">Camera permission may be requested the first time.</p>
+    <button class="dark" id="photoScanBtn" type="button">SCAN QR FROM PHOTO</button>
+    <input id="photoScanInput" type="file" accept="image/*" capture="environment" class="hidden">
+  </div>
+</section>
+
 <section id="labelScreen" class="hidden">
   <div class="card">
-    <button class="gray" data-home>← Home</button>
+    <button class="gray" data-home type="button">← HOME</button>
     <h2>Blank Equipment QR</h2>
     <div id="printArea"><div id="label">
       <h2>RES-COM HVAC</h2><b>Equipment Service History</b>
@@ -81,7 +100,21 @@ textarea{min-height:105px}.hidden{display:none!important}.grid{display:grid;grid
 <section id="detailScreen" class="hidden"><div id="detail"></div></section>
 </main>
 
-<script src="qrcode.min.js"></script>
+<script src="qrcode.min.js">
+document.addEventListener("click", async (e)=>{
+  const homeBtn=e.target.closest && e.target.closest("[data-home]");
+  if(homeBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    await stopScanner();
+    history.replaceState({},"",location.pathname);
+    renderList();
+    show("home");
+    window.scrollTo(0,0);
+  }
+}, true);
+
+</script>
 <script>
 const BASE="app6oNlvuTx1nCzCh";
 const EQUIP_TABLE="tbl9B76qnfGH0nO1q";
@@ -110,7 +143,7 @@ function uid(){const r=crypto.getRandomValues(new Uint32Array(2));return "RC-"+r
 function entryId(){return "SV-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
 function getLocal(id){return loadLocal().find(x=>x.id===id)}
 function upsertLocal(u){const a=loadLocal(),i=a.findIndex(x=>x.id===u.id);if(i>=0)a[i]=u;else a.push(u);saveLocal(a)}
-function show(id){["home","settings","labelScreen","detailScreen"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");scrollTo(0,0)}
+function show(id){["home","settings","scanner","labelScreen","detailScreen"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");scrollTo(0,0)}
 function appURL(id){const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("unit",id);return u.toString()}
 function setStatus(mode,text){
   const b=$("syncBadge");b.className="badge "+mode;b.textContent=text;
@@ -235,7 +268,7 @@ function renderList(){
 function makeQR(id){$("qrbox").innerHTML="";new QRCode($("qrbox"),{text:appURL(id),width:240,height:240,correctLevel:QRCode.CorrectLevel.M});$("labelId").textContent=id}
 async function newBlank(){const id=uid();const u={id,assigned:false,unit:"",type:"",mfr:"",model:"",serial:"",location:"",thermo:"",notes:"",history:[]};upsertLocal(u);currentId=id;makeQR(id);show("labelScreen");renderList()}
 function setupForm(u){
-  $("detail").innerHTML=`<div class="card"><button class="gray" data-home>← Home</button><span class="badge pending">NEW QR</span>
+  $("detail").innerHTML=`<div class="card"><button class="gray" data-home type="button">← HOME</button><span class="badge pending">NEW QR</span>
   <h2>Set Up This Equipment</h2>
   <div class="grid">
     <div><label>Equipment Type</label><select id="f_type"><option>Gas Furnace</option><option>Boiler</option><option>Air Handler</option><option>Condenser</option><option>Heat Pump</option><option>Other</option></select></div>
@@ -266,7 +299,7 @@ function histGroup(h,kind){
 }
 async function renderDetail(u){
   currentId=u.id;currentRecordId=u.recordId||null;
-  $("detail").innerHTML=`<div class="card"><button class="gray" data-home>← Home</button>
+  $("detail").innerHTML=`<div class="card"><button class="gray" data-home type="button">← HOME</button>
   <span class="badge synced">QR LOCKED TO THIS UNIT</span>
   <h2>${esc(u.type||"Equipment")}</h2>
   <p><b>Manufacturer:</b> ${esc(u.mfr)}</p><p><b>Model:</b> ${esc(u.model)}</p><p><b>Serial:</b> ${esc(u.serial)}</p>
@@ -302,8 +335,131 @@ window.openUnit=async function(id){
   currentId=id;let u=await loadUnit(id);
   if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u);
 }
-function bindHome(){document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>{history.replaceState({},"",location.pathname);renderList();show("home")})}
+function bindHome(){
+  document.querySelectorAll("[data-home]").forEach(b=>{
+    b.addEventListener("click", async (e)=>{
+      e.preventDefault();
+      e.stopPropagation();
+      await stopScanner();
+      history.replaceState({},"",location.pathname);
+      renderList();
+      show("home");
+      window.scrollTo(0,0);
+    });
+  });
+}
 
+
+
+let scanStream=null;
+let scanLoopActive=false;
+
+function unitIdFromScan(text){
+  const raw=(text||"").trim();
+  if(/^RC-[A-Z0-9]+-[A-Z0-9]+$/i.test(raw)) return raw.toUpperCase();
+  try{
+    const u=new URL(raw);
+    const id=u.searchParams.get("unit") || u.searchParams.get("equipment");
+    if(id && /^RC-[A-Z0-9]+-[A-Z0-9]+$/i.test(id)) return id.toUpperCase();
+  }catch(e){}
+  const m=raw.match(/RC-[A-Z0-9]+-[A-Z0-9]+/i);
+  return m ? m[0].toUpperCase() : null;
+}
+
+async function stopScanner(){
+  scanLoopActive=false;
+  if(scanStream){
+    scanStream.getTracks().forEach(t=>t.stop());
+    scanStream=null;
+  }
+  const v=$("scanVideo");
+  if(v) v.srcObject=null;
+}
+
+async function startScanner(){
+  show("scanner");
+  $("scanMessage").textContent="Starting camera...";
+  await stopScanner();
+
+  if(!("BarcodeDetector" in window)){
+    $("scanMessage").textContent="Live QR scanning is not supported on this device. Tap SCAN QR FROM PHOTO, or use the phone Camera app.";
+    return;
+  }
+
+  try{
+    const formats=await BarcodeDetector.getSupportedFormats();
+    if(formats.length && !formats.includes("qr_code")){
+      $("scanMessage").textContent="This device does not support live QR detection. Tap SCAN QR FROM PHOTO.";
+      return;
+    }
+  }catch(e){}
+
+  try{
+    scanStream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}},
+      audio:false
+    });
+    const video=$("scanVideo");
+    video.srcObject=scanStream;
+    await video.play();
+    const detector=new BarcodeDetector({formats:["qr_code"]});
+    scanLoopActive=true;
+    $("scanMessage").textContent="Camera ready — center the QR and hold steady.";
+
+    const loop=async()=>{
+      if(!scanLoopActive) return;
+      try{
+        const codes=await detector.detect(video);
+        if(codes && codes.length){
+          const id=unitIdFromScan(codes[0].rawValue);
+          if(id){
+            $("scanMessage").textContent="QR found — opening equipment...";
+            await stopScanner();
+            openUnit(id);
+            return;
+          }
+          $("scanMessage").textContent="QR detected, but it is not a Res-Com equipment QR.";
+        }
+      }catch(e){}
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }catch(e){
+    $("scanMessage").textContent="Camera could not open. Allow camera access, or use SCAN QR FROM PHOTO.";
+  }
+}
+
+async function scanImageFile(file){
+  if(!file) return;
+  $("scanMessage").textContent="Reading QR from photo...";
+  if(!("BarcodeDetector" in window)){
+    $("scanMessage").textContent="This device cannot read QR photos inside the app. Use the normal Camera app to scan the label.";
+    return;
+  }
+  try{
+    const bmp=await createImageBitmap(file);
+    const detector=new BarcodeDetector({formats:["qr_code"]});
+    const codes=await detector.detect(bmp);
+    if(!codes || !codes.length){
+      $("scanMessage").textContent="No QR found in that photo. Try again closer and in better light.";
+      return;
+    }
+    const id=unitIdFromScan(codes[0].rawValue);
+    if(!id){
+      $("scanMessage").textContent="QR found, but it is not a Res-Com equipment QR.";
+      return;
+    }
+    await stopScanner();
+    openUnit(id);
+  }catch(e){
+    $("scanMessage").textContent="Could not read that photo. Use the normal Camera app to scan the QR.";
+  }
+}
+
+$("scanQrBtn").addEventListener("click", startScanner);
+$("closeScanner").addEventListener("click", async()=>{await stopScanner();renderList();show("home");window.scrollTo(0,0)});
+$("photoScanBtn").addEventListener("click", ()=>$("photoScanInput").click());
+$("photoScanInput").addEventListener("change", e=>scanImageFile(e.target.files && e.target.files[0]));
 $("createBlank").onclick=newBlank;$("printBtn").onclick=()=>window.print();$("setupNow").onclick=()=>openUnit(currentId);
 $("openById").onclick=()=>{const id=prompt("Enter Res-Com Equipment ID:");if(id)openUnit(id.trim().toUpperCase())};
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();show("settings")};

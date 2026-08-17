@@ -1,34 +1,17 @@
-RES-COM HVAC QR SHARED APP v2
+RES-COM HVAC QR SHARED APP v4 — RELIABILITY UPDATE
 
-WHAT CHANGED
-- Equipment and service history can sync through your Airtable base:
-  Res-Com Equipment Service Records
-- One large SAVE button.
-- Status shows SAVED & SYNCED / SYNC PENDING / OFFLINE.
-- Offline entries remain on the device and are retried when connection returns.
-- QR-first workflow remains unchanged.
+FIXES
+- Home/back buttons use stronger tap handling on iPhone and iPad.
+- Settings HOME button has a global fallback so it cannot get stranded.
+- Removed the external scanner library that could fail to load and interfere with the page.
+- Live QR scanning uses the device's built-in QR detector where supported.
+- Added SCAN QR FROM PHOTO fallback.
+- If a device still cannot scan inside the app, the normal phone Camera app can scan the QR and open the Res-Com unit.
 
-IMPORTANT SECURITY SETUP
-Do NOT put an Airtable token in GitHub source code.
+UPDATE GITHUB
+Replace all existing hosted files with this package, especially index.html and service-worker.js.
 
-On each iPhone/iPad:
-1. Create a restricted Airtable Personal Access Token in Airtable.
-2. Give it ONLY:
-   - data.records:read
-   - data.records:write
-3. Give it access ONLY to:
-   - Res-Com Equipment Service Records
-4. In the Res-Com app, open Settings.
-5. Paste the token and tap Save Connection.
-
-GITHUB UPDATE
-Replace the existing hosted app files with the files from this package:
-- index.html
-- manifest.webmanifest
-- service-worker.js
-- qrcode.min.js
-- icon-192.png
-- icon-512.png
-
-After GitHub Pages updates, reopen the installed app. If iOS keeps an old version,
-close the app completely and reopen it, or remove/re-add it to the Home Screen.
+AFTER GITHUB PAGES UPDATES
+1. Open the site in Safari and refresh.
+2. Fully close the Home Screen app and reopen it.
+3. If an old version is still cached, remove the Home Screen icon and add it again from Safari.
