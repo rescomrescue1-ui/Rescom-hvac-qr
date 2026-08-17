@@ -282,7 +282,7 @@ button.gray,.gray{
   </div>
 </div>
 <div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v19.0 • UPDATED Aug 17, 2026 4:49 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v20.0 • UPDATED Aug 17, 2026 5:00 PM</span></p></header>
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
@@ -296,7 +296,7 @@ button.gray,.gray{
     <div id="handoffUnit" class="unit"></div>
     <p>This QR was opened from the phone Camera. iPhone opens web QR links in Safari instead of switching directly into an installed Home Screen web app.</p>
     <button class="orange" id="handoffOpenRecord" type="button">OPEN EQUIPMENT RECORD HERE</button>
-    <button class="outline" id="handoffCopyId" type="button">COPY EQUIPMENT ID</button>
+    <button class="orange" id="handoffCopyId" type="button">COPY EQUIPMENT ID</button><p class="small"><b>Then:</b> open the Res-Com Home Screen app and tap <b>PASTE EQUIPMENT ID</b>.</p>
     <p class="small">For direct Camera → installed app opening, Res-Com needs to be packaged as a native app with universal/app links.</p>
   </div>
 </section>
@@ -308,6 +308,9 @@ button.gray,.gray{
     <button class="orange" id="scanQrBtn" type="button">OPEN QR SCAN INSTRUCTIONS</button>
     <button class="orange" id="createBlank" type="button">Create Blank QR Label</button>
     <button class="dark" id="openById" type="button">Open Equipment by ID</button>
+    <button class="outline" id="pasteEquipmentId" type="button">PASTE EQUIPMENT ID</button>
+    <button class="outline" id="openAccounts" type="button">VIEW ACCOUNTS</button>
+
   </div>
   <div class="card"><h2>Equipment</h2>
   <div id="maintenanceSummary" class="small"></div>
@@ -315,6 +318,17 @@ button.gray,.gray{
   <label style="display:flex;align-items:center;gap:8px;margin:10px 0"><input id="showArchived" type="checkbox" style="width:auto"> Show archived equipment</label>
   <div id="unitList"></div>
 </div>
+</section>
+
+
+<section id="accountsScreen" class="hidden">
+  <div class="card">
+    <button class="gray" data-home type="button">← HOME</button>
+    <h2>Accounts</h2>
+    <p class="small">Customer accounts are stored in Airtable and can be linked to multiple pieces of equipment.</p>
+    <button class="outline" id="refreshAccounts" type="button">REFRESH ACCOUNTS</button>
+    <div id="accountsList"></div>
+  </div>
 </section>
 
 <section id="settings" class="hidden">
@@ -330,6 +344,12 @@ button.gray,.gray{
 <button class="outline" id="testHistory" type="button">TEST CLOUD HISTORY</button>
 <button class="dark" id="checkUpdate" type="button">CHECK FOR APP UPDATE</button>
 <button class="outline" id="openPatchNotes" type="button">PATCH NOTES</button>
+    <div class="unit">
+      <h3>Customer Email Reminders</h3>
+      <p class="small">Account email addresses are copied onto equipment records so Airtable can email customers when Warranty Expiration or Next Maintenance Due reaches today.</p>
+      <p class="small">These reminder emails run from Airtable Automations, so they can send even while the app is closed.</p>
+    </div>
+
     <button class="gray" id="clearToken" type="button">Remove Token From This Device</button>
     
     <hr>
@@ -376,6 +396,16 @@ button.gray,.gray{
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 20.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 5:00 PM</p>
+      <p>• Added customer Accounts with Account Name, Email, Phone, and Airtable linking.</p>
+      <p>• Multiple equipment records can use the same customer account.</p>
+      <p>• Added PASTE EQUIPMENT ID on the app home screen for Camera-scan handoff.</p>
+      <p>• QR handoff now makes COPY EQUIPMENT ID the main action.</p>
+      <p>• Account Email is copied onto equipment records for warranty and maintenance reminder emails.</p>
+      <p>• Reminder emails are intended to run from Airtable Automations so they work even when the app is closed.</p>
+    </div>
     <div class="unit">
       <h3>Version 19.0</h3>
       <p><b>Released:</b> Aug 17, 2026 4:49 PM</p>
@@ -512,10 +542,12 @@ renderList();
 const BASE="app6oNlvuTx1nCzCh";
 const EQUIP_TABLE="tbl9B76qnfGH0nO1q";
 const HIST_TABLE="tblbkLz1D5cq0hguG";
+const ACCOUNTS_TABLE="tbloh2QYjro6CWW6A";
+const A={name:"fldeFOocoyzVFefN2",email:"fldhJrjnxrkGcuCvh",phone:"flduFKRtaTcImBej4",notes:"fldVjO9xnbGVCcQcP"};
 const F={
   unit:"fldcDPyAU4s2AhB18", type:"fld2KTFkYciRP0ZiA", mfr:"fldCvK4MhC4P0tpw5",
   model:"fld54UT8f0suWOC19", serial:"fldKsiWMvnKcP83tj", loc:"fldxmUQvjqedkGNln",
-  notes:"fldypRObFBssilOiV", thermo:"fldPal2V0joJfDhX6", install:"fldKXOJftbH6HYZal", photos:"fldNnM4hwoK2A6nqB", site:"fldZ5o0xl0EEJKo5V", warranty:"fldsqY7KB3c5pdk4o", due:"fldEhoxGoK9bTCYnq", archived:"fldXdG47AH3ox2sah", customType:"fldnfWRqTlTq0mEQp"
+  notes:"fldypRObFBssilOiV", thermo:"fldPal2V0joJfDhX6", install:"fldKXOJftbH6HYZal", photos:"fldNnM4hwoK2A6nqB", site:"fldZ5o0xl0EEJKo5V", warranty:"fldsqY7KB3c5pdk4o", due:"fldEhoxGoK9bTCYnq", archived:"fldXdG47AH3ox2sah", customType:"fldnfWRqTlTq0mEQp", account:"flduudzLtjGeiC4bn", accountEmail:"fldOstBDGzAYmKQnj"
 };
 const H={
   id:"fldku7k6Fb5bHbkwj", equipment:"fldkTvYSmQfbZJ2CQ", date:"fldZ88VWvLVA0ch9z",
@@ -539,8 +571,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="19.0";
-const APP_BUILD="Aug 17, 2026 4:49 PM";
+const APP_VERSION="20.0";
+const APP_BUILD="Aug 17, 2026 5:00 PM";
 
 const PIN_HASH_KEY="rescom_company_pin_hash_v1";
 const PIN_UNLOCK_KEY="rescom_company_unlocked_v1";
@@ -749,7 +781,7 @@ function uid(){const r=crypto.getRandomValues(new Uint32Array(2));return "RC-"+r
 function entryId(){return "SV-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
 function getLocal(id){return loadLocal().find(x=>x.id===id)}
 function upsertLocal(u){const a=loadLocal(),i=a.findIndex(x=>x.id===u.id);if(i>=0)a[i]=u;else a.push(u);saveLocal(a)}
-function show(id){["home","settings","scanner","labelScreen","detailScreen"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");scrollTo(0,0)}
+function show(id){["home","settings","scanner","labelScreen","detailScreen","patchNotes","qrHandoff","accountsScreen"].forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});const t=$(id);if(t)t.classList.remove("hidden");scrollTo(0,0)}
 function appURL(id){const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("unit",id);return u.toString()}
 function setStatus(mode,text){
   const b=$("syncBadge");
@@ -833,6 +865,79 @@ async function uploadMany(recordId,fieldId,files){
   for(const f of list)await uploadAttachment(recordId,fieldId,f);
 }
 function formulaEscape(s){return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}
+
+async function findAccountByEmailOrName(name,email){
+  if(!token())return null;
+  const conditions=[];
+  if(email)conditions.push(`LOWER({Email})='${formulaEscape(email.toLowerCase())}'`);
+  if(name)conditions.push(`LOWER({Account Name})='${formulaEscape(name.toLowerCase())}'`);
+  if(!conditions.length)return null;
+  const formula=conditions.length===1?conditions[0]:`OR(${conditions.join(",")})`;
+  const params=new URLSearchParams({filterByFormula:formula,maxRecords:"1"});
+  const data=await api(ACCOUNTS_TABLE+"?"+params.toString());
+  return data.records?.[0]||null;
+}
+async function ensureAccount(u){
+  const name=(u.accountName||u.site||"").trim();
+  const email=(u.accountEmail||"").trim();
+  const phone=(u.accountPhone||"").trim();
+  if(!name && !email)return null;
+  let r=await findAccountByEmailOrName(name,email);
+  const fields={
+    [A.name]:name||email||"Unnamed Account",
+    [A.email]:email||null,
+    [A.phone]:phone||null
+  };
+  if(r){
+    const out=await api(ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:r.id,fields}],typecast:true})});
+    return out.records?.[0]||r;
+  }
+  const out=await api(ACCOUNTS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+  return out.records?.[0]||null;
+}
+async function loadAccountRecord(recordId){
+  if(!recordId)return null;
+  try{return await api(ACCOUNTS_TABLE+"/"+recordId)}catch(e){return null}
+}
+async function allAccounts(){
+  let offset="",out=[];
+  do{
+    const params=new URLSearchParams({pageSize:"100"});
+    if(offset)params.set("offset",offset);
+    const data=await api(ACCOUNTS_TABLE+"?"+params.toString());
+    out.push(...(data.records||[]));
+    offset=data.offset||"";
+  }while(offset);
+  return out;
+}
+async function renderAccounts(){
+  const box=$("accountsList");if(!box)return;
+  if(!token()){box.innerHTML="<p class='small'>Save the Airtable token on this device to load accounts.</p>";return}
+  try{
+    box.innerHTML="<p class='small'>Loading accounts...</p>";
+    const records=await allAccounts();
+    box.innerHTML=records.length?records.map(r=>{
+      const f=r.fields||{};
+      return `<div class="unit"><b>${esc(f["Account Name"]||"Unnamed Account")}</b>
+        <div class="small">${esc(f["Email"]||"No email")}</div>
+        <div class="small">${esc(f["Phone"]||"")}</div></div>`;
+    }).join(""):"<p class='small'>No accounts yet.</p>";
+  }catch(err){
+    box.innerHTML=`<p class="small">Could not load accounts: ${esc(err.message)}</p>`;
+  }
+}
+async function pasteEquipmentId(){
+  let text="";
+  try{text=(await navigator.clipboard.readText()).trim()}catch(e){}
+  if(!text)text=(prompt("Paste or enter the Res-Com Equipment ID:")||"").trim();
+  const id=unitIdFromScan(text)||text.toUpperCase();
+  if(!/^RC-[A-Z0-9]+-[A-Z0-9]+$/.test(id)){
+    alert("That does not look like a Res-Com Equipment ID.");
+    return;
+  }
+  openUnit(id);
+}
+
 async function findRemoteEquipment(id){
   const params=new URLSearchParams({filterByFormula:`{Unit ID}='${formulaEscape(id)}'`,maxRecords:"1"});
   const data=await api(EQUIP_TABLE+"?"+params.toString());
@@ -844,7 +949,7 @@ function fromRecord(r){
     type:f["Equipment Type (Custom)"]||f["Equipment Type"]||"",mfr:f["Manufacturer"]||"",model:f["Model Number"]||"",
     serial:f["Serial Number"]||"",location:f["Location"]||"",thermo:f["Thermostat Location(s)"]||"",
     site:f["Customer / Site Name"]||"",install:f["Install Date"]||"",warranty:f["Warranty Expiration"]||"",
-    due:f["Next Maintenance Due"]||"",archived:!!f["Archived"],photos:f["Equipment Photos"]||[],
+    due:f["Next Maintenance Due"]||"",archived:!!f["Archived"],accountRecordId:(f["Account"]||[])[0]||"",accountEmail:f["Account Email"]||"",accountName:"",accountPhone:"",photos:f["Equipment Photos"]||[],
     notes:f["Notes"]||"",history:[]};
 }
 async function remoteHistory(recordId){
@@ -881,6 +986,7 @@ async function loadUnit(id){
     const r=await findRemoteEquipment(id);
     if(!r)return local;
     const u=fromRecord(r);
+    if(u.accountRecordId){const ar=await loadAccountRecord(u.accountRecordId);if(ar){u.accountName=ar.fields?.["Account Name"]||"";u.accountEmail=ar.fields?.["Email"]||u.accountEmail||"";u.accountPhone=ar.fields?.["Phone"]||"";}}
     u.history=await remoteHistory(r.id);
     rememberTechsFromHistory(u.history);
     upsertLocal(u);currentRecordId=r.id;setStatus("synced","✓ SAVED & SYNCED");return u;
@@ -891,13 +997,15 @@ async function saveEquipment(u){
   if(!token()||!navigator.onLine){enqueue({kind:"equipment",data:u});setStatus("pending","OFFLINE — WILL SYNC");return false}
   try{
     const existing=await findRemoteEquipment(u.id);
+    const account=await ensureAccount(u);
+    if(account){u.accountRecordId=account.id;u.accountName=account.fields?.["Account Name"]||u.accountName||"";u.accountEmail=account.fields?.["Email"]||u.accountEmail||"";u.accountPhone=account.fields?.["Phone"]||u.accountPhone||"";}
     const fields={
       [F.unit]:u.id,
       [F.type]:(["Gas Furnace", "Air Handler", "Condenser", "Heat Pump", "AC Coil", "Air Filter", "Bypass Humidifier", "Power Humidifier", "Steam Humidifier", "External Hot Water Coil", "Ductless Split", "Hot Water Heater", "Indirect Hot Water Maker", "Tankless Water Heater", "Combi", "Other"].includes(u.type)?u.type:"Other"),
       [F.customType]:u.type||"",
       [F.mfr]:u.mfr,[F.model]:u.model,[F.serial]:u.serial,
       [F.loc]:u.location,[F.thermo]:u.thermo,[F.site]:u.site||"",[F.install]:u.install||null,
-      [F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.notes]:u.notes
+      [F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.account]:u.accountRecordId?[u.accountRecordId]:[],[F.accountEmail]:u.accountEmail||null,[F.notes]:u.notes
     };
     let out;
     if(existing){
@@ -1021,7 +1129,7 @@ function renderList(){
   document.querySelectorAll(".openUnitBtn").forEach(b=>b.onclick=()=>openUnit(b.dataset.unit));
 }
 function makeQR(id){$("qrbox").innerHTML="";new QRCode($("qrbox"),{text:appURL(id),width:240,height:240,correctLevel:QRCode.CorrectLevel.M});$("labelId").textContent=id}
-async function newBlank(){const id=uid();const u={id,assigned:false,unit:"",type:"",mfr:"",model:"",serial:"",location:"",thermo:"",site:"",install:"",warranty:"",due:"",archived:false,photos:[],notes:"",history:[]};upsertLocal(u);currentId=id;makeQR(id);show("labelScreen");renderList()}
+async function newBlank(){const id=uid();const u={id,assigned:false,unit:"",type:"",mfr:"",model:"",serial:"",location:"",thermo:"",site:"",install:"",warranty:"",due:"",archived:false,accountRecordId:"",accountName:"",accountEmail:"",accountPhone:"",photos:[],notes:"",history:[]};upsertLocal(u);currentId=id;makeQR(id);show("labelScreen");renderList()}
 function setupForm(u){
   $("detail").innerHTML=`<div class="card"><button class="gray" data-home type="button">← HOME</button><span class="badge pending">NEW QR</span>
   <h2>${u.assigned?"Edit Equipment":"Set Up This Equipment"}</h2>
@@ -1031,7 +1139,11 @@ function setupForm(u){
       <datalist id="equipmentTypeOptions"><option value="Gas Furnace"></option><option value="Air Handler"></option><option value="Condenser"></option><option value="Heat Pump"></option><option value="AC Coil"></option><option value="Air Filter"></option><option value="Bypass Humidifier"></option><option value="Power Humidifier"></option><option value="Steam Humidifier"></option><option value="External Hot Water Coil"></option><option value="Ductless Split"></option><option value="Hot Water Heater"></option><option value="Indirect Hot Water Maker"></option><option value="Tankless Water Heater"></option><option value="Combi"></option><option value="Other"></option></datalist>
       <div class="small">Tap the field for suggestions, or type any equipment type.</div>
     </div>
-    <div><label>Customer / Site Name</label><input id="f_site" value="${esc(u.site||"")}" placeholder="Customer, building, property..."></div><div><label>Location</label><input id="f_loc" value="${esc(u.location||"")}" placeholder="Basement, attic, roof..."></div>
+    
+    <div><label>Account Name</label><input id="f_account_name" value="${esc(u.accountName||u.site||"")}" placeholder="Customer or company account"></div>
+    <div><label>Account Email</label><input id="f_account_email" type="email" value="${esc(u.accountEmail||"")}" placeholder="customer@example.com"></div>
+    <div><label>Account Phone</label><input id="f_account_phone" type="tel" value="${esc(u.accountPhone||"")}" placeholder="Phone"></div>
+<div><label>Customer / Site Name</label><input id="f_site" value="${esc(u.site||"")}" placeholder="Customer, building, property..."></div><div><label>Location</label><input id="f_loc" value="${esc(u.location||"")}" placeholder="Basement, attic, roof..."></div>
     <div><label>Manufacturer</label><input id="f_mfr" value="${esc(u.mfr||"")}"></div>
     <div><label>Model Number</label><input id="f_model" value="${esc(u.model||"")}"></div>
     <div><label>Serial Number</label><input id="f_serial" value="${esc(u.serial||"")}"></div>
@@ -1046,7 +1158,7 @@ function setupForm(u){
   bindHome();
   $("saveSetup").onclick=async()=>{
     const b=$("saveSetup");b.disabled=true;b.textContent="SAVING...";
-    Object.assign(u,{assigned:true,type:$("f_type").value.trim()||"Other",site:$("f_site").value.trim(),location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),
+    Object.assign(u,{assigned:true,type:$("f_type").value.trim()||"Other",accountName:$("f_account_name").value.trim(),accountEmail:$("f_account_email").value.trim(),accountPhone:$("f_account_phone").value.trim(),site:$("f_site").value.trim(),location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),
       model:$("f_model").value.trim(),serial:$("f_serial").value.trim(),thermo:$("f_thermo").value.trim(),install:$("f_install").value,
       warranty:$("f_warranty").value,due:$("f_due").value,notes:$("f_notes").value.trim()});
     const files=$("f_photos").files;
@@ -1107,7 +1219,7 @@ async function renderDetail(u){
   ${u.archived?'<span class="badge archived-badge">ARCHIVED EQUIPMENT</span>':'<span class="badge synced">QR LOCKED TO THIS UNIT</span>'}
   <h2>${esc(u.type||"Equipment")}</h2>
   <p><b>Manufacturer:</b> ${esc(u.mfr)}</p><p><b>Model:</b> ${esc(u.model)}</p><p><b>Serial:</b> ${esc(u.serial)}</p>
-  <p><b>Customer / Site:</b> ${esc(u.site||"Not entered")}</p><p><b>Location:</b> ${esc(u.location)}</p><p><b>Thermostat:</b> ${esc(u.thermo)}</p><p><b>Install Date:</b> ${esc(u.install||"Not entered")}</p><p><b>Warranty Expiration:</b> ${esc(u.warranty||"Not entered")}</p><p><b>Next Maintenance Due:</b> ${esc(u.due||"Not entered")}</p>${maintenanceBadge(u.due)}<p><b>Notes:</b> ${esc(u.notes)}</p><h3>Equipment Photos</h3>${photoGrid(u.photos)}<div class="photo-picker"><b>Add Equipment Photos</b><input id="detailPhotos" type="file" accept="image/*" capture="environment" multiple></div><button class="outline" id="uploadDetailPhotos" type="button">UPLOAD PHOTOS</button><button class="outline" id="editEquipment" type="button">EDIT EQUIPMENT / INSTALL DATE</button>
+  <p><b>Account:</b> ${esc(u.accountName||"Not linked")}</p><p><b>Account Email:</b> ${esc(u.accountEmail||"Not entered")}</p><p><b>Account Phone:</b> ${esc(u.accountPhone||"Not entered")}</p><p><b>Customer / Site:</b> ${esc(u.site||"Not entered")}</p><p><b>Location:</b> ${esc(u.location)}</p><p><b>Thermostat:</b> ${esc(u.thermo)}</p><p><b>Install Date:</b> ${esc(u.install||"Not entered")}</p><p><b>Warranty Expiration:</b> ${esc(u.warranty||"Not entered")}</p><p><b>Next Maintenance Due:</b> ${esc(u.due||"Not entered")}</p>${maintenanceBadge(u.due)}<p><b>Notes:</b> ${esc(u.notes)}</p><h3>Equipment Photos</h3>${photoGrid(u.photos)}<div class="photo-picker"><b>Add Equipment Photos</b><input id="detailPhotos" type="file" accept="image/*" capture="environment" multiple></div><button class="outline" id="uploadDetailPhotos" type="button">UPLOAD PHOTOS</button><button class="outline" id="editEquipment" type="button">EDIT EQUIPMENT / INSTALL DATE</button>
 <button class="dark" id="archiveEquipment" type="button">${u.archived?"RESTORE EQUIPMENT":"ARCHIVE EQUIPMENT"}</button>
 <button class="danger" id="deleteEquipment" type="button">DELETE EQUIPMENT</button><div class="small mono">${esc(u.id)}</div><button class="outline" id="reprint">Show / Reprint QR</button></div>
   <div class="card"><h2>Add History</h2><p class="small">Saved history uploads to the shared cloud record when sync succeeds.</p>
@@ -1253,6 +1365,10 @@ safeOn("createBlank","click",newBlank);
 safeOn("printBtn","click",()=>window.print());
 safeOn("setupNow","click",()=>openUnit(currentId));
 safeOn("openById","click",()=>{const id=prompt("Enter Res-Com Equipment ID:");if(id)openUnit(id.trim().toUpperCase())});
+safeOn("pasteEquipmentId","click",pasteEquipmentId);
+safeOn("openAccounts","click",async()=>{show("accountsScreen");await renderAccounts()});
+safeOn("refreshAccounts","click",renderAccounts);
+
 safeOn("settingsBtn","click",()=>{if($("tokenInput"))$("tokenInput").value=token();updateDeviceTokenStatus();renderTechnicians();initButtonSoundSetting();show("settings")});
 safeOn("saveToken","click",async()=>{
   localStorage.setItem(TOKEN,$("tokenInput").value.trim());updateDeviceTokenStatus();

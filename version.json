@@ -1,5 +1,5 @@
 {
-  "version": "19.0",
-  "build": "Aug 17, 2026 4:49 PM",
-  "notes": "Button tap sounds with per-device Settings toggle."
+  "version": "20.0",
+  "build": "Aug 17, 2026 5:00 PM",
+  "notes": "Accounts, account email reminders groundwork, and QR copy/paste handoff."
 }
