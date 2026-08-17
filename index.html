@@ -5,290 +5,316 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f97316">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Res-Com QR">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Res-Com HVAC QR</title>
 <style>
 *{box-sizing:border-box}
-:root{--orange:#f97316;--bg:#f3f4f6;--ink:#1f2937;--muted:#6b7280;--line:#d1d5db}
-html,body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);min-height:100%}
-header{background:var(--orange);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 18px 18px;position:sticky;top:0;z-index:5}
-header h1{margin:0;font-size:24px} header p{margin:5px 0 0;font-size:14px}
-main{max-width:760px;margin:auto;padding:16px 16px calc(30px + env(safe-area-inset-bottom))}
-.card{background:white;border-radius:16px;padding:18px;margin:0 0 15px;box-shadow:0 2px 12px #00000012}
-h2,h3{margin-top:0}
-button,.btn{display:block;width:100%;min-height:52px;border:0;border-radius:12px;padding:13px 16px;margin:10px 0;font-weight:700;font-size:17px;text-align:center;text-decoration:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.orange{background:var(--orange);color:white}.dark{background:#111827;color:white}.gray{background:#e5e7eb;color:#111827}.outline{background:#fff;border:2px solid var(--orange);color:#c2410c}.red{background:#fee2e2;color:#991b1b}
-input,textarea,select{width:100%;font-size:17px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#fff;margin:6px 0 13px}
-textarea{min-height:100px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid>*{min-width:0}
-@media(max-width:650px){.grid{grid-template-columns:1fr}}
-.hidden{display:none!important}
-.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#ffedd5;color:#9a3412;font-weight:700;font-size:12px}
-.unit{border:1px solid #e5e7eb;padding:14px;border-radius:12px;margin:10px 0}
-.entry{border-left:5px solid var(--orange);background:#fafafa;padding:12px;margin:10px 0;border-radius:8px}
-.small{font-size:13px;color:var(--muted)} .center{text-align:center}
-#qrbox{display:flex;justify-content:center;align-items:center;min-height:270px;padding:12px;background:#fff}
-#label{max-width:360px;margin:auto;border:3px solid #111;padding:16px;text-align:center;background:#fff}
-#label h2{margin:4px 0 8px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
-.notice{background:#fff7ed;border:1px solid #fdba74;padding:12px;border-radius:10px}
-.install{background:#eff6ff;border:1px solid #93c5fd;padding:12px;border-radius:10px}
-.row{display:flex;gap:10px}.row>*{flex:1}
-@media print{
- body *{visibility:hidden!important}
- #printArea,#printArea *{visibility:visible!important}
- #printArea{position:absolute;left:0;top:0;width:3in}
- header{display:none!important}
-}
+:root{--orange:#f97316;--bg:#f3f4f6;--ink:#1f2937;--muted:#6b7280;--green:#15803d;--red:#b91c1c}
+html,body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink)}
+header{background:var(--orange);color:#fff;padding:calc(16px + env(safe-area-inset-top)) 16px 16px;position:sticky;top:0;z-index:10}
+header h1{font-size:23px;margin:0}header p{margin:4px 0 0;font-size:13px}
+main{max-width:760px;margin:auto;padding:14px 14px calc(30px + env(safe-area-inset-bottom))}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px #0001}
+button,.btn{width:100%;min-height:54px;border:0;border-radius:12px;padding:13px 15px;margin:9px 0;font-size:17px;font-weight:800;touch-action:manipulation}
+.orange{background:var(--orange);color:#fff}.dark{background:#111827;color:#fff}.gray{background:#e5e7eb;color:#111827}.outline{background:#fff;border:2px solid var(--orange);color:#c2410c}
+input,textarea,select{width:100%;font-size:17px;padding:13px;border:1px solid #d1d5db;border-radius:10px;background:#fff;margin:5px 0 13px}
+textarea{min-height:105px}.hidden{display:none!important}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:650px){.grid{grid-template-columns:1fr}}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900}
+.synced{background:#dcfce7;color:#166534}.pending{background:#fef3c7;color:#92400e}.offline{background:#fee2e2;color:#991b1b}
+.unit,.entry{border:1px solid #e5e7eb;border-radius:12px;padding:13px;margin:10px 0}.entry{border-left:5px solid var(--orange);background:#fafafa}
+.small{font-size:13px;color:var(--muted)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
+#qrbox{display:flex;justify-content:center;min-height:260px;padding:10px;background:#fff}
+#label{max-width:360px;margin:auto;border:3px solid #111;padding:14px;text-align:center;background:#fff}
+.statusbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+@media print{body *{visibility:hidden!important}#printArea,#printArea *{visibility:visible!important}#printArea{position:absolute;left:0;top:0;width:3in}}
 </style>
 </head>
 <body>
-<header><h1>Res-Com HVAC QR</h1><p>QR first • equipment info second • service history stays with the unit</p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets</p></header>
 <main>
-  <div id="fileWarning" class="card notice hidden">
-    <b>This copy is being opened as a file.</b>
-    <p>For iPhone/iPad buttons, offline storage, Home Screen installation, and QR links to work correctly, this app must be opened from its HTTPS web address.</p>
+<div class="statusbar">
+  <span id="syncBadge" class="badge pending">CHECKING...</span>
+  <button id="settingsBtn" class="gray" style="width:auto;min-height:40px;padding:8px 12px;margin:0">Settings</button>
+</div>
+
+<section id="home">
+  <div class="card">
+    <h2>QR First</h2>
+    <p>Create the QR, print it, put it on one unit, then scan it to enter the equipment information.</p>
+    <button class="orange" id="createBlank">Create Blank QR Label</button>
+    <button class="dark" id="openById">Open Equipment by ID</button>
   </div>
+  <div class="card"><h2>Equipment on this device</h2><div id="unitList"></div></div>
+</section>
 
-  <section id="home">
-    <div class="card">
-      <span class="badge">QR-FIRST WORKFLOW</span>
-      <h2 style="margin-top:10px">Start with a blank QR</h2>
-      <p>Create the QR before entering any equipment information. Print the label, put it on the unit, then scan it to set up that equipment.</p>
-      <button class="orange" id="createBlank">Create Blank QR Label</button>
-      <button class="dark" id="openById">Open Equipment by ID</button>
-    </div>
+<section id="settings" class="hidden">
+  <div class="card">
+    <button class="gray" data-home>← Home</button>
+    <h2>Shared Saving Setup</h2>
+    <p>This app uses your Res-Com Airtable base as the shared filing cabinet. Enter a restricted Airtable Personal Access Token once on each device.</p>
+    <p class="small"><b>Recommended token access:</b> only the “Res-Com Equipment Service Records” base, with <b>data.records:read</b> and <b>data.records:write</b>.</p>
+    <label>Airtable Personal Access Token</label>
+    <input id="tokenInput" type="password" autocomplete="off" placeholder="pat...">
+    <button class="orange" id="saveToken">Save Connection</button>
+    <button class="outline" id="testToken">Test Connection</button>
+    <button class="gray" id="clearToken">Remove Token From This Device</button>
+    <p class="small">The token is stored only in this device's browser storage. Do not put the token in the GitHub source files.</p>
+  </div>
+</section>
 
-    <div class="card">
-      <h2>Equipment on this device</h2>
-      <div id="unitList"></div>
-    </div>
+<section id="labelScreen" class="hidden">
+  <div class="card">
+    <button class="gray" data-home>← Home</button>
+    <h2>Blank Equipment QR</h2>
+    <div id="printArea"><div id="label">
+      <h2>RES-COM HVAC</h2><b>Equipment Service History</b>
+      <div id="qrbox"></div><div id="labelId" class="mono"></div>
+      <p><b>Scan to set up / service this equipment</b></p>
+    </div></div>
+    <button class="orange" id="printBtn">Print QR Label</button>
+    <button class="outline" id="setupNow">Set Up This Equipment Now</button>
+  </div>
+</section>
 
-    <div class="card">
-      <h2>Device backup</h2>
-      <p class="small">Because equipment history is stored on this device, use backup/merge to move or combine records between your iPad and iPhone.</p>
-      <button class="gray" id="exportBtn">Export Backup</button>
-      <label class="btn gray" for="importFile">Merge Backup</label>
-      <input id="importFile" class="hidden" type="file" accept="application/json,.json">
-    </div>
-
-    <div class="card install">
-      <b>Install on iPhone/iPad</b>
-      <p class="small">Open the hosted app in Safari → Share → Add to Home Screen. After the first visit, the app shell is cached for offline use.</p>
-    </div>
-  </section>
-
-  <section id="labelScreen" class="hidden">
-    <div class="card">
-      <button class="gray" data-home>← Home</button>
-      <h2>Blank Equipment QR</h2>
-      <p>Print this label and attach it to one piece of equipment. Enter the equipment information only after scanning this QR.</p>
-      <div id="printArea">
-        <div id="label">
-          <h2>RES-COM HVAC</h2>
-          <div><b>Equipment Service History</b></div>
-          <div id="qrbox"></div>
-          <div class="mono" id="labelId"></div>
-          <p><b>Scan to set up / service this equipment</b></p>
-        </div>
-      </div>
-      <button class="orange" id="printBtn">Print QR Label</button>
-      <button class="outline" id="setupNow">Set Up This Equipment Now</button>
-    </div>
-  </section>
-
-  <section id="detailScreen" class="hidden">
-    <div id="detail"></div>
-  </section>
+<section id="detailScreen" class="hidden"><div id="detail"></div></section>
 </main>
 
 <script src="qrcode.min.js"></script>
 <script>
-const KEY="rescom_hvac_qr_v1";
-let currentId=null;
+const BASE="app6oNlvuTx1nCzCh";
+const EQUIP_TABLE="tbl9B76qnfGH0nO1q";
+const HIST_TABLE="tblbkLz1D5cq0hguG";
+const F={
+  unit:"fldcDPyAU4s2AhB18", type:"fld2KTFkYciRP0ZiA", mfr:"fldCvK4MhC4P0tpw5",
+  model:"fld54UT8f0suWOC19", serial:"fldKsiWMvnKcP83tj", loc:"fldxmUQvjqedkGNln",
+  notes:"fldypRObFBssilOiV", thermo:"fldPal2V0joJfDhX6"
+};
+const H={
+  id:"fldku7k6Fb5bHbkwj", equipment:"fldkTvYSmQfbZJ2CQ", date:"fldZ88VWvLVA0ch9z",
+  tech:"fldgNEGJnVuOZUot2", type:"fldBHwjS4eIJcCoJ8", work:"fldp2a1MBjbICgPJJ",
+  part:"fldpn385RszDIy5zX", partnotes:"fld0BCyDeMZmvwzNv"
+};
+const LOCAL="rescom_shared_local_v2", TOKEN="rescom_airtable_pat", QUEUE="rescom_sync_queue_v2";
+let currentId=null,currentRecordId=null;
 
 const $=id=>document.getElementById(id);
-function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
-function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
-function uid(){
-  const r=crypto.getRandomValues(new Uint32Array(2));
-  return "RC-"+r[0].toString(36).toUpperCase().padStart(6,"0")+"-"+r[1].toString(36).toUpperCase().padStart(6,"0");
-}
 function esc(s){const d=document.createElement("div");d.textContent=s??"";return d.innerHTML}
-function show(which){
-  ["home","labelScreen","detailScreen"].forEach(x=>$(x).classList.add("hidden"));
-  $(which).classList.remove("hidden");
-  scrollTo(0,0);
+function loadLocal(){try{return JSON.parse(localStorage.getItem(LOCAL)||"[]")}catch(e){return[]}}
+function saveLocal(a){localStorage.setItem(LOCAL,JSON.stringify(a))}
+function token(){return localStorage.getItem(TOKEN)||""}
+function queue(){try{return JSON.parse(localStorage.getItem(QUEUE)||"[]")}catch(e){return[]}}
+function setQueue(q){localStorage.setItem(QUEUE,JSON.stringify(q))}
+function uid(){const r=crypto.getRandomValues(new Uint32Array(2));return "RC-"+r[0].toString(36).toUpperCase()+"-"+r[1].toString(36).toUpperCase()}
+function entryId(){return "SV-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
+function getLocal(id){return loadLocal().find(x=>x.id===id)}
+function upsertLocal(u){const a=loadLocal(),i=a.findIndex(x=>x.id===u.id);if(i>=0)a[i]=u;else a.push(u);saveLocal(a)}
+function show(id){["home","settings","labelScreen","detailScreen"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");scrollTo(0,0)}
+function appURL(id){const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("unit",id);return u.toString()}
+function setStatus(mode,text){
+  const b=$("syncBadge");b.className="badge "+mode;b.textContent=text;
 }
-function appURL(id){
-  const u=new URL(location.href);
-  u.search="";
-  u.hash="";
-  u.searchParams.set("unit",id);
-  return u.toString();
+async function api(path,opts={}){
+  if(!token())throw new Error("NO_TOKEN");
+  const res=await fetch("https://api.airtable.com/v0/"+BASE+"/"+path,{
+    ...opts,
+    headers:{"Authorization":"Bearer "+token(),"Content-Type":"application/json",...(opts.headers||{})}
+  });
+  if(!res.ok){let msg="Airtable error "+res.status;try{msg+=": "+JSON.stringify(await res.json())}catch(e){}throw new Error(msg)}
+  return res.json();
 }
-function getUnit(id){return load().find(x=>x.id===id)}
-function upsert(u){
-  const a=load(), i=a.findIndex(x=>x.id===u.id);
-  if(i>=0)a[i]=u; else a.push(u);
-  save(a);
+function formulaEscape(s){return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}
+async function findRemoteEquipment(id){
+  const params=new URLSearchParams({filterByFormula:`{Unit ID}='${formulaEscape(id)}'`,maxRecords:"1"});
+  const data=await api(EQUIP_TABLE+"?"+params.toString());
+  return data.records?.[0]||null;
 }
-function ensureBlank(id){
-  let u=getUnit(id);
-  if(!u){
-    u={id,assigned:false,unit:"",type:"",mfr:"",model:"",serial:"",location:"",thermo:"",notes:"",
-       services:[],tuneups:[],parts:[],created:new Date().toISOString()};
-    upsert(u);
+function fromRecord(r){
+  const f=r.fields||{};
+  return {id:f["Unit ID"]||"",assigned:true,recordId:r.id,unit:f["Unit ID"]||"",
+    type:f["Equipment Type"]||"",mfr:f["Manufacturer"]||"",model:f["Model Number"]||"",
+    serial:f["Serial Number"]||"",location:f["Location"]||"",thermo:f["Thermostat Location(s)"]||"",
+    notes:f["Notes"]||"",history:[]};
+}
+async function remoteHistory(recordId){
+  const params=new URLSearchParams({filterByFormula:`FIND('${recordId}',ARRAYJOIN({Equipment}))>0`,sort:'[{"field":"Date","direction":"desc"}]'});
+  // Airtable does not support JSON sort in URL consistently; filter only, sort client-side.
+  params.delete("sort");
+  const data=await api(HIST_TABLE+"?"+params.toString());
+  return (data.records||[]).map(r=>({rid:r.id,id:r.fields["Entry ID"]||"",date:r.fields["Date"]||"",
+    tech:r.fields["Technician"]||"",kind:r.fields["Visit Type"]||"",notes:r.fields["Work Performed / Notes"]||"",
+    part:r.fields["Part / Component"]||"",partnotes:r.fields["Part Notes"]||""}))
+    .sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+}
+async function loadUnit(id){
+  let local=getLocal(id)||{id,assigned:false,history:[]};
+  if(!token()||!navigator.onLine)return local;
+  try{
+    const r=await findRemoteEquipment(id);
+    if(!r)return local;
+    const u=fromRecord(r);
+    u.history=await remoteHistory(r.id);
+    upsertLocal(u);currentRecordId=r.id;setStatus("synced","✓ SAVED & SYNCED");return u;
+  }catch(e){setStatus("offline","OFFLINE / LOCAL");return local}
+}
+async function saveEquipment(u){
+  upsertLocal(u);setStatus("pending","SAVING...");
+  if(!token()||!navigator.onLine){enqueue({kind:"equipment",data:u});setStatus("pending","OFFLINE — WILL SYNC");return false}
+  try{
+    const existing=await findRemoteEquipment(u.id);
+    const fields={
+      [F.unit]:u.id,[F.type]:u.type,[F.mfr]:u.mfr,[F.model]:u.model,[F.serial]:u.serial,
+      [F.loc]:u.location,[F.thermo]:u.thermo,[F.notes]:u.notes
+    };
+    let out;
+    if(existing){
+      out=await api(EQUIP_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:existing.id,fields}],typecast:false})});
+      currentRecordId=existing.id;
+    }else{
+      out=await api(EQUIP_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:false})});
+      currentRecordId=out.records?.[0]?.id||null;
+    }
+    u.recordId=currentRecordId;upsertLocal(u);setStatus("synced","✓ SAVED & SYNCED");return true;
+  }catch(e){enqueue({kind:"equipment",data:u});setStatus("pending","SAVED LOCALLY — SYNC PENDING");return false}
+}
+async function saveHistory(u,e){
+  u.history=u.history||[];u.history.push(e);upsertLocal(u);setStatus("pending","SAVING...");
+  if(!token()||!navigator.onLine){enqueue({kind:"history",unitId:u.id,data:e});setStatus("pending","OFFLINE — WILL SYNC");return false}
+  try{
+    let r=await findRemoteEquipment(u.id);
+    if(!r){await saveEquipment(u);r=await findRemoteEquipment(u.id)}
+    if(!r)throw new Error("Equipment record missing");
+    const fields={
+      [H.id]:e.id,[H.equipment]:[r.id],[H.date]:e.date,[H.tech]:e.tech,[H.type]:e.kind,
+      [H.work]:e.notes,[H.part]:e.part||"",[H.partnotes]:e.partnotes||""
+    };
+    await api(HIST_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:false})});
+    setStatus("synced","✓ SAVED & SYNCED");return true;
+  }catch(err){enqueue({kind:"history",unitId:u.id,data:e});setStatus("pending","SAVED LOCALLY — SYNC PENDING");return false}
+}
+function enqueue(op){
+  const q=queue();
+  if(op.kind==="equipment"){
+    const i=q.findIndex(x=>x.kind==="equipment"&&x.data.id===op.data.id);
+    if(i>=0)q[i]=op;else q.push(op);
+  }else if(!q.some(x=>x.kind==="history"&&x.data.id===op.data.id))q.push(op);
+  setQueue(q);
+}
+async function flushQueue(){
+  if(!token()||!navigator.onLine||!queue().length)return;
+  setStatus("pending","SYNCING...");
+  const q=queue(),remain=[];
+  for(const op of q){
+    try{
+      if(op.kind==="equipment"){await saveEquipment(op.data)}
+      else{
+        const u=getLocal(op.unitId)||{id:op.unitId,assigned:true,history:[]};
+        // prevent duplicate local push during queue replay
+        let r=await findRemoteEquipment(u.id);
+        if(!r){await saveEquipment(u);r=await findRemoteEquipment(u.id)}
+        const fields={
+          [H.id]:op.data.id,[H.equipment]:[r.id],[H.date]:op.data.date,[H.tech]:op.data.tech,[H.type]:op.data.kind,
+          [H.work]:op.data.notes,[H.part]:op.data.part||"",[H.partnotes]:op.data.partnotes||""
+        };
+        const check=new URLSearchParams({filterByFormula:`{Entry ID}='${formulaEscape(op.data.id)}'`,maxRecords:"1"});
+        const exists=(await api(HIST_TABLE+"?"+check.toString())).records?.[0];
+        if(!exists)await api(HIST_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:false})});
+      }
+    }catch(e){remain.push(op)}
   }
-  return u;
+  setQueue(remain);
+  setStatus(remain.length?"pending":"synced",remain.length?"SYNC PENDING":"✓ SAVED & SYNCED");
 }
 function renderList(){
-  const a=load();
-  if(!a.length){$("unitList").innerHTML="<p class='small'>No QR equipment records on this device yet.</p>";return}
-  $("unitList").innerHTML=a.slice().reverse().map(u=>`
-    <div class="unit">
-      <b>${u.assigned?esc(u.unit||u.type||"Equipment"):"Unassigned QR"}</b>
-      ${u.assigned?`<div class="small">${esc(u.type)} ${u.location?"• "+esc(u.location):""}</div>`:"<div class='small'>Ready to be attached and set up</div>"}
-      <div class="small mono">${esc(u.id)}</div>
-      <button class="outline" onclick="openUnit('${u.id}')">Open</button>
-    </div>`).join("");
+  const a=loadLocal();
+  $("unitList").innerHTML=a.length?a.slice().reverse().map(u=>`<div class="unit"><b>${esc(u.assigned?(u.type||u.id):"Unassigned QR")}</b>
+    <div class="small">${esc(u.location||"")}</div><div class="small mono">${esc(u.id)}</div>
+    <button class="outline" onclick="openUnit('${u.id}')">Open</button></div>`).join(""):"<p class='small'>No equipment records on this device yet.</p>";
 }
-function makeQR(id){
-  $("qrbox").innerHTML="";
-  new QRCode($("qrbox"),{text:appURL(id),width:240,height:240,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
-  $("labelId").textContent=id;
-}
-function newBlank(){
-  const id=uid();
-  ensureBlank(id); currentId=id; makeQR(id); show("labelScreen"); renderList();
-}
+function makeQR(id){$("qrbox").innerHTML="";new QRCode($("qrbox"),{text:appURL(id),width:240,height:240,correctLevel:QRCode.CorrectLevel.M});$("labelId").textContent=id}
+async function newBlank(){const id=uid();const u={id,assigned:false,unit:"",type:"",mfr:"",model:"",serial:"",location:"",thermo:"",notes:"",history:[]};upsertLocal(u);currentId=id;makeQR(id);show("labelScreen");renderList()}
 function setupForm(u){
-  $("detail").innerHTML=`
-  <div class="card">
-    <button class="gray" data-home>← Home</button>
-    <span class="badge">UNASSIGNED QR</span>
-    <h2 style="margin-top:10px">Set Up This Equipment</h2>
-    <p>This QR is ready. Enter the equipment information now.</p>
-    <div class="grid">
-      <div><label>Equipment / Unit #</label><input id="f_unit" value="${esc(u.unit)}" placeholder="Furnace #1"></div>
-      <div><label>Type of Unit</label><input id="f_type" value="${esc(u.type)}" placeholder="Furnace, Condenser, Boiler..."></div>
-      <div><label>Manufacturer</label><input id="f_mfr" value="${esc(u.mfr)}"></div>
-      <div><label>Model #</label><input id="f_model" value="${esc(u.model)}"></div>
-      <div><label>Serial #</label><input id="f_serial" value="${esc(u.serial)}"></div>
-      <div><label>Location</label><input id="f_location" value="${esc(u.location)}" placeholder="Basement, Attic..."></div>
-    </div>
-    <label>Thermostat Location(s)</label><textarea id="f_thermo">${esc(u.thermo)}</textarea>
-    <label>Equipment Notes</label><textarea id="f_notes">${esc(u.notes)}</textarea>
-    <button class="orange" id="saveSetup">Save Equipment</button>
-    <div class="small mono">${esc(u.id)}</div>
-  </div>`;
+  $("detail").innerHTML=`<div class="card"><button class="gray" data-home>← Home</button><span class="badge pending">NEW QR</span>
+  <h2>Set Up This Equipment</h2>
+  <div class="grid">
+    <div><label>Equipment Type</label><select id="f_type"><option>Gas Furnace</option><option>Boiler</option><option>Air Handler</option><option>Condenser</option><option>Heat Pump</option><option>Other</option></select></div>
+    <div><label>Location</label><input id="f_loc" value="${esc(u.location||"")}" placeholder="Basement, attic, roof..."></div>
+    <div><label>Manufacturer</label><input id="f_mfr" value="${esc(u.mfr||"")}"></div>
+    <div><label>Model Number</label><input id="f_model" value="${esc(u.model||"")}"></div>
+    <div><label>Serial Number</label><input id="f_serial" value="${esc(u.serial||"")}"></div>
+    <div><label>Thermostat Location(s)</label><input id="f_thermo" value="${esc(u.thermo||"")}"></div>
+  </div>
+  <label>Equipment Notes</label><textarea id="f_notes">${esc(u.notes||"")}</textarea>
+  <button class="orange" id="saveSetup">SAVE EQUIPMENT</button>
+  <div class="small mono">${esc(u.id)}</div></div>`;
+  $("f_type").value=u.type||"Gas Furnace";
   bindHome();
-  $("saveSetup").onclick=()=>{
-    u.unit=$("f_unit").value.trim(); u.type=$("f_type").value.trim(); u.mfr=$("f_mfr").value.trim();
-    u.model=$("f_model").value.trim(); u.serial=$("f_serial").value.trim(); u.location=$("f_location").value.trim();
-    u.thermo=$("f_thermo").value.trim(); u.notes=$("f_notes").value.trim(); u.assigned=true;
-    upsert(u); renderList(); renderDetail(u);
+  $("saveSetup").onclick=async()=>{
+    const b=$("saveSetup");b.disabled=true;b.textContent="SAVING...";
+    Object.assign(u,{assigned:true,type:$("f_type").value,location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),
+      model:$("f_model").value.trim(),serial:$("f_serial").value.trim(),thermo:$("f_thermo").value.trim(),notes:$("f_notes").value.trim()});
+    await saveEquipment(u);renderList();await renderDetail(await loadUnit(u.id));
   };
 }
-function entryHTML(arr,kind){
-  if(!arr?.length)return "<p class='small'>No history recorded yet.</p>";
-  return arr.slice().reverse().map(x=>`<div class="entry"><b>${esc(x.date)} — ${esc(x.title||kind)}</b>
-    ${x.tech?`<div><b>Tech:</b> ${esc(x.tech)}</div>`:""}<p>${esc(x.notes||"")}</p></div>`).join("");
+function histGroup(h,kind){
+  const a=(h||[]).filter(x=>x.kind===kind);
+  if(!a.length)return "<p class='small'>No history yet.</p>";
+  return a.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(x=>`<div class="entry"><b>${esc(x.date)} — ${esc(x.kind)}</b>
+    ${x.tech?`<div><b>Tech:</b> ${esc(x.tech)}</div>`:""}${x.part?`<div><b>Part:</b> ${esc(x.part)}</div>`:""}
+    <p>${esc(x.notes||x.partnotes||"")}</p></div>`).join("");
 }
-function renderDetail(u){
-  currentId=u.id;
-  $("detail").innerHTML=`
-  <div class="card">
-    <button class="gray" data-home>← Home</button>
-    <span class="badge">QR LOCKED TO THIS UNIT</span>
-    <h2 style="margin-top:10px">${esc(u.unit||u.type||"Equipment")}</h2>
-    <p><b>Type:</b> ${esc(u.type)}</p><p><b>Manufacturer:</b> ${esc(u.mfr)}</p>
-    <p><b>Model:</b> ${esc(u.model)}</p><p><b>Serial:</b> ${esc(u.serial)}</p>
-    <p><b>Location:</b> ${esc(u.location)}</p><p><b>Thermostat:</b> ${esc(u.thermo)}</p>
-    <p><b>Equipment Notes:</b> ${esc(u.notes)}</p><div class="small mono">${esc(u.id)}</div>
-    <button class="outline" id="showLabel">Show / Reprint QR Label</button>
-  </div>
-  <div class="card">
-    <h2>Add History</h2>
-    <button class="orange" onclick="historyForm('service')">+ Service Call</button>
-    <button class="orange" onclick="historyForm('tuneup')">+ Tune-Up / Preventive Maintenance</button>
-    <button class="orange" onclick="historyForm('part')">+ Parts Replacement</button>
+async function renderDetail(u){
+  currentId=u.id;currentRecordId=u.recordId||null;
+  $("detail").innerHTML=`<div class="card"><button class="gray" data-home>← Home</button>
+  <span class="badge synced">QR LOCKED TO THIS UNIT</span>
+  <h2>${esc(u.type||"Equipment")}</h2>
+  <p><b>Manufacturer:</b> ${esc(u.mfr)}</p><p><b>Model:</b> ${esc(u.model)}</p><p><b>Serial:</b> ${esc(u.serial)}</p>
+  <p><b>Location:</b> ${esc(u.location)}</p><p><b>Thermostat:</b> ${esc(u.thermo)}</p><p><b>Notes:</b> ${esc(u.notes)}</p>
+  <div class="small mono">${esc(u.id)}</div><button class="outline" id="reprint">Show / Reprint QR</button></div>
+  <div class="card"><h2>Add History</h2>
+    <button class="orange" onclick="historyForm('Service Call')">SERVICE CALL</button>
+    <button class="orange" onclick="historyForm('Tune-Up / Preventive Maintenance')">TUNE-UP</button>
+    <button class="orange" onclick="historyForm('Parts Replacement')">PART REPLACEMENT</button>
     <div id="entryForm"></div>
   </div>
-  <div class="card"><h2>Service Call History</h2>${entryHTML(u.services,"Service Call")}</div>
-  <div class="card"><h2>Tune-Up History</h2>${entryHTML(u.tuneups,"Tune-Up")}</div>
-  <div class="card"><h2>Parts Replacement History</h2>${entryHTML(u.parts,"Part Replacement")}</div>`;
-  bindHome();
-  $("showLabel").onclick=()=>{makeQR(u.id);show("labelScreen")};
-  show("detailScreen");
+  <div class="card"><h2>Service Calls</h2>${histGroup(u.history,"Service Call")}</div>
+  <div class="card"><h2>Tune-Ups</h2>${histGroup(u.history,"Tune-Up / Preventive Maintenance")}</div>
+  <div class="card"><h2>Parts Replaced</h2>${histGroup(u.history,"Parts Replacement")}</div>`;
+  bindHome();$("reprint").onclick=()=>{makeQR(u.id);show("labelScreen")};show("detailScreen");
 }
 window.historyForm=function(kind){
-  const titles={service:"Service Call",tuneup:"Tune-Up / Preventive Maintenance",part:"Parts Replacement"};
-  $("entryForm").innerHTML=`
-  <div class="unit">
-    <h3>${titles[kind]}</h3>
+  const parts=kind==="Parts Replacement";
+  $("entryForm").innerHTML=`<div class="unit"><h3>${esc(kind)}</h3>
     <label>Date</label><input id="h_date" type="date" value="${new Date().toISOString().slice(0,10)}">
-    <label>Technician(s)</label><input id="h_tech">
-    <label>${kind==="part"?"Part / Component":"Work Type"}</label><input id="h_title" placeholder="${kind==="part"?"Blower motor, capacitor...":titles[kind]}">
-    <label>Notes / Work Performed</label><textarea id="h_notes"></textarea>
-    <button class="orange" id="saveHist">Save ${titles[kind]}</button>
-  </div>`;
-  $("saveHist").onclick=()=>{
-    const a=load(), u=a.find(x=>x.id===currentId); if(!u)return;
-    const entry={id:uid(),date:$("h_date").value,tech:$("h_tech").value.trim(),title:$("h_title").value.trim()||titles[kind],notes:$("h_notes").value.trim(),created:new Date().toISOString()};
-    if(kind==="service")u.services.push(entry); if(kind==="tuneup")u.tuneups.push(entry); if(kind==="part")u.parts.push(entry);
-    save(a); renderDetail(u);
+    <label>Technician</label><input id="h_tech" placeholder="Technician name">
+    ${parts?'<label>Part / Component</label><input id="h_part" placeholder="Capacitor, motor, contactor...">':""}
+    <label>${parts?"Part Notes / Work Performed":"Work Performed / Notes"}</label><textarea id="h_notes"></textarea>
+    <button class="orange" id="saveHist">SAVE</button></div>`;
+  $("saveHist").onclick=async()=>{
+    const b=$("saveHist");b.disabled=true;b.textContent="SAVING...";
+    const u=getLocal(currentId);const e={id:entryId(),date:$("h_date").value,tech:$("h_tech").value.trim(),kind,
+      notes:$("h_notes").value.trim(),part:parts?$("h_part").value.trim():"",partnotes:parts?$("h_notes").value.trim():""};
+    await saveHistory(u,e);await renderDetail(await loadUnit(currentId));
   };
 }
-window.openUnit=function(id){
-  const u=ensureBlank(id); currentId=id; if(u.assigned)renderDetail(u); else {setupForm(u);show("detailScreen")}
+window.openUnit=async function(id){
+  currentId=id;let u=await loadUnit(id);
+  if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u);
 }
 function bindHome(){document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>{history.replaceState({},"",location.pathname);renderList();show("home")})}
 
-$("createBlank").onclick=newBlank;
-$("printBtn").onclick=()=>window.print();
-$("setupNow").onclick=()=>openUnit(currentId);
-$("openById").onclick=()=>{
-  const id=prompt("Enter the Res-Com Equipment ID from the QR label:");
-  if(id)openUnit(id.trim().toUpperCase());
-};
-document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>{renderList();show("home")});
+$("createBlank").onclick=newBlank;$("printBtn").onclick=()=>window.print();$("setupNow").onclick=()=>openUnit(currentId);
+$("openById").onclick=()=>{const id=prompt("Enter Res-Com Equipment ID:");if(id)openUnit(id.trim().toUpperCase())};
+$("settingsBtn").onclick=()=>{$("tokenInput").value=token();show("settings")};
+$("saveToken").onclick=async()=>{localStorage.setItem(TOKEN,$("tokenInput").value.trim());setStatus("pending","CHECKING...");try{await findRemoteEquipment("__TEST__");setStatus("synced","✓ CONNECTED");alert("Airtable connection saved.");flushQueue()}catch(e){setStatus("offline","CONNECTION ERROR");alert("Could not connect. Check the token and its Airtable permissions.")}};
+$("testToken").onclick=async()=>{try{await findRemoteEquipment("__TEST__");alert("Connection is working.");setStatus("synced","✓ CONNECTED")}catch(e){alert("Connection failed. Check the token and permissions.");setStatus("offline","CONNECTION ERROR")}};
+$("clearToken").onclick=()=>{localStorage.removeItem(TOKEN);$("tokenInput").value="";setStatus("pending","SHARED SAVE NOT CONNECTED")};
 
-$("exportBtn").onclick=()=>{
-  const blob=new Blob([JSON.stringify({app:"Res-Com HVAC QR",version:1,exported:new Date().toISOString(),units:load()},null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="ResCom_HVAC_QR_Backup_"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);
-};
-$("importFile").onchange=async e=>{
-  const f=e.target.files[0]; if(!f)return;
-  try{
-    const data=JSON.parse(await f.text()), incoming=Array.isArray(data)?data:data.units;
-    if(!Array.isArray(incoming))throw 0;
-    const map=new Map(load().map(u=>[u.id,u]));
-    incoming.forEach(n=>{
-      const o=map.get(n.id);
-      if(!o){map.set(n.id,n);return}
-      // Prefer populated equipment fields; merge histories by entry id.
-      ["assigned","unit","type","mfr","model","serial","location","thermo","notes"].forEach(k=>{
-        if((n[k]!==undefined && n[k]!=="" && n[k]!==false) && (!o[k] || k==="assigned"))o[k]=n[k];
-      });
-      ["services","tuneups","parts"].forEach(k=>{
-        const all=[...(o[k]||[]),...(n[k]||[])], seen=new Set();
-        o[k]=all.filter(x=>{const key=x.id||JSON.stringify(x);if(seen.has(key))return false;seen.add(key);return true});
-      });
-    });
-    save([...map.values()]);renderList();alert("Backup merged successfully.");
-  }catch(err){alert("That backup file could not be read.");}
-  e.target.value="";
-};
-
-if(location.protocol==="file:")$("fileWarning").classList.remove("hidden");
-if("serviceWorker" in navigator && location.protocol.startsWith("http")){
-  navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
-}
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+window.addEventListener("online",()=>flushQueue());window.addEventListener("offline",()=>setStatus("offline","OFFLINE — SAVING LOCALLY"));
 renderList();
-const requested=new URLSearchParams(location.search).get("unit");
-if(requested)openUnit(requested);
+if(token())flushQueue().then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");
+const requested=new URLSearchParams(location.search).get("unit");if(requested)openUnit(requested);
 </script>
-</body>
-</html>
+</body></html>
