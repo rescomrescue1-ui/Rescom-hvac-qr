@@ -1,11 +1,18 @@
-RES-COM HVAC QR v24.0 — SWIPEABLE BOTTOM TABS
+RES-COM HVAC QR v25.0
 
 NEW
-- Bottom tabs are now horizontally swipeable on portrait phones.
-- Home / Equipment / Accounts / Settings / Manual each keep a readable minimum width.
-- Swipe left/right along the bottom bar to reach hidden tabs.
-- Tapping a tab scrolls it toward the center.
-- One-time hint: "Swipe bottom tabs left/right".
-- No need to rotate the phone sideways just to reach Manual.
+- First-load LOG IN / CREATE COMPANY ACCOUNT screen.
+- Company phone number is the login identifier.
+- Auth0 signup button for new company accounts.
+- Airtable Company Users match by Phone.
+- Account cards are clickable.
+- Account detail/edit screen added.
+- PATCH NOTES added to the swipeable bottom navigation.
+- In-app Manual updated with all v25 changes.
 
-Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
+AUTH0
+See AUTH0_SETUP.txt.
+Phone Number as Identifier must be enabled in the Auth0 database connection.
+If phone verification is enabled, an Auth0 phone provider is required.
+
+Keep the SAME GitHub Pages URL so existing QR labels continue to work.

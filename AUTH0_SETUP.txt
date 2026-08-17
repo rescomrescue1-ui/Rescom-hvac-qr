@@ -1,44 +1,44 @@
-RES-COM v23 — AUTH0 SETUP
+RES-COM v25 — AUTH0 PHONE NUMBER LOGIN SETUP
 
-The app integration is already built. Complete these steps in your Auth0 account:
+The app is built to use the employee PHONE NUMBER as the company login identifier.
 
-1. Create an Auth0 tenant/account.
-2. Applications > Create Application.
-3. Name: Res-Com HVAC QR
-4. Type: Single Page Application.
-5. Copy Domain and Client ID into auth-config.js.
-   DO NOT put a Client Secret in the browser app.
-
-6. In the Auth0 application settings, add the EXACT Res-Com GitHub Pages URL:
+AUTH0 APPLICATION
+1. Create/use the Res-Com HVAC QR Single Page Application.
+2. Put the Auth0 Domain and Client ID in auth-config.js.
+3. Keep the SAME GitHub Pages URL in:
    - Allowed Callback URLs
    - Allowed Logout URLs
    - Allowed Web Origins
    - Allowed Origins (CORS)
 
-7. Authentication > Database:
-   - Create/use a database connection.
-   - Keep password authentication enabled.
-   - Disable public sign-ups for production if only Res-Com employees should get accounts.
-   - Configure a strong password policy.
+PHONE NUMBER LOGIN
+4. Auth0 Dashboard > Authentication > Database > your Res-Com database connection.
+5. Activate Flexible Identifiers / Attributes.
+6. Turn ON: Use Phone Number as Identifier.
+7. Set Allow Signup with Phone Number to REQUIRED.
+8. Turn ON Verify Phone on Signup if you want each employee to prove ownership of the phone number.
+9. Configure an Auth0 phone provider. Phone verification cannot work without a phone provider.
+10. Use Identifier First authentication in Universal Login.
 
-8. Enable Universal Login.
-9. Enable Identifier First authentication.
-10. Enable Passkeys on the database connection.
-    Auth0 requires passwords to remain enabled with passkeys.
+PASSWORDS / RESET
+11. Keep password authentication enabled.
+12. Configure the password policy.
+13. Auth0 phone identifiers can be used for login and password reset when configured as an identifier.
 
-11. Create the first employee user in Auth0.
-12. Sign in to Res-Com with that user.
-    If the Airtable Company Users table is empty, the first authenticated employee becomes the first Admin.
-13. Admins can then create Company User profiles in Res-Com Settings.
-    Each employee must also be created in Auth0 with the SAME email.
+FACE ID / PASSKEYS
+14. Enable Passkeys on the database connection.
+15. Universal Login + Identifier First are required for the standard Auth0 passkey flow.
+16. Supported iPhones can approve a passkey using Face ID. Biometric data remains on the device.
 
-PASSWORD RESET
-- Tap FORGOT PASSWORD in Res-Com.
-- Auth0 sends a one-time password-reset email.
+CREATE COMPANY ACCOUNT
+- The Res-Com CREATE COMPANY ACCOUNT button sends the user to Auth0 Universal Login with screen_hint=signup.
+- Auth0 must allow signup on the database connection.
+- For tighter company-only security, disable public signup and use an approved invitation/provisioning workflow instead.
 
-FACE ID
-- Face ID is used by iOS to approve a passkey.
-- Res-Com and Auth0 do not receive the user's Face ID biometric data.
+RES-COM COMPANY USER MATCHING
+- After Auth0 login, the app matches Auth0 phone_number to Airtable Company Users > Phone.
+- If no Company User exists, v25 creates a Technician profile automatically.
+- If the Company Users table is completely empty, the first authenticated user becomes Admin.
 
 IMPORTANT
 Keep the same GitHub Pages URL so existing printed QR labels continue to work.

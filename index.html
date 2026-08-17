@@ -401,24 +401,37 @@ body{padding-bottom:88px!important}
   flex:0 0 8px;
 }
 
+
+.account-card{cursor:pointer!important}
+.account-card:active{transform:scale(.99)}
+.account-card::after{content:"Tap to open";display:block;margin-top:8px;font-size:11px;font-weight:800;color:#75adff}
+#accountDetailBody .account-card::after{display:none}
 </style>
 
 <script src="./auth-config.js"></script>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 </head>
 <body>
+
 <div id="authGate" class="hidden">
   <div class="auth-card">
-    <h2>Res-Com Company Login</h2>
-    <div id="authStatusBox"></div>
-    <button class="orange" id="authLoginButton" type="button">SIGN IN WITH COMPANY ACCOUNT</button>
+    <h2>Res-Com Company Access</h2>
+    <p class="small">Use your company phone number to sign in, or create a new company login.</p>
+
+    <label>Company Phone Number</label>
+    <input id="authPhoneHint" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 555-5555">
+
+    <button class="orange" id="authLoginButton" type="button">LOG IN</button>
+    <button class="outline" id="authCreateButton" type="button">CREATE COMPANY ACCOUNT</button>
     <button class="outline" id="authForgotButton" type="button">FORGOT PASSWORD</button>
     <button class="outline" id="authPasskeyInfo" type="button">FACE ID / PASSKEY HELP</button>
-    <p class="small">Each employee has an individual account. Supported iPhones can use Face ID to approve a passkey sign-in.</p>
+
+    <div id="authStatusBox"></div>
+    <p class="small">Your phone number is the company login identifier. Auth0 securely handles passwords, password resets, phone verification, and passkeys.</p>
   </div>
 </div>
 <div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v24.0 • UPDATED Aug 17, 2026 5:34 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v25.0 • UPDATED Aug 17, 2026 5:46 PM</span></p></header>
 <div id="signedUserBar" class="hidden">
   <span id="signedUserText"></span>
   <button class="gray" id="logoutUser" type="button">LOG OUT</button>
@@ -492,6 +505,23 @@ body{padding-bottom:88px!important}
 
 
 
+
+<section id="accountDetailScreen" class="hidden">
+  <div class="card">
+    <button class="gray" id="accountDetailBack" type="button">← ACCOUNTS</button>
+    <h2>Account</h2>
+    <div id="accountDetailBody"></div>
+    <div class="unit">
+      <h3>Edit Account</h3>
+      <label>Account Name</label><input id="editAccountName">
+      <label>Email</label><input id="editAccountEmail" type="email">
+      <label>Phone</label><input id="editAccountPhone" type="tel">
+      <label>Notes</label><textarea id="editAccountNotes"></textarea>
+      <button class="orange" id="saveAccountChanges" type="button">SAVE ACCOUNT</button>
+    </div>
+  </div>
+</section>
+
 <section id="manualScreen" class="hidden">
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
@@ -509,11 +539,13 @@ body{padding-bottom:88px!important}
 
     
     <div class="manual-section">
-      <h3>Company Login, Passwords & Face ID</h3>
-      <p>Each Res-Com employee uses an individual Auth0 account with their own email and password.</p>
-      <p><b>Forgot Password</b> sends a secure reset email through Auth0.</p>
-      <p>When Auth0 passkeys are enabled, a supported iPhone can use Face ID to approve the employee's passkey sign-in. Face ID biometric data stays on the iPhone.</p>
-      <p>The Auth0 email is matched to the Airtable Company Users table for Technician Name and Admin/Technician role.</p>
+      <h3>Company Login, Phone Number, Passwords & Face ID</h3>
+      <p>When the app first opens, choose <b>LOG IN</b> or <b>CREATE COMPANY ACCOUNT</b>.</p>
+      <p>Each employee uses their <b>company phone number</b> as the login identifier. Auth0 stores the secure password and can verify the phone number by OTP when phone verification is enabled.</p>
+      <p><b>Create Company Account</b> opens the Auth0 signup screen. Use the same company phone number that is saved in the Res-Com Company User profile.</p>
+      <p><b>Forgot Password</b> is handled through Auth0 after entering the phone-number identifier.</p>
+      <p>When Auth0 passkeys are enabled, supported iPhones can use Face ID to approve passkey sign-in. Face ID biometric data stays on the iPhone.</p>
+      <p>The signed-in phone number is matched to the Airtable Company Users table for Technician Name and Admin/Technician role.</p>
     </div>
 <div class="manual-section" id="m-start">
       <h3>1. Getting Started</h3>
@@ -568,10 +600,10 @@ body{padding-bottom:88px!important}
     </div>
 
     <div class="manual-section" id="m-accounts">
-      <h3>7. Accounts</h3>
-      <p>Accounts store customer/company contact information. Tap <b>ACCOUNTS</b> from the bottom bar to create a new account.</p>
-      <p>An account can include Name, Email, Phone, and Notes. Multiple equipment records can belong to the same account.</p>
-      <p>Account Email is used for warranty and maintenance reminder emails.</p>
+      <h3>Accounts</h3>
+      <p>Tap <b>ACCOUNTS</b> from the bottom navigation to create, search, and view customer/company accounts.</p>
+      <p><b>Tap any account card to open it.</b> From the account screen you can edit Account Name, Email, Phone, and Notes.</p>
+      <p>Multiple equipment records can use the same customer account. Account Email is used for warranty and maintenance reminder emails.</p>
     </div>
 
     <div class="manual-section" id="m-service">
@@ -596,7 +628,12 @@ body{padding-bottom:88px!important}
       <p>Settings includes CHECK FOR APP UPDATE and Patch Notes. Keep the same GitHub Pages web address so existing printed QR labels continue to work.</p>
     </div>
 
-    <div class="manual-section" id="m-help">
+    <div class="manual-section">
+      <h3>Bottom Navigation</h3>
+      <p>The bottom bar is swipeable left/right in portrait mode. Tabs are Home, Equipment, Accounts, Settings, Manual, and Patch Notes.</p>
+      <p>Swipe across the bottom bar to reach any tab without rotating the phone.</p>
+    </div>
+<div class="manual-section" id="m-help">
       <h3>12. Troubleshooting</h3>
       <p><b>No cloud history:</b> check internet, verify the Airtable token, then refresh history.</p>
       <p><b>QR opens Safari:</b> copy the Equipment ID, open the app, tap Paste Equipment ID.</p>
@@ -659,10 +696,10 @@ body{padding-bottom:88px!important}
     <div id="companyUsersAdmin" class="admin-only hidden">
       <h3>Company Users</h3>
       <p class="small">Admins can add Res-Com employee profiles here. Passwords, password resets, and passkeys are managed by Auth0.</p>
-      <label>Employee Email</label><input id="newUserEmail" type="email" placeholder="employee@company.com">
+      <label>Employee Email (optional)</label><input id="newUserEmail" type="email" placeholder="employee@company.com">
       <label>Technician Name</label><input id="newUserName" placeholder="Employee name">
       <label>Role</label><select id="newUserRole"><option>Technician</option><option>Admin</option></select>
-      <label>Phone</label><input id="newUserPhone" type="tel" placeholder="Phone">
+      <label>Company Phone Number</label><input id="newUserPhone" type="tel" inputmode="tel" placeholder="(555) 555-5555">
       <button class="orange" id="createCompanyUser" type="button">CREATE COMPANY USER</button>
       <button class="outline" id="refreshCompanyUsers" type="button">REFRESH COMPANY USERS</button>
       <div id="companyUsersList"></div>
@@ -685,6 +722,17 @@ body{padding-bottom:88px!important}
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 25.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 5:46 PM</p>
+      <p>• First-load screen now offers LOG IN or CREATE COMPANY ACCOUNT.</p>
+      <p>• Company logins now use the employee phone number as the primary identifier.</p>
+      <p>• Create Company Account opens Auth0 Universal Login signup.</p>
+      <p>• Company User profiles save and match the company phone number.</p>
+      <p>• Account cards are now tappable and open an editable Account screen.</p>
+      <p>• Added PATCH NOTES as a swipeable bottom navigation tab.</p>
+      <p>• Updated the in-app Manual for phone login, account opening/editing, and the new bottom tab.</p>
+    </div>
     <div class="unit">
       <h3>Version 24.0</h3>
       <p><b>Released:</b> Aug 17, 2026 5:34 PM</p>
@@ -903,8 +951,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="24.0";
-const APP_BUILD="Aug 17, 2026 5:34 PM";
+const APP_VERSION="25.0";
+const APP_BUILD="Aug 17, 2026 5:46 PM";
 
 const PIN_HASH_KEY="rescom_company_pin_hash_v1";
 const PIN_UNLOCK_KEY="rescom_company_unlocked_v1";
@@ -1023,6 +1071,21 @@ function authConfigReady(){
   return !!(c.domain&&c.clientId&&!String(c.domain).includes("YOUR_")&&!String(c.clientId).includes("YOUR_"));
 }
 function authRedirectUri(){return location.origin+location.pathname}
+
+function normalizePhone(v){
+  const raw=String(v||"").trim();
+  const digits=raw.replace(/\D/g,"");
+  if(digits.length===10)return "+1"+digits;
+  if(digits.length===11&&digits.startsWith("1"))return "+"+digits;
+  if(raw.startsWith("+")&&digits.length>=10)return "+"+digits;
+  return raw;
+}
+function phoneDisplay(v){
+  const p=normalizePhone(v),d=p.replace(/\D/g,"");
+  if(d.length===11&&d.startsWith("1"))return `(${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`;
+  return v||"";
+}
+
 async function initAuth0(){
   if(!authConfigReady())return null;
   if(auth0Client)return auth0Client;
@@ -1032,13 +1095,13 @@ async function initAuth0(){
     clientId:c.clientId,
     cacheLocation:"localstorage",
     useRefreshTokens:true,
-    authorizationParams:{redirect_uri:authRedirectUri(),scope:"openid profile email"}
+    authorizationParams:{redirect_uri:authRedirectUri(),scope:"openid profile email phone"}
   });
   return auth0Client;
 }
 function applyCurrentUserUI(){
   const u=currentUser(),bar=document.getElementById("signedUserBar"),text=document.getElementById("signedUserText");
-  if(u){bar?.classList.remove("hidden");if(text)text.textContent=`${u.name||u.email} • ${u.role||"Technician"}`}
+  if(u){bar?.classList.remove("hidden");if(text)text.textContent=`${u.name||u.email} • ${phoneDisplay(u.phone||"")} • ${u.role||"Technician"}`}
   else{bar?.classList.add("hidden");if(text)text.textContent=""}
   document.querySelectorAll(".admin-only").forEach(el=>el.classList.toggle("hidden",!(u&&u.role==="Admin")));
 }
@@ -1053,13 +1116,24 @@ function showAuthGate(message=""){
     box.classList.remove("auth-config-missing");
     box.textContent=message||"Sign in with your individual Res-Com company account.";
   }
+  const ph=document.getElementById("authPhoneHint");
+  if(ph&&!ph.value)ph.value=phoneDisplay(localStorage.getItem("rescom_last_login_phone_v1")||"");
 }
 function hideAuthGate(){document.getElementById("authGate")?.classList.add("hidden")}
 async function authLogin(){
   if(!authConfigReady()){showAuthGate();return}
+  const phone=normalizePhone(document.getElementById("authPhoneHint")?.value||"");
+  if(!phone){alert("Enter your company phone number.");return}
+  localStorage.setItem("rescom_last_login_phone_v1",phone);
   try{
     const c=await initAuth0();
-    await c.loginWithRedirect({authorizationParams:{redirect_uri:authRedirectUri()}});
+    await c.loginWithRedirect({
+      authorizationParams:{
+        redirect_uri:authRedirectUri(),
+        login_hint:phone,
+        prompt:"login"
+      }
+    });
   }catch(err){showAuthGate("Login failed: "+err.message)}
 }
 async function authLogout(){
@@ -1070,21 +1144,30 @@ async function authLogout(){
     else location.reload();
   }catch(e){location.reload()}
 }
+
+async function authCreateAccount(){
+  if(!authConfigReady()){showAuthGate();return}
+  const phone=normalizePhone(document.getElementById("authPhoneHint")?.value||"");
+  if(phone)localStorage.setItem("rescom_last_login_phone_v1",phone);
+  try{
+    const c=await initAuth0();
+    await c.loginWithRedirect({
+      authorizationParams:{
+        redirect_uri:authRedirectUri(),
+        login_hint:phone||undefined,
+        prompt:"login",
+        screen_hint:"signup"
+      }
+    });
+  }catch(err){showAuthGate("Account creation failed: "+err.message)}
+}
+
 async function authForgotPassword(){
   if(!authConfigReady()){showAuthGate();return}
-  const email=(prompt("Enter your Res-Com company email:")||"").trim();
-  if(!email)return;
-  const c=authConfig();
-  try{
-    const res=await fetch(`https://${c.domain}/dbconnections/change_password`,{
-      method:"POST",
-      headers:{"content-type":"application/json"},
-      body:JSON.stringify({client_id:c.clientId,email,connection:c.connection||"Username-Password-Authentication"})
-    });
-    const text=await res.text();
-    if(!res.ok)throw new Error(text||("HTTP "+res.status));
-    alert("Password reset email requested. Check your email.");
-  }catch(err){alert("Could not request password reset: "+err.message)}
+  const phone=normalizePhone(prompt("Enter your Res-Com company phone number:")||"");
+  if(!phone)return;
+  alert("Password reset is handled on the Auth0 Universal Login screen. Tap LOG IN, enter your phone number, then choose the password reset option shown by Auth0.");
+  const el=document.getElementById("authPhoneHint");if(el)el.value=phone;
 }
 function showPasskeyHelp(){
   alert("Face ID is used by your iPhone to approve an Auth0 passkey. On the Auth0 login screen, choose or enroll a passkey. Your Face ID biometric data stays on the iPhone.");
@@ -1097,7 +1180,12 @@ async function allCompanyUsers(){
   }while(offset);
   return out;
 }
+async function findCompanyUserByPhone(phone){
+  const p=new URLSearchParams({filterByFormula:`{Phone}='${formulaEscape(normalizePhone(phone))}'`,maxRecords:"1"});
+  const d=await api(COMPANY_USERS_TABLE+"?"+p.toString());return d.records?.[0]||null;
+}
 async function findCompanyUserByEmail(email){
+  if(!email)return null;
   const p=new URLSearchParams({filterByFormula:`LOWER({Email})='${formulaEscape(String(email).toLowerCase())}'`,maxRecords:"1"});
   const d=await api(COMPANY_USERS_TABLE+"?"+p.toString());return d.records?.[0]||null;
 }
@@ -1106,8 +1194,9 @@ function companyUserFromRecord(r){
   return {recordId:r?.id||"",email:f["Email"]||"",name:f["Technician Name"]||f["Email"]||"",role:f["Role"]||"Technician",active:f["Active"]!==false,phone:f["Phone"]||""};
 }
 async function finishAuthenticatedUser(authUser){
+  const phone=normalizePhone(authUser?.phone_number||localStorage.getItem("rescom_last_login_phone_v1")||"");
   const email=String(authUser?.email||"").trim().toLowerCase();
-  if(!email)throw new Error("Auth0 account has no email address.");
+  if(!phone)throw new Error("Your Auth0 account does not contain a phone number.");
 
   if(!token()){
     const supplied=prompt("This device needs the Res-Com Airtable token once. Paste it now:");
@@ -1116,19 +1205,32 @@ async function finishAuthenticatedUser(authUser){
   }
 
   const users=await allCompanyUsers();
-  let record=users.find(r=>String(r.fields?.["Email"]||"").toLowerCase()===email)||null;
+  let record=users.find(r=>normalizePhone(r.fields?.["Phone"]||"")===phone)||null;
+  if(!record&&email)record=users.find(r=>String(r.fields?.["Email"]||"").toLowerCase()===email)||null;
 
   if(!record&&users.length===0){
-    const name=String(authUser?.name||authUser?.nickname||email.split("@")[0]).trim();
-    const fields={[U.email]:email,[U.name]:name,[U.role]:"Admin",[U.active]:true};
+    const name=String(authUser?.name||authUser?.nickname||phoneDisplay(phone)).trim();
+    const fallbackEmail=email||`phone-${phone.replace(/\D/g,"")}@rescom.local`;
+    const fields={[U.email]:fallbackEmail,[U.name]:name,[U.role]:"Admin",[U.active]:true,[U.phone]:phone};
+    const out=await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+    record=out.records?.[0]||null;
+  }else if(!record){
+    const name=String(authUser?.name||authUser?.nickname||phoneDisplay(phone)).trim();
+    const fallbackEmail=email||`phone-${phone.replace(/\D/g,"")}@rescom.local`;
+    const fields={[U.email]:fallbackEmail,[U.name]:name,[U.role]:"Technician",[U.active]:true,[U.phone]:phone};
     const out=await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
     record=out.records?.[0]||null;
   }
 
-  if(!record)throw new Error("Your login is valid, but this email is not a Res-Com Company User. Ask an Admin to add it.");
+  if(!record)throw new Error("Could not create or match your Res-Com Company User.");
   const u=companyUserFromRecord(record);
+  u.phone=phone;
   if(!u.active)throw new Error("This Res-Com Company User is inactive.");
-  saveCurrentUser(u);hideAuthGate();renderTechnicians();return u;
+  saveCurrentUser(u);
+  localStorage.setItem("rescom_last_login_phone_v1",phone);
+  hideAuthGate();
+  renderTechnicians();
+  return u;
 }
 async function bootstrapAuth(){
   applyCurrentUserUI();
@@ -1153,14 +1255,14 @@ async function createCompanyUserFromForm(){
   const name=($("newUserName")?.value||"").trim();
   const role=$("newUserRole")?.value||"Technician";
   const phone=($("newUserPhone")?.value||"").trim();
-  if(!email.includes("@")||!name){alert("Enter employee email and technician name.");return}
+  if(!name||!normalizePhone(phone)){alert("Enter technician name and company phone number.");return}
   try{
-    if(await findCompanyUserByEmail(email)){alert("That Company User already exists.");return}
-    const fields={[U.email]:email,[U.name]:name,[U.role]:role,[U.active]:true,[U.phone]:phone||null};
+    if(await findCompanyUserByPhone(phone)){alert("That company phone number already exists.");return}
+    const fields={[U.email]:email||`phone-${normalizePhone(phone).replace(/\D/g,"")}@rescom.local`,[U.name]:name,[U.role]:role,[U.active]:true,[U.phone]:normalizePhone(phone)};
     await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
     $("newUserEmail").value="";$("newUserName").value="";$("newUserPhone").value="";
     await renderCompanyUsers();setStatus("synced","✓ COMPANY USER PROFILE CREATED");
-    alert("Company User profile created. Create an Auth0 user with the same email.");
+    alert("Company User profile created. The employee can now tap CREATE COMPANY ACCOUNT and sign up using this same phone number.");
   }catch(err){alert("Could not create Company User: "+err.message)}
 }
 async function renderCompanyUsers(){
@@ -1281,7 +1383,7 @@ function uid(){const r=crypto.getRandomValues(new Uint32Array(2));return "RC-"+r
 function entryId(){return "SV-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
 function getLocal(id){return loadLocal().find(x=>x.id===id)}
 function upsertLocal(u){const a=loadLocal(),i=a.findIndex(x=>x.id===u.id);if(i>=0)a[i]=u;else a.push(u);saveLocal(a)}
-function show(id){["home","settings","scanner","labelScreen","detailScreen","patchNotes","qrHandoff","accountsScreen","manualScreen"].forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});const t=$(id);if(t)t.classList.remove("hidden");scrollTo(0,0)}
+function show(id){["home","settings","scanner","labelScreen","detailScreen","patchNotes","qrHandoff","accountsScreen","accountDetailScreen","manualScreen"].forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});const t=$(id);if(t)t.classList.remove("hidden");scrollTo(0,0)}
 function appURL(id){const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("unit",id);return u.toString()}
 function setStatus(mode,text){
   const b=$("syncBadge");
@@ -1411,6 +1513,44 @@ async function allAccounts(){
   return out;
 }
 
+
+let currentAccountRecordId="";
+
+async function openAccountDetail(recordId){
+  if(!recordId)return;
+  try{
+    const r=await api(ACCOUNTS_TABLE+"/"+recordId);
+    currentAccountRecordId=recordId;
+    const f=r.fields||{};
+    $("accountDetailBody").innerHTML=`<div class="account-card">
+      <b>${esc(f["Account Name"]||"Unnamed Account")}</b>
+      <div class="small">${esc(f["Email"]||"No email")}</div>
+      <div class="small">${esc(f["Phone"]||"No phone")}</div>
+      ${f["Notes"]?`<div class="small">${esc(f["Notes"])}</div>`:""}
+    </div>`;
+    $("editAccountName").value=f["Account Name"]||"";
+    $("editAccountEmail").value=f["Email"]||"";
+    $("editAccountPhone").value=f["Phone"]||"";
+    $("editAccountNotes").value=f["Notes"]||"";
+    show("accountDetailScreen");
+  }catch(err){alert("Could not open account: "+err.message)}
+}
+
+async function saveAccountChanges(){
+  if(!currentAccountRecordId)return;
+  const name=$("editAccountName").value.trim();
+  const email=$("editAccountEmail").value.trim();
+  const phone=$("editAccountPhone").value.trim();
+  const notes=$("editAccountNotes").value.trim();
+  if(!name){alert("Account Name is required.");return}
+  try{
+    const fields={[A.name]:name,[A.email]:email||null,[A.phone]:phone||null,[A.notes]:notes||""};
+    await api(ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:currentAccountRecordId,fields}],typecast:true})});
+    setStatus("synced","✓ ACCOUNT SAVED");
+    await openAccountDetail(currentAccountRecordId);
+  }catch(err){alert("Could not save account: "+err.message)}
+}
+
 async function createAccountFromForm(){
   if(!token()){alert("Save the Airtable token on this device first.");return}
   if(!navigator.onLine){alert("Creating an account requires an internet connection.");return}
@@ -1446,13 +1586,16 @@ async function renderAccounts(){
     }):records;
     box.innerHTML=filtered.length?filtered.map(r=>{
       const f=r.fields||{};
-      return `<div class="account-card">
+      return `<div class="account-card" data-account-id="${r.id}">
         <b>${esc(f["Account Name"]||"Unnamed Account")}</b>
         <div class="small">${esc(f["Email"]||"No email")}</div>
         <div class="small">${esc(f["Phone"]||"No phone")}</div>
         ${f["Notes"]?`<div class="small">${esc(f["Notes"])}</div>`:""}
       </div>`;
     }).join(""):"<p class='small'>No matching accounts.</p>";
+    box.querySelectorAll(".account-card[data-account-id]").forEach(card=>{
+      card.addEventListener("click",()=>openAccountDetail(card.dataset.accountId));
+    });
   }catch(err){
     box.innerHTML=`<p class="small">Could not load accounts: ${esc(err.message)}</p>`;
   }
@@ -1892,6 +2035,9 @@ safeOn("openById","click",()=>{const id=prompt("Enter Res-Com Equipment ID:");if
 safeOn("pasteEquipmentId","click",pasteEquipmentId);
 safeOn("openAccounts","click",async()=>{show("accountsScreen");await renderAccounts()});
 safeOn("refreshAccounts","click",renderAccounts);
+safeOn("accountDetailBack","click",async()=>{show("accountsScreen");await renderAccounts()});
+safeOn("saveAccountChanges","click",saveAccountChanges);
+
 
 safeOn("createAccount","click",createAccountFromForm);
 safeOn("accountSearch","input",renderAccounts);
@@ -1948,6 +2094,7 @@ safeOn("testHistory","click",async()=>{
 });
 safeOn("checkUpdate","click",checkForAppUpdate);
 safeOn("authLoginButton","click",authLogin);
+safeOn("authCreateButton","click",authCreateAccount);
 safeOn("authForgotButton","click",authForgotPassword);
 safeOn("authPasskeyInfo","click",showPasskeyHelp);
 safeOn("logoutUser","click",authLogout);
@@ -2070,6 +2217,7 @@ async function handleGlobalNav(e){
   if(nav==="accounts"){show("accountsScreen");renderAccounts();window.scrollTo(0,0);return}
   if(nav==="manual"){show("manualScreen");window.scrollTo(0,0);return}
   if(nav==="patchnotes"){show("patchNotes");window.scrollTo(0,0);return}
+  if(nav==="patchnotes"){show("patchNotes");window.scrollTo(0,0);return}
 }
 
 document.addEventListener("pointerup",e=>{
@@ -2121,6 +2269,7 @@ const requested=qp.get("unit")||qp.get("equipment");
   <button type="button" id="navAccounts" data-nav="accounts">👤 ACCOUNTS</button>
   <button type="button" id="navSettings" data-nav="settings">⚙️ SETTINGS</button>
   <button type="button" id="navManual" data-nav="manual">📘 MANUAL</button>
+  <button type="button" id="navPatchNotes" data-nav="patchnotes">📝 PATCH NOTES</button>
 </nav>
 
 </body></html>
