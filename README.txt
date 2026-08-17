@@ -1,17 +1,24 @@
-RES-COM HVAC QR SHARED APP v4 — RELIABILITY UPDATE
+RES-COM HVAC QR v5 — PERMANENT QR / SHARED EQUIPMENT FIX
 
-FIXES
-- Home/back buttons use stronger tap handling on iPhone and iPad.
-- Settings HOME button has a global fallback so it cannot get stranded.
-- Removed the external scanner library that could fail to load and interfere with the page.
-- Live QR scanning uses the device's built-in QR detector where supported.
-- Added SCAN QR FROM PHOTO fallback.
-- If a device still cannot scan inside the app, the normal phone Camera app can scan the QR and open the Res-Com unit.
+IMPORTANT CHANGES
+1. A new blank QR is registered in Airtable immediately when it is created.
+   The QR Unit ID no longer depends on one phone's local storage.
+2. The Home screen refreshes the shared equipment list from Airtable.
+   Existing equipment returns after app updates and on other authorized devices.
+3. Old QR links using either ?unit= or the older ?equipment= format are accepted.
+4. The unreliable Scan From Photo feature was removed.
+5. In-app scanning is attempted only on browsers that support QR BarcodeDetector.
+   On iPhone/iPad, the reliable method is the normal Camera app:
+   point Camera at the Res-Com QR and tap the banner. It opens the exact unit.
+
+DO NOT CHANGE THE GITHUB PAGES URL/REPOSITORY PATH.
+Existing printed QR labels contain that web address. Keeping the same hosted URL keeps the labels valid.
 
 UPDATE GITHUB
-Replace all existing hosted files with this package, especially index.html and service-worker.js.
+Replace all current app files with the contents of this package.
+Especially replace index.html and service-worker.js.
 
-AFTER GITHUB PAGES UPDATES
-1. Open the site in Safari and refresh.
-2. Fully close the Home Screen app and reopen it.
-3. If an old version is still cached, remove the Home Screen icon and add it again from Safari.
+AFTER DEPLOYMENT
+Open the GitHub Pages site in Safari and refresh.
+Then fully close and reopen the Home Screen app.
+If a device still has the old cached version, remove only the Home Screen shortcut and add it again from the SAME GitHub Pages URL.
