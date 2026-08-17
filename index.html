@@ -41,6 +41,23 @@ button { min-height:52px; cursor:pointer; -webkit-tap-highlight-color:rgba(0,0,0
 .photo-picker input[type=file]{width:100%;padding:8px;background:white}
 .photo-note{font-size:12px;color:#52606d}
 
+
+body{padding-bottom:78px!important}
+#globalNav{
+  position:fixed;left:0;right:0;bottom:0;z-index:10000;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+  padding:8px max(8px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));
+  background:#071521;border-top:3px solid #e6212a;
+  box-shadow:0 -2px 12px rgba(0,0,0,.25)
+}
+#globalNav button{
+  margin:0!important;min-height:48px!important;background:#0b4ea2!important;
+  color:white!important;border:1px solid rgba(255,255,255,.25)!important;
+  border-radius:10px!important;font-size:13px!important
+}
+#globalNav button.homeNav{background:#e6212a!important}
+@media print{#globalNav{display:none!important}body{padding-bottom:0!important}}
+
 </style>
 </head>
 <body>
@@ -247,15 +264,22 @@ function fromRecord(r){
     serial:f["Serial Number"]||"",location:f["Location"]||"",thermo:f["Thermostat Location(s)"]||"",
     install:f["Install Date"]||"",photos:f["Equipment Photos"]||[],notes:f["Notes"]||"",history:[]};
 }
-async function remoteHistory(recordId){
-  const params=new URLSearchParams({filterByFormula:`FIND('${recordId}',ARRAYJOIN({Equipment}))>0`,sort:'[{"field":"Date","direction":"desc"}]'});
-  // Airtable does not support JSON sort in URL consistently; filter only, sort client-side.
-  params.delete("sort");
+async function remoteHistory(unitId){
+  const params=new URLSearchParams({
+    filterByFormula:`FIND('${formulaEscape(unitId)}',ARRAYJOIN({Equipment}))>0`
+  });
   const data=await api(HIST_TABLE+"?"+params.toString());
-  return (data.records||[]).map(r=>({rid:r.id,id:r.fields["Entry ID"]||"",date:r.fields["Date"]||"",
-    tech:r.fields["Technician"]||"",kind:r.fields["Visit Type"]||"",notes:r.fields["Work Performed / Notes"]||"",
-    part:r.fields["Part / Component"]||"",partnotes:r.fields["Part Notes"]||"",photos:r.fields["Service Photos"]||[]}))
-    .sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  return (data.records||[]).map(r=>({
+    rid:r.id,
+    id:r.fields["Entry ID"]||"",
+    date:r.fields["Date"]||"",
+    tech:r.fields["Technician"]||"",
+    kind:r.fields["Visit Type"]||"",
+    notes:r.fields["Work Performed / Notes"]||"",
+    part:r.fields["Part / Component"]||"",
+    partnotes:r.fields["Part Notes"]||"",
+    photos:r.fields["Service Photos"]||[]
+  })).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
 }
 async function loadUnit(id){
   let local=getLocal(id)||{id,assigned:false,history:[]};
@@ -264,7 +288,7 @@ async function loadUnit(id){
     const r=await findRemoteEquipment(id);
     if(!r)return local;
     const u=fromRecord(r);
-    u.history=await remoteHistory(r.id);
+    u.history=await remoteHistory(id);
     upsertLocal(u);currentRecordId=r.id;setStatus("synced","✓ SAVED & SYNCED");return u;
   }catch(e){setStatus("offline","OFFLINE / LOCAL");return local}
 }
@@ -407,11 +431,17 @@ async function renderDetail(u){
     <button class="orange" onclick="historyForm('Parts Replacement')">PART REPLACEMENT</button>
     <div id="entryForm"></div>
   </div>
-  <div class="card"><h2>Service Calls</h2>${histGroup(u.history,"Service Call")}</div>
+  <div class="card"><button class="outline" id="refreshHistory" type="button">REFRESH HISTORY FROM CLOUD</button><h2>Service Calls</h2>${histGroup(u.history,"Service Call")}</div>
   <div class="card"><h2>Tune-Ups</h2>${histGroup(u.history,"Tune-Up / Preventive Maintenance")}</div>
   <div class="card"><h2>Parts Replaced</h2>${histGroup(u.history,"Parts Replacement")}</div>`;
   bindHome();
   $("reprint").onclick=()=>{makeQR(u.id);show("labelScreen")};
+  $("refreshHistory").onclick=async()=>{
+    setStatus("pending","LOADING HISTORY FROM CLOUD...");
+    const fresh=await loadUnit(u.id);
+    await renderDetail(fresh);
+    setStatus("synced","✓ HISTORY UPDATED FROM CLOUD");
+  };
   $("editEquipment").onclick=()=>{setupForm(u);show("detailScreen")};
   $("uploadDetailPhotos").onclick=async()=>{
     const files=$("detailPhotos").files;
@@ -458,17 +488,14 @@ window.openUnit=async function(id){
   if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u);
 }
 function bindHome(){
-  document.querySelectorAll("[data-home]").forEach(b=>{
-    b.addEventListener("click", async (e)=>{
-      e.preventDefault();
-      e.stopPropagation();
-      await stopScanner();
-      history.replaceState({},"",location.pathname);
-      renderList();
-      show("home");
-      window.scrollTo(0,0);
-    });
-  });
+  // Home buttons are handled by the universal delegated handler.
+}
+async function goHome(){
+  try{await stopScanner()}catch(e){}
+  try{history.replaceState({},"",location.pathname)}catch(e){}
+  renderList();
+  show("home");
+  window.scrollTo(0,0);
 }
 
 
@@ -592,7 +619,40 @@ $("clearToken").onclick=()=>{localStorage.removeItem(TOKEN);$("tokenInput").valu
 if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
 window.addEventListener("online",()=>flushQueue());window.addEventListener("offline",()=>setStatus("offline","OFFLINE — SAVING LOCALLY"));
 renderList();
-if(token())flushQueue().then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");
-const requested=new URLSearchParams(location.search).get("unit");if(requested)openUnit(requested);
+if(token())flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");
+const qp=new URLSearchParams(location.search);const requested=qp.get("unit")||qp.get("equipment");if(requested)openUnit(requested.trim().toUpperCase());
+
+document.addEventListener("click",function(e){
+  const home=e.target.closest&&e.target.closest("[data-home],#navHome");
+  if(home){
+    e.preventDefault();
+    e.stopPropagation();
+    goHome();
+    return;
+  }
+  const eq=e.target.closest&&e.target.closest("#navEquipment");
+  if(eq){
+    e.preventDefault();
+    e.stopPropagation();
+    (async()=>{try{await refreshSharedEquipment()}catch(err){} show("home");window.scrollTo(0,0)})();
+    return;
+  }
+  const st=e.target.closest&&e.target.closest("#navSettings");
+  if(st){
+    e.preventDefault();
+    e.stopPropagation();
+    $("tokenInput").value=token();
+    show("settings");
+    window.scrollTo(0,0);
+  }
+},true);
+
 </script>
+
+<nav id="globalNav" aria-label="Main navigation">
+  <button class="homeNav" type="button" id="navHome">🏠 HOME</button>
+  <button type="button" id="navEquipment">🧰 EQUIPMENT</button>
+  <button type="button" id="navSettings">⚙️ SETTINGS</button>
+</nav>
+
 </body></html>

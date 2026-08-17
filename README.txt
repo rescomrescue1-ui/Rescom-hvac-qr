@@ -1,21 +1,20 @@
-RES-COM HVAC QR v8 — INSTALL DATE + CLOUD PHOTOS
+RES-COM HVAC QR v9 — HOME + CLOUD HISTORY FIX
 
-NEW
-- Install Date field on equipment setup/edit.
-- Edit Equipment / Install Date button for existing QR units.
-- Equipment Photos section.
-- Take a photo with the camera or choose from the photo library.
-- Equipment photos upload to the existing Airtable Equipment Photos field.
-- Service Photos can be added to Service Call, Tune-Up, and Parts Replacement entries.
-- Service photos upload to the new Airtable Service Photos field.
-- Photos already in Airtable display in the equipment/service history screens.
-
-PHOTO NOTE
-Photo upload requires an internet connection. The app reduces image size before upload to improve reliability.
+FIXED
+- Service history now loads from Airtable using the equipment Unit ID.
+- Existing Airtable history displays on phones/tablets after the unit is opened.
+- Added REFRESH HISTORY FROM CLOUD button on Equipment Details.
+- Rebuilt Home navigation around one universal goHome() function.
+- Added permanent bottom navigation: Home / Equipment / Settings.
+- Install Date, Equipment Photos, and Service Photos from v8 remain.
 
 IMPORTANT
-Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
+Use the SAME GitHub repository and SAME GitHub Pages URL.
+Do not create a new site address, or existing printed QR labels will no longer point to the app.
 
-UPDATE
-Replace the current files in the same GitHub repository with all files in this package.
-Especially index.html and service-worker.js.
+TEST AFTER UPDATE
+1. Open the app.
+2. Open RC-1BECSGR-1MQG3NT.
+3. Its Airtable service history should appear.
+4. Tap REFRESH HISTORY FROM CLOUD if needed.
+5. Test HOME from Settings, Equipment Details, Add History, and QR screens.
