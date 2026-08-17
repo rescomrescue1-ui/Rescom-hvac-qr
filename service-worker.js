@@ -1,5 +1,5 @@
 
-const CACHE = "rescom-qr-v21-manual-accounts-techfix";
+const CACHE = "rescom-qr-v24-swipe-tabs";
 const ASSETS = ["./","./index.html","./version.json","./manifest.webmanifest","./qrcode.min.js","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));

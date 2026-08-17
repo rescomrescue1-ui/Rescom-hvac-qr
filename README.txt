@@ -1,18 +1,11 @@
-RES-COM HVAC QR v21.0
+RES-COM HVAC QR v24.0 — SWIPEABLE BOTTOM TABS
 
-NEW IN v21
-- Full New User Manual is built into the app.
-- MANUAL button added to the bottom navigation.
-- Technician names are now bright white on dark technician cards.
-- ACCOUNTS button added to bottom navigation.
-- Create Account form inside the app:
-  - Account Name
-  - Email
-  - Phone
-  - Notes
-- Account search added.
-- Account creation saves directly to the Airtable Accounts table.
+NEW
+- Bottom tabs are now horizontally swipeable on portrait phones.
+- Home / Equipment / Accounts / Settings / Manual each keep a readable minimum width.
+- Swipe left/right along the bottom bar to reach hidden tabs.
+- Tapping a tab scrolls it toward the center.
+- One-time hint: "Swipe bottom tabs left/right".
+- No need to rotate the phone sideways just to reach Manual.
 
-IMPORTANT
 Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
-Upload all files, including version.json and service-worker.js.

@@ -319,20 +319,111 @@ button.gray,.gray{
 .manual-section p,.manual-section li{color:#ffffff!important}
 .manual-section .small{color:#d5dde7!important}
 
+
+#companyLoginGate{position:fixed;inset:0;z-index:40000;display:flex;align-items:center;justify-content:center;background:#0b1016;padding:18px}
+#companyLoginGate.hidden{display:none!important}
+#companyLoginGate .login-card{width:min(440px,100%);background:#202935;border:2px solid #4f9bff;border-radius:18px;padding:20px;box-shadow:0 12px 34px rgba(0,0,0,.5)}
+#signedUserBar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;background:#17202b;border:1px solid #39495d;border-radius:10px;margin:8px 12px 0}
+#signedUserText{color:#fff!important;font-size:12px;font-weight:700}
+#logoutUser{width:auto!important;min-height:34px!important;padding:5px 10px!important}
+.admin-only.hidden{display:none!important}
+
+#authGate{position:fixed;inset:0;z-index:50000;display:flex;align-items:center;justify-content:center;background:#0b1016;padding:18px}
+#authGate.hidden{display:none!important}
+#authGate .auth-card{width:min(460px,100%);background:#202935;border:2px solid #4f9bff;border-radius:18px;padding:20px;box-shadow:0 12px 34px rgba(0,0,0,.5)}
+#authStatusBox{padding:10px;border:1px solid #4b5a6c;border-radius:10px;background:#17202b;margin:10px 0}
+.auth-config-missing{border-color:#e6212a!important}
+
+/* v24 portrait-friendly swipeable bottom tabs */
+#globalNav{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  z-index:10000!important;
+
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  gap:8px!important;
+
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  scroll-snap-type:x proximity!important;
+  overscroll-behavior-x:contain!important;
+
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom)) 10px!important;
+  background:#0c1015!important;
+  border-top:3px solid #e6212a!important;
+  box-shadow:0 -2px 12px rgba(0,0,0,.28)!important;
+
+  scrollbar-width:none!important;
+}
+#globalNav::-webkit-scrollbar{display:none!important}
+
+#globalNav button{
+  flex:0 0 auto!important;
+  min-width:112px!important;
+  width:auto!important;
+  min-height:52px!important;
+  margin:0!important;
+  padding:9px 12px!important;
+  white-space:nowrap!important;
+
+  scroll-snap-align:start!important;
+  touch-action:pan-x!important;
+  cursor:pointer!important;
+
+  background:#243040!important;
+  color:#ffffff!important;
+  border:2px solid #46566b!important;
+  border-radius:12px!important;
+  font-size:13px!important;
+  font-weight:800!important;
+}
+
+#globalNav button.homeNav{
+  background:#1167d8!important;
+  border-color:#5fa0ff!important;
+}
+
+#globalNav button:focus{
+  outline:2px solid #75adff!important;
+  outline-offset:2px!important;
+}
+
+/* Give content enough room above the taller swipeable nav */
+body{padding-bottom:88px!important}
+
+/* Subtle edge hint so users know more tabs can be swiped into view */
+#globalNav::after{
+  content:"";
+  flex:0 0 8px;
+}
+
 </style>
+
+<script src="./auth-config.js"></script>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 </head>
 <body>
-<div id="pinGate" class="hidden">
-  <div class="pin-card">
-    <h2>Res-Com Company Access</h2>
-    <p>Enter the 4-digit company PIN to use equipment QR records.</p>
-    <input id="companyPinEntry" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" placeholder="••••">
-    <button class="orange" id="unlockCompany" type="button">UNLOCK RES-COM</button>
-    <p id="pinMessage" class="small"></p>
+<div id="authGate" class="hidden">
+  <div class="auth-card">
+    <h2>Res-Com Company Login</h2>
+    <div id="authStatusBox"></div>
+    <button class="orange" id="authLoginButton" type="button">SIGN IN WITH COMPANY ACCOUNT</button>
+    <button class="outline" id="authForgotButton" type="button">FORGOT PASSWORD</button>
+    <button class="outline" id="authPasskeyInfo" type="button">FACE ID / PASSKEY HELP</button>
+    <p class="small">Each employee has an individual account. Supported iPhones can use Face ID to approve a passkey sign-in.</p>
   </div>
 </div>
 <div id="updateBanner" class="updated hidden"></div>
-<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v21.0 • UPDATED Aug 17, 2026 5:19 PM</span></p></header>
+<header><h1>Res-Com HVAC QR</h1><p>Shared equipment history across phones & tablets<br><span id="appVersionBadge">APP v24.0 • UPDATED Aug 17, 2026 5:34 PM</span></p></header>
+<div id="signedUserBar" class="hidden">
+  <span id="signedUserText"></span>
+  <button class="gray" id="logoutUser" type="button">LOG OUT</button>
+</div>
+
 <main>
 <div class="statusbar">
   <span id="syncBadge" class="badge pending">CHECKING...</span>
@@ -416,7 +507,15 @@ button.gray,.gray{
       <button class="outline manualJump" type="button" data-target="m-help">Troubleshooting</button>
     </div>
 
-    <div class="manual-section" id="m-start">
+    
+    <div class="manual-section">
+      <h3>Company Login, Passwords & Face ID</h3>
+      <p>Each Res-Com employee uses an individual Auth0 account with their own email and password.</p>
+      <p><b>Forgot Password</b> sends a secure reset email through Auth0.</p>
+      <p>When Auth0 passkeys are enabled, a supported iPhone can use Face ID to approve the employee's passkey sign-in. Face ID biometric data stays on the iPhone.</p>
+      <p>The Auth0 email is matched to the Airtable Company Users table for Technician Name and Admin/Technician role.</p>
+    </div>
+<div class="manual-section" id="m-start">
       <h3>1. Getting Started</h3>
       <p>The Res-Com app tracks each piece of HVAC equipment by a permanent Unit ID and QR code. Equipment, service history, photos, customer accounts, warranty dates, and maintenance dates are shared through Airtable.</p>
       <p><b>New device:</b> open the Res-Com app, enter the company PIN, then open Settings and save the Airtable token to that device.</p>
@@ -530,6 +629,11 @@ button.gray,.gray{
     <button class="gray" id="clearToken" type="button">Remove Token From This Device</button>
     
     <hr>
+    <div class="unit">
+      <h3>Auth0 Login Status</h3>
+      <div id="authConfigStatus" class="small"></div>
+      <button class="outline" id="testAuthConfig" type="button">CHECK AUTH0 CONFIG</button>
+    </div>
     <h3>Device Token Setup</h3><p class="small"><b>New device setup:</b> paste the company Airtable token once, tap SAVE TOKEN TO THIS DEVICE, then VERIFY TOKEN ON THIS DEVICE. After that, the device remembers it.</p>
     <p class="small">Save and verify the Airtable token on this phone or iPad. Each device keeps its own saved copy.</p>
     <div id="deviceTokenStatus" class="badge pending">TOKEN STATUS UNKNOWN</div>
@@ -544,18 +648,26 @@ button.gray,.gray{
       <input id="buttonSoundsToggle" type="checkbox" style="width:auto">
     </label>
     <p class="small">Plays a short click when you tap app buttons. Saved separately on each device.</p>
-<h3>Company QR PIN</h3>
-    <p class="small">This 4-digit PIN is required before equipment QR records can be opened on this device.</p>
-    <label>New 4-Digit PIN</label>
-    <input id="newCompanyPin" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="4 digits">
-    <label>Confirm New PIN</label>
-    <input id="confirmCompanyPin" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="4 digits">
-    <button class="dark" id="changeCompanyPin" type="button">CHANGE COMPANY PIN</button>
-    <button class="gray" id="lockAppNow" type="button">LOCK APP NOW</button>
+<h3>Company Login Security</h3>
+    <p class="small">Individual passwords, password reset, and Face ID/passkeys are handled by Auth0. Employee passwords are not stored in Airtable.</p>
+    <button class="outline" id="manageLoginButton" type="button">SIGN IN / SWITCH USER</button>
 
 <p class="small">The token is stored only in this device's browser storage. Do not put the token in the GitHub source files.</p>
     <hr>
-    <h3>Technicians</h3>
+    
+    <hr class="admin-only hidden">
+    <div id="companyUsersAdmin" class="admin-only hidden">
+      <h3>Company Users</h3>
+      <p class="small">Admins can add Res-Com employee profiles here. Passwords, password resets, and passkeys are managed by Auth0.</p>
+      <label>Employee Email</label><input id="newUserEmail" type="email" placeholder="employee@company.com">
+      <label>Technician Name</label><input id="newUserName" placeholder="Employee name">
+      <label>Role</label><select id="newUserRole"><option>Technician</option><option>Admin</option></select>
+      <label>Phone</label><input id="newUserPhone" type="tel" placeholder="Phone">
+      <button class="orange" id="createCompanyUser" type="button">CREATE COMPANY USER</button>
+      <button class="outline" id="refreshCompanyUsers" type="button">REFRESH COMPANY USERS</button>
+      <div id="companyUsersList"></div>
+    </div>
+<h3>Technicians</h3>
     <p class="small">Technicians saved here appear in the service-history dropdown on this device. Names found in downloaded cloud history are also added automatically.</p>
     <div class="grid">
       <input id="techNameInput" placeholder="Technician name">
@@ -573,6 +685,36 @@ button.gray,.gray{
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 24.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 5:34 PM</p>
+      <p>• Rebuilt the bottom navigation for portrait phones.</p>
+      <p>• Home, Equipment, Accounts, Settings, and Manual tabs can now be swiped left/right.</p>
+      <p>• Tabs stay large enough to read and tap instead of being squeezed across the screen.</p>
+      <p>• Tapping a tab automatically brings it toward the center of the navigation bar.</p>
+      <p>• Added a one-time swipe hint for new users.</p>
+    </div>
+    <div class="unit">
+      <h3>Version 23.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 5:38 PM</p>
+      <p>• Added individual employee passwords through Auth0 Universal Login.</p>
+      <p>• Added Forgot Password reset-email flow.</p>
+      <p>• Added Face ID/passkey-ready authentication.</p>
+      <p>• Employee passwords are not stored in Airtable or the app source.</p>
+      <p>• Airtable Company Users still controls technician names and roles.</p>
+      <p>• Added Auth0 setup/status check in Settings.</p>
+    </div>
+    <div class="unit">
+      <h3>Version 22.0</h3>
+      <p><b>Released:</b> Aug 17, 2026 5:26 PM</p>
+      <p>• Added company employee logins using company email + Res-Com company PIN.</p>
+      <p>• Added Admin and Technician company-user roles.</p>
+      <p>• Admins can add company users in Settings.</p>
+      <p>• Signed-in technician name automatically fills service history.</p>
+      <p>• Service History saves Company User Email.</p>
+      <p>• Equipment saves Last Updated By email.</p>
+      <p>• Added signed-in user display and LOG OUT.</p>
+    </div>
     <div class="unit">
       <h3>Version 21.0</h3>
       <p><b>Released:</b> Aug 17, 2026 5:19 PM</p>
@@ -719,6 +861,7 @@ document.addEventListener("click", async (e)=>{
     history.replaceState({},"",location.pathname);
     markVersionSeen();initButtonSoundSetting();
 renderList();
+showNavSwipeHintOnce();
     show("home");
     window.scrollTo(0,0);
   }
@@ -730,16 +873,18 @@ const BASE="app6oNlvuTx1nCzCh";
 const EQUIP_TABLE="tbl9B76qnfGH0nO1q";
 const HIST_TABLE="tblbkLz1D5cq0hguG";
 const ACCOUNTS_TABLE="tbloh2QYjro6CWW6A";
+const COMPANY_USERS_TABLE="tbl9dXtC0C1OVrpfV";
 const A={name:"fldeFOocoyzVFefN2",email:"fldhJrjnxrkGcuCvh",phone:"flduFKRtaTcImBej4",notes:"fldVjO9xnbGVCcQcP"};
+const U={email:"fldKRDHdrBwcRJ8Qj",name:"fldE4DJ8XZNxVyuGz",role:"fldkrvD1XpbCqnAmv",active:"fldIiQjLpIvYp9RW4",phone:"fldPxfb0qddJHAJTI",notes:"fldK0ONZ2K7zBxcgQ"};
 const F={
   unit:"fldcDPyAU4s2AhB18", type:"fld2KTFkYciRP0ZiA", mfr:"fldCvK4MhC4P0tpw5",
   model:"fld54UT8f0suWOC19", serial:"fldKsiWMvnKcP83tj", loc:"fldxmUQvjqedkGNln",
-  notes:"fldypRObFBssilOiV", thermo:"fldPal2V0joJfDhX6", install:"fldKXOJftbH6HYZal", photos:"fldNnM4hwoK2A6nqB", site:"fldZ5o0xl0EEJKo5V", warranty:"fldsqY7KB3c5pdk4o", due:"fldEhoxGoK9bTCYnq", archived:"fldXdG47AH3ox2sah", customType:"fldnfWRqTlTq0mEQp", account:"flduudzLtjGeiC4bn", accountEmail:"fldOstBDGzAYmKQnj"
+  notes:"fldypRObFBssilOiV", thermo:"fldPal2V0joJfDhX6", install:"fldKXOJftbH6HYZal", photos:"fldNnM4hwoK2A6nqB", site:"fldZ5o0xl0EEJKo5V", warranty:"fldsqY7KB3c5pdk4o", due:"fldEhoxGoK9bTCYnq", archived:"fldXdG47AH3ox2sah", customType:"fldnfWRqTlTq0mEQp", account:"flduudzLtjGeiC4bn", accountEmail:"fldOstBDGzAYmKQnj", lastUpdatedBy:"fldGOSuobAUl1DiDv"
 };
 const H={
   id:"fldku7k6Fb5bHbkwj", equipment:"fldkTvYSmQfbZJ2CQ", date:"fldZ88VWvLVA0ch9z",
   tech:"fldgNEGJnVuOZUot2", type:"fldBHwjS4eIJcCoJ8", work:"fldp2a1MBjbICgPJJ",
-  part:"fldpn385RszDIy5zX", partnotes:"fld0BCyDeMZmvwzNv", photos:"fld0a0bY7JMeOAZQz"
+  part:"fldpn385RszDIy5zX", partnotes:"fld0BCyDeMZmvwzNv", photos:"fld0a0bY7JMeOAZQz", userEmail:"fld89n13zlb3VuM1U"
 };
 const LOCAL="rescom_shared_local_v2", TOKEN="rescom_airtable_pat", QUEUE="rescom_sync_queue_v2";
 let currentId=null,currentRecordId=null;
@@ -758,8 +903,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="21.0";
-const APP_BUILD="Aug 17, 2026 5:19 PM";
+const APP_VERSION="24.0";
+const APP_BUILD="Aug 17, 2026 5:34 PM";
 
 const PIN_HASH_KEY="rescom_company_pin_hash_v1";
 const PIN_UNLOCK_KEY="rescom_company_unlocked_v1";
@@ -862,6 +1007,174 @@ function playTapSound(){
     osc.start(now);
     osc.stop(now+0.06);
   }catch(e){}
+}
+
+
+
+const CURRENT_USER_KEY="rescom_current_company_user_v2";
+let auth0Client=null;
+
+function currentUser(){try{return JSON.parse(localStorage.getItem(CURRENT_USER_KEY)||"null")}catch(e){return null}}
+function saveCurrentUser(u){localStorage.setItem(CURRENT_USER_KEY,JSON.stringify(u));applyCurrentUserUI()}
+function clearCurrentUser(){localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI()}
+function authConfig(){return window.RESCOM_AUTH0||{}}
+function authConfigReady(){
+  const c=authConfig();
+  return !!(c.domain&&c.clientId&&!String(c.domain).includes("YOUR_")&&!String(c.clientId).includes("YOUR_"));
+}
+function authRedirectUri(){return location.origin+location.pathname}
+async function initAuth0(){
+  if(!authConfigReady())return null;
+  if(auth0Client)return auth0Client;
+  const c=authConfig();
+  auth0Client=await auth0.createAuth0Client({
+    domain:c.domain,
+    clientId:c.clientId,
+    cacheLocation:"localstorage",
+    useRefreshTokens:true,
+    authorizationParams:{redirect_uri:authRedirectUri(),scope:"openid profile email"}
+  });
+  return auth0Client;
+}
+function applyCurrentUserUI(){
+  const u=currentUser(),bar=document.getElementById("signedUserBar"),text=document.getElementById("signedUserText");
+  if(u){bar?.classList.remove("hidden");if(text)text.textContent=`${u.name||u.email} • ${u.role||"Technician"}`}
+  else{bar?.classList.add("hidden");if(text)text.textContent=""}
+  document.querySelectorAll(".admin-only").forEach(el=>el.classList.toggle("hidden",!(u&&u.role==="Admin")));
+}
+function showAuthGate(message=""){
+  const g=document.getElementById("authGate");if(!g)return;g.classList.remove("hidden");
+  const box=document.getElementById("authStatusBox");
+  if(!box)return;
+  if(!authConfigReady()){
+    box.classList.add("auth-config-missing");
+    box.innerHTML="<b>Auth0 setup needed.</b><br>Enter the Auth0 Domain and Client ID in auth-config.js.";
+  }else{
+    box.classList.remove("auth-config-missing");
+    box.textContent=message||"Sign in with your individual Res-Com company account.";
+  }
+}
+function hideAuthGate(){document.getElementById("authGate")?.classList.add("hidden")}
+async function authLogin(){
+  if(!authConfigReady()){showAuthGate();return}
+  try{
+    const c=await initAuth0();
+    await c.loginWithRedirect({authorizationParams:{redirect_uri:authRedirectUri()}});
+  }catch(err){showAuthGate("Login failed: "+err.message)}
+}
+async function authLogout(){
+  clearCurrentUser();
+  try{
+    const c=await initAuth0();
+    if(c)await c.logout({logoutParams:{returnTo:authRedirectUri()}});
+    else location.reload();
+  }catch(e){location.reload()}
+}
+async function authForgotPassword(){
+  if(!authConfigReady()){showAuthGate();return}
+  const email=(prompt("Enter your Res-Com company email:")||"").trim();
+  if(!email)return;
+  const c=authConfig();
+  try{
+    const res=await fetch(`https://${c.domain}/dbconnections/change_password`,{
+      method:"POST",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify({client_id:c.clientId,email,connection:c.connection||"Username-Password-Authentication"})
+    });
+    const text=await res.text();
+    if(!res.ok)throw new Error(text||("HTTP "+res.status));
+    alert("Password reset email requested. Check your email.");
+  }catch(err){alert("Could not request password reset: "+err.message)}
+}
+function showPasskeyHelp(){
+  alert("Face ID is used by your iPhone to approve an Auth0 passkey. On the Auth0 login screen, choose or enroll a passkey. Your Face ID biometric data stays on the iPhone.");
+}
+async function allCompanyUsers(){
+  let offset="",out=[];
+  do{
+    const p=new URLSearchParams({pageSize:"100"});if(offset)p.set("offset",offset);
+    const d=await api(COMPANY_USERS_TABLE+"?"+p.toString());out.push(...(d.records||[]));offset=d.offset||"";
+  }while(offset);
+  return out;
+}
+async function findCompanyUserByEmail(email){
+  const p=new URLSearchParams({filterByFormula:`LOWER({Email})='${formulaEscape(String(email).toLowerCase())}'`,maxRecords:"1"});
+  const d=await api(COMPANY_USERS_TABLE+"?"+p.toString());return d.records?.[0]||null;
+}
+function companyUserFromRecord(r){
+  const f=r?.fields||{};
+  return {recordId:r?.id||"",email:f["Email"]||"",name:f["Technician Name"]||f["Email"]||"",role:f["Role"]||"Technician",active:f["Active"]!==false,phone:f["Phone"]||""};
+}
+async function finishAuthenticatedUser(authUser){
+  const email=String(authUser?.email||"").trim().toLowerCase();
+  if(!email)throw new Error("Auth0 account has no email address.");
+
+  if(!token()){
+    const supplied=prompt("This device needs the Res-Com Airtable token once. Paste it now:");
+    if(!supplied)throw new Error("Airtable token required on this device.");
+    localStorage.setItem(TOKEN,String(supplied).trim());
+  }
+
+  const users=await allCompanyUsers();
+  let record=users.find(r=>String(r.fields?.["Email"]||"").toLowerCase()===email)||null;
+
+  if(!record&&users.length===0){
+    const name=String(authUser?.name||authUser?.nickname||email.split("@")[0]).trim();
+    const fields={[U.email]:email,[U.name]:name,[U.role]:"Admin",[U.active]:true};
+    const out=await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+    record=out.records?.[0]||null;
+  }
+
+  if(!record)throw new Error("Your login is valid, but this email is not a Res-Com Company User. Ask an Admin to add it.");
+  const u=companyUserFromRecord(record);
+  if(!u.active)throw new Error("This Res-Com Company User is inactive.");
+  saveCurrentUser(u);hideAuthGate();renderTechnicians();return u;
+}
+async function bootstrapAuth(){
+  applyCurrentUserUI();
+  if(!authConfigReady()){showAuthGate("Auth0 setup needed.");return false}
+  try{
+    const c=await initAuth0();
+    if(location.search.includes("code=")&&location.search.includes("state=")){
+      await c.handleRedirectCallback();
+      history.replaceState({},"",location.pathname);
+    }
+    if(!(await c.isAuthenticated())){clearCurrentUser();showAuthGate();return false}
+    const authUser=await c.getUser();
+    await finishAuthenticatedUser(authUser);
+    return true;
+  }catch(err){
+    clearCurrentUser();showAuthGate("Login error: "+err.message);return false;
+  }
+}
+async function createCompanyUserFromForm(){
+  const me=currentUser();if(!me||me.role!=="Admin"){alert("Admin access required.");return}
+  const email=($("newUserEmail")?.value||"").trim().toLowerCase();
+  const name=($("newUserName")?.value||"").trim();
+  const role=$("newUserRole")?.value||"Technician";
+  const phone=($("newUserPhone")?.value||"").trim();
+  if(!email.includes("@")||!name){alert("Enter employee email and technician name.");return}
+  try{
+    if(await findCompanyUserByEmail(email)){alert("That Company User already exists.");return}
+    const fields={[U.email]:email,[U.name]:name,[U.role]:role,[U.active]:true,[U.phone]:phone||null};
+    await api(COMPANY_USERS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+    $("newUserEmail").value="";$("newUserName").value="";$("newUserPhone").value="";
+    await renderCompanyUsers();setStatus("synced","✓ COMPANY USER PROFILE CREATED");
+    alert("Company User profile created. Create an Auth0 user with the same email.");
+  }catch(err){alert("Could not create Company User: "+err.message)}
+}
+async function renderCompanyUsers(){
+  const box=$("companyUsersList"),me=currentUser();if(!box||!me||me.role!=="Admin")return;
+  try{
+    const users=await allCompanyUsers();
+    box.innerHTML=users.length?users.map(r=>{const u=companyUserFromRecord(r);return `<div class="tech-chip"><span>${esc(u.name)}<br><small>${esc(u.email)} • ${esc(u.role)}${u.active?"":" • INACTIVE"}</small></span></div>`}).join(""):"<p class='small'>No company users.</p>";
+  }catch(err){box.innerHTML=`<p class="small">Could not load users: ${esc(err.message)}</p>`}
+}
+async function testAuthConfig(){
+  const box=$("authConfigStatus");
+  if(!authConfigReady()){if(box)box.textContent="Auth0 Domain / Client ID are not configured in auth-config.js.";return}
+  try{await initAuth0();if(box)box.textContent="Auth0 configuration loaded: "+authConfig().domain}
+  catch(err){if(box)box.textContent="Auth0 configuration error: "+err.message}
 }
 
 const $=id=>document.getElementById(id);
@@ -1189,7 +1502,7 @@ async function remoteHistory(recordId){
           notes:r.fields["Work Performed / Notes"]||"",
           part:r.fields["Part / Component"]||"",
           partnotes:r.fields["Part Notes"]||"",
-          photos:r.fields["Service Photos"]||[]
+          photos:r.fields["Service Photos"]||[],userEmail:r.fields["Company User Email"]||""
         });
       }
     }
@@ -1223,7 +1536,7 @@ async function saveEquipment(u){
       [F.customType]:u.type||"",
       [F.mfr]:u.mfr,[F.model]:u.model,[F.serial]:u.serial,
       [F.loc]:u.location,[F.thermo]:u.thermo,[F.site]:u.site||"",[F.install]:u.install||null,
-      [F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.account]:u.accountRecordId?[u.accountRecordId]:[],[F.accountEmail]:u.accountEmail||null,[F.notes]:u.notes
+      [F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.account]:u.accountRecordId?[u.accountRecordId]:[],[F.accountEmail]:u.accountEmail||null,[F.lastUpdatedBy]:currentUser()?.email||null,[F.notes]:u.notes
     };
     let out;
     if(existing){
@@ -1521,18 +1834,15 @@ window.historyForm=function(kind){
   const parts=kind==="Parts Replacement";
   $("entryForm").innerHTML=`<div class="unit"><h3>${esc(kind)}</h3>
     <label>Date</label><input id="h_date" type="date" value="${new Date().toISOString().slice(0,10)}">
-    <label>Technician</label><select id="h_tech">${techSelectOptions()}</select>
-    <input id="h_tech_custom" class="hidden" placeholder="Enter technician name">
+    <label>Technician</label><input id="h_tech" value="${esc(currentUser()?.name||"")}" readonly><div class="small">Automatically filled from your company login.</div>
     ${parts?'<label>Part / Component</label><input id="h_part" placeholder="Capacitor, motor, contactor...">':""}
     <label>${parts?"Part Notes / Work Performed":"Work Performed / Notes"}</label><textarea id="h_notes"></textarea>
     <div class="photo-picker"><b>Service Photos</b><input id="h_photos" type="file" accept="image/*" capture="environment" multiple>    <div class="photo-note">Add equipment condition, readings, failed parts, completed repair, or installation photos.</div></div>
     <button class="orange" id="saveHist">SAVE SERVICE + PHOTOS</button></div>`;
-  $("h_tech").onchange=()=>{$("h_tech_custom").classList.toggle("hidden",$("h_tech").value!=="__other__")};
   $("saveHist").onclick=async()=>{
     const b=$("saveHist");b.disabled=true;b.textContent="SAVING...";
     const u=getLocal(currentId);
-    const selectedTech=$("h_tech").value;
-    const tech=selectedTech==="__other__"?$("h_tech_custom").value.trim():selectedTech;
+    const tech=(currentUser()?.name||$("h_tech").value||"").trim();
     if(tech)addTechName(tech);
     const e={id:entryId(),date:$("h_date").value,tech,kind,
       notes:$("h_notes").value.trim(),part:parts?$("h_part").value.trim():"",partnotes:parts?$("h_notes").value.trim():""};
@@ -1550,11 +1860,7 @@ window.historyForm=function(kind){
 }
 window.openUnit=async function(id){
   const clean=(id||"").trim().toUpperCase();
-  if(!isCompanyUnlocked()){
-    pendingProtectedUnit=clean;
-    showPinGate("Enter company PIN to open this equipment.");
-    return;
-  }
+  if(!currentUser()){pendingProtectedUnit=clean;showAuthGate("Sign in to open this equipment.");return}
   currentId=clean;let u=await loadUnit(clean);
   if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u);
 }
@@ -1641,6 +1947,16 @@ safeOn("testHistory","click",async()=>{
   }
 });
 safeOn("checkUpdate","click",checkForAppUpdate);
+safeOn("authLoginButton","click",authLogin);
+safeOn("authForgotButton","click",authForgotPassword);
+safeOn("authPasskeyInfo","click",showPasskeyHelp);
+safeOn("logoutUser","click",authLogout);
+safeOn("manageLoginButton","click",authLogout);
+safeOn("testAuthConfig","click",testAuthConfig);
+
+safeOn("createCompanyUser","click",createCompanyUserFromForm);
+safeOn("refreshCompanyUsers","click",renderCompanyUsers);
+
 
 safeOn("buttonSoundsToggle","change",e=>{
   setButtonSoundsEnabled(!!e.target.checked);
@@ -1648,10 +1964,6 @@ safeOn("buttonSoundsToggle","change",e=>{
 });
 
 
-safeOn("unlockCompany","click",unlockCompany);
-safeOn("companyPinEntry","keydown",e=>{if(e.key==="Enter")unlockCompany()});
-safeOn("changeCompanyPin","click",changeCompanyPin);
-safeOn("lockAppNow","click",lockCompanyNow);
 
 
 safeOn("handoffOpenRecord","click",()=>{if(pendingQRUnit)openUnit(pendingQRUnit)});
@@ -1722,9 +2034,25 @@ async function navGoSettings(){
   updateDeviceTokenStatus();
   renderTechnicians();
   initButtonSoundSetting();
+  applyCurrentUserUI();
+  if(currentUser()?.role==="Admin")renderCompanyUsers();
   show("settings");
   window.scrollTo(0,0);
 }
+
+const NAV_HINT_KEY="rescom_nav_swipe_hint_v24";
+function showNavSwipeHintOnce(){
+  if(localStorage.getItem(NAV_HINT_KEY)==="seen")return;
+  const h=$("navSwipeHint");
+  if(!h)return;
+  h.classList.remove("hidden");
+  localStorage.setItem(NAV_HINT_KEY,"seen");
+  setTimeout(()=>h.classList.add("hidden"),4200);
+}
+function centerNavButton(btn){
+  try{btn?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"})}catch(e){}
+}
+
 let lastNavTap=0;
 async function handleGlobalNav(e){
   const btn=e.target.closest&&e.target.closest("[data-nav],[data-home]");
@@ -1734,6 +2062,7 @@ async function handleGlobalNav(e){
   lastNavTap=now;
   e.preventDefault();
   e.stopPropagation();
+  centerNavButton(btn);
   const nav=btn.dataset.nav;
   if(nav==="home" || btn.hasAttribute("data-home"))return navGoHome();
   if(nav==="equipment")return navGoEquipment();
@@ -1772,21 +2101,19 @@ renderList();
 if(token())flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")});else setStatus("pending","SET UP SHARED SAVING");
 const qp=new URLSearchParams(location.search);
 const requested=qp.get("unit")||qp.get("equipment");
-if(requested){
-  const rid=requested.trim().toUpperCase();
-  if(isCompanyUnlocked()){
-    openUnit(rid);
-  }else{
-    pendingProtectedUnit=rid;
-    showPinGate("Enter company PIN to open this equipment.");
-  }
-}else if(!isCompanyUnlocked()){
-  showPinGate();
-}
+(async()=>{
+  const ok=await bootstrapAuth();
+  if(ok&&requested)openUnit(requested.trim().toUpperCase());
+})();
 
 
 
 </script>
+
+
+<div id="navSwipeHint" class="hidden" style="position:fixed;left:50%;bottom:78px;transform:translateX(-50%);z-index:9999;background:#17202b;color:#fff;border:1px solid #4f9bff;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;white-space:nowrap">
+  Swipe bottom tabs left/right
+</div>
 
 <nav id="globalNav" aria-label="Main navigation">
   <button class="homeNav" type="button" id="navHome" data-nav="home">🏠 HOME</button>

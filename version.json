@@ -1,5 +1,5 @@
 {
-  "version": "21.0",
-  "build": "Aug 17, 2026 5:19 PM",
-  "notes": "In-app manual, technician visibility fix, and create/search Accounts."
+  "version": "24.0",
+  "build": "Aug 17, 2026 5:34 PM",
+  "notes": "Swipeable bottom navigation for portrait phones."
 }
