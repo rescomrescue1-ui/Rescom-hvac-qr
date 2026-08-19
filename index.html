@@ -527,7 +527,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=30.11">
+<link rel="stylesheet" href="./modern-ui.css?v=30.14">
 </head>
 <body>
 <div id="loadingScreen">
@@ -536,7 +536,7 @@ body{padding-bottom:88px!important}
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
     <div id="loadingStatus">Opening Res-Com…</div>
-    <div id="loadingVersion" class="small">Installed v30.11</div>
+    <div id="loadingVersion" class="small">Installed v30.14</div>
   </div>
 </div>
 <script>
@@ -567,7 +567,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v30.11 • UPDATED Aug 19, 2026 5:49 PM</span>
+    <span id="appVersionBadge">APP v30.14 • UPDATED Aug 19, 2026 6:10 PM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -703,13 +703,26 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
     
     <div class="manual-section">
-      <h3>Company Access — v30.11</h3>
+      <h3>Company Access — v30.14</h3>
       <p>Every Res-Com Admin and Tech signs in with their employee <b>email and 6-digit personal PIN</b>. The first App Account created becomes Admin automatically.</p>
       <p>The current <b>4-digit Company PIN</b> is an Admin-managed authorization code used when an employee creates an account or sets/resets a personal PIN. It is not the employee's normal sign-in PIN.</p>
-      <p>Admins manage the Team list, roles, employee accounts, Staff Sign-In QR, and the Company PIN.</p>
+      <p>Admins manage the Team list, roles, employee accounts, employee personal PINs, Staff Sign-In QR, and the Company PIN.</p>
     </div>
 
     <div class="manual-section" id="m-temp-login-v3010">
+      <h3>Version 30.14 — Fast PIN / Fresh Cloud Reads</h3>
+      <p><b>Root delay fix:</b> Res-Com no longer allows the service worker to cache Airtable API reads. Employee accounts, PIN hashes, deleted users, and company settings are always read fresh from the cloud.</p>
+      <p><b>Faster sign-in:</b> the account list already loaded for the Sign In screen is reused when the employee taps SIGN IN, removing an unnecessary second Airtable request.</p>
+      <p><b>Open immediately:</b> after a correct 6-digit PIN is verified, Res-Com opens the app immediately. Updating Last Login and refreshing equipment continue in the background instead of holding the employee on the PIN screen.</p>
+      <p><b>PIN feedback:</b> the button changes immediately to CHECKING PIN so the phone never looks frozen while WebCrypto verifies the PIN.</p>
+      <h3>Version 30.13 — Admin Give Employee PIN</h3>
+      <p><b>Admin PIN control:</b> an Admin can open Team and tap <b>SET PIN</b> beside any other employee to assign or replace that employee's 6-digit personal PIN.</p>
+      <p><b>Add Employee:</b> Admins can optionally choose the employee's 6-digit PIN while creating the employee. Leaving it blank still lets the employee choose a PIN later.</p>
+      <p><b>Security:</b> the readable PIN is shown only while the Admin is entering it. Airtable stores only the random salt and PBKDF2 hash.</p>
+      <h3>Version 30.12 — PIN Save Verification Fix</h3>
+      <p><b>PIN save fix:</b> Res-Com now verifies a newly saved personal PIN from Airtable's actual save response first instead of immediately depending on a second account-list request.</p>
+      <p><b>No false failure:</b> if Airtable briefly returns an older account copy right after a successful save, the app retries and keeps the confirmed PIN values instead of telling the employee the PIN failed.</p>
+      <p><b>Sign-in:</b> employees still use email + their own 6-digit personal PIN. The 4-digit Company PIN is used only for account creation and PIN reset authorization.</p>
       <h3>Version 30.11 — Personal PIN Sign-In</h3>
       <p><b>No employee passwords:</b> Res-Com employee sign-in now uses email + a 6-digit personal PIN.</p>
       <p><b>Existing employees:</b> tap <b>SET / RESET PIN</b> on Sign In, enter the email already on the account, enter the current 4-digit Company PIN, then choose and confirm a 6-digit personal PIN.</p>
@@ -806,7 +819,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
     <div class="manual-section" id="m-accounts">
       <h3>7. Team Accounts</h3>
       <p>Tap <b>TEAM</b> from the bottom navigation to view the signed-in employee and the Res-Com employee account list.</p>
-      <p>The first App Account is Admin. New self-signups use the 4-digit Company PIN and start as Tech. Admins can create employees, switch Tech/Admin roles, delete accounts, generate Staff Sign-In QR codes, and rotate the Company PIN.</p>
+      <p>The first App Account is Admin. New self-signups use the 4-digit Company PIN and start as Tech. Admins can create employees, assign/reset another employee's 6-digit personal PIN, switch Tech/Admin roles, delete accounts, generate Staff Sign-In QR codes, and rotate the Company PIN.</p>
       <p>Each employee signs in with their email and their own 6-digit personal PIN. Existing employees who do not have a PIN yet can tap SET / RESET PIN on Sign In. Service History saves the signed-in App Account email so entries stay tied to the technician who performed the work.</p>
     </div>
 
@@ -959,6 +972,9 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
 <section id="patchNotes" class="hidden">
   <div class="card">
+<div class="unit" id="rcPatch3014"><h3>Version 30.14 — Fast PIN / Fresh Cloud Reads</h3><p><b>Released:</b> Aug 19, 2026 6:10 PM</p><p>• Fixed the underlying stale-cloud-read problem that could make a newly changed PIN appear delayed on another phone.</p><p>• Service worker now bypasses caching for Airtable and all third-party requests.</p><p>• Airtable API GET requests use browser no-store mode.</p><p>• Sign In reuses the fresh account list already loaded on the screen instead of doing a second account download.</p><p>• Last Login is written in the background after successful PIN verification, so it no longer blocks entry into the app.</p><p>• Added immediate CHECKING PIN feedback before cryptographic PIN verification.</p><p>• Existing equipment QR links, Unit IDs, service history, and account PIN data are unchanged.</p></div>
+<div class="unit" id="rcPatch3013"><h3>Version 30.13 — Admin Give Employee PIN</h3><p><b>Released:</b> Aug 19, 2026 6:05 PM</p><p>• Added an Admin SET PIN button beside each other employee in Team.</p><p>• Admin can assign or replace a 6-digit personal PIN without signing in as that employee.</p><p>• Add Employee now has an optional 6-digit PIN field so an Admin can create an employee and give them a working PIN immediately.</p><p>• PIN saves use the v30.12 verified Airtable write path.</p><p>• Readable PINs are never stored in Airtable.</p><p>• Existing equipment QR links and service history are unchanged.</p></div>
+<div class="unit" id="rcPatch3012"><h3>Version 30.12 — PIN Save Verification Fix</h3><p><b>Released:</b> Aug 19, 2026 6:00 PM</p><p>• Fixed a false “PIN did not verify after saving” message caused by an immediate stale Airtable read.</p><p>• PIN saves are now verified against Airtable's PATCH response first.</p><p>• Added short read-back retries before treating cloud verification as delayed.</p><p>• A successful PIN write is no longer discarded just because the next account-list response is briefly stale.</p><p>• Existing employee accounts, equipment QR links, and service history are unchanged.</p></div>
 <div class="unit" id="rcPatch3011"><h3>Version 30.11 — Personal PIN Sign-In</h3><p><b>Released:</b> Aug 19, 2026 5:49 PM</p><p>• Replaced employee password sign-in with email + a 6-digit personal PIN.</p><p>• Existing employees can tap SET / RESET PIN, confirm their account email with the current 4-digit Company PIN, and choose their own PIN.</p><p>• New self-created employee accounts choose a personal PIN during signup.</p><p>• Admin Add Employee no longer generates temporary passwords; the employee chooses a PIN on their own phone.</p><p>• Added CHOOSE / CHANGE MY PIN for signed-in employees.</p><p>• Kept Staff Sign-In QR as a separate one-use Admin option.</p><p>• PIN and signup forms use full-screen keyboard-safe scrolling with explicitly bound controls.</p><p>• Old password fields are retained only for backward data compatibility and are no longer used by the v30.11 sign-in screen.</p><p>• Existing equipment QR links and service history are unchanged.</p></div>
 <div class="unit" id="rcPatch3010"><h3>Version 30.10 — Reliable Temporary Passwords</h3><p><b>Released:</b> Aug 19, 2026 5:40 PM</p><p>• Fixed the temporary-password / Staff-QR collision by giving Staff QR its own Airtable hash and expiration fields.</p><p>• Admin-generated RC temporary passwords now use a dedicated one-time login token and no longer overwrite the employee's permanent password at generation time.</p><p>• Temporary-password verification reads the saved token back from Airtable before showing VERIFIED AGAINST AIRTABLE.</p><p>• Staff QR and temporary password can now both be active without canceling each other.</p><p>• Successful temp sign-in promotes that exact code to the normal employee password and consumes the one-time temp token.</p><p>• Marked the Staff QR CLOSE control as a bound button so it no longer produces a false button bug report.</p><p>• Existing equipment QR codes, service history, employee accounts, and password-reset flow remain compatible.</p></div>
 <div class="unit" id="rcPatch309"><h3>Version 30.9 — Self-Service Password Recovery</h3><p><b>Released:</b> Aug 19, 2026 5:31 PM</p><p>• Added FORGOT / RESET PASSWORD on the employee sign-in screen.</p><p>• Recovery starts with the employee email used for the existing Res-Com account.</p><p>• Requires the current 4-digit Company PIN before changing the password.</p><p>• New password and confirmation are validated, re-hashed with a fresh random salt, written to Airtable, and verified before sign-in.</p><p>• Old temporary-password reset tokens are cleared after a successful self-service reset.</p><p>• Password recovery and employee signup use full-screen keyboard-safe touch scrolling on iPhone and Android.</p><p>• Added explicit button binding/status handling for Sign In, Create Account, Forgot Password, Continue, Reset Password, Back, and Guest controls.</p><p>• Existing equipment QR links, Staff QR sign-in, service history, and account records remain compatible.</p></div>
@@ -1363,8 +1379,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="30.11";
-const APP_BUILD="Aug 19, 2026 5:40 PM";
+const APP_VERSION="30.14";
+const APP_BUILD="Aug 19, 2026 6:10 PM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -2129,6 +2145,7 @@ async function api(path,opts={},meta={}){
   if(!token())throw new Error("NO_TOKEN");
   const res=await fetch("https://api.airtable.com/v0/"+BASE+"/"+path,{
     ...opts,
+    cache:method==="GET"?"no-store":(opts.cache||"default"),
     headers:{"Authorization":"Bearer "+token(),"Content-Type":"application/json",...(opts.headers||{})}
   });
   if(!res.ok){
@@ -3926,7 +3943,7 @@ renderAccounts=renderTeamV30;
 
 
 /* =========================
-   RES-COM v30.11 PERSONAL PIN SIGN-IN
+   RES-COM v30.14 PERSONAL PIN SIGN-IN / ADMIN PIN CONTROL
    Employee passwords are retired from the active UI.
    ========================= */
 const PERSONAL_PIN_LEN_V311=6;
@@ -3936,17 +3953,47 @@ async function personalPinHashV311(pin,salt){return passwordHashV30("RESCOM-PIN-
 async function setPersonalPinV311(acct,pin){
   pin=normalizePersonalPinV311(pin);
   if(!validPersonalPinV311(pin))throw new Error("Choose a 6-digit personal PIN.");
+  if(!acct?.recordId)throw new Error("This employee account is missing its Airtable record ID. Refresh Team and try again.");
   const salt=randomSaltV30(),hash=await personalPinHashV311(pin,salt),now=new Date().toISOString();
-  await updateAccountV30(acct,{[AF.pinSalt]:salt,[AF.pinHash]:hash,[AF.pinUpdated]:now,[AF.resetHash]:"",[AF.resetExpires]:null});
-  const fresh=await findAppAccountByEmail(acct.email);
-  if(!fresh?.pinSalt||!fresh?.pinHash||(await personalPinHashV311(pin,fresh.pinSalt))!==fresh.pinHash)throw new Error("PIN did not verify after saving. Please try again.");
-  return fresh;
+  let patch;
+  try{
+    patch=await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields:{[AF.pinSalt]:salt,[AF.pinHash]:hash,[AF.pinUpdated]:now,[AF.resetHash]:"",[AF.resetExpires]:null}}],typecast:true})});
+  }catch(e){
+    if(String(e?.message||e).includes("ROW_DOES_NOT_EXIST"))throw new Error("That employee account was deleted. Ask an Admin to create it again.");
+    throw e;
+  }
+
+  // v30.12: verify the write from Airtable's PATCH response first. The old v30.11 code
+  // immediately re-listed every account; on some phones that follow-up list could briefly
+  // return the pre-write version and falsely report that a PIN which DID save had failed.
+  const patched=accountFromRecord(patch?.records?.[0]||{});
+  if(patched?.pinSalt&&patched?.pinHash){
+    const patchMatch=(await personalPinHashV311(pin,patched.pinSalt))===patched.pinHash;
+    if(patchMatch){
+      return {...acct,...patched,pinSalt:patched.pinSalt,pinHash:patched.pinHash,pinUpdated:patched.pinUpdated||now};
+    }
+  }
+
+  // Fallback read-back with short retries for Airtable propagation instead of rejecting a
+  // successful save after one immediate stale read.
+  for(let attempt=0;attempt<4;attempt++){
+    if(attempt)await new Promise(r=>setTimeout(r,350*attempt));
+    try{
+      const fresh=await findAppAccountByEmail(acct.email);
+      if(fresh?.pinSalt&&fresh?.pinHash&&(await personalPinHashV311(pin,fresh.pinSalt))===fresh.pinHash)return fresh;
+    }catch(_){}
+  }
+
+  // The PATCH request succeeded. Keep the confirmed values locally so the employee is not
+  // locked out by a read-after-write timing issue; the next normal cloud read will reconcile.
+  try{logBug("Airtable / Network","PIN write succeeded but read-back was delayed. Using confirmed saved PIN values.","Personal PIN save",acct.email||"","AUTH")}catch(_){}
+  return {...acct,pinSalt:salt,pinHash:hash,pinUpdated:now,resetHash:"",resetExpires:""};
 }
 async function createPinAccountV311({name,email,pin="",role="Tech",createdBy="Self signup",allowNoPin=false}){
   name=String(name||"").trim();email=String(email||"").trim().toLowerCase();pin=normalizePersonalPinV311(pin);
   if(!name)throw new Error("Enter the employee name.");
   if(!/^\S+@\S+\.\S+$/.test(email))throw new Error("Enter a valid email address.");
-  if(await findAppAccountByEmail(email))throw new Error("An account already exists for that email. Use SET / RESET PIN instead.");
+  if(await findAppAccountByEmailFastV314(email))throw new Error("An account already exists for that email. Use SET / RESET PIN instead.");
   if(!allowNoPin&&!validPersonalPinV311(pin))throw new Error("Choose a 6-digit personal PIN.");
   const now=new Date().toISOString(),fields={[AF.id]:accountIdV30(),[AF.name]:name,[AF.email]:email,[AF.role]:role,[AF.status]:"Active",[AF.created]:now,[AF.createdBy]:createdBy};
   if(validPersonalPinV311(pin)){
@@ -3955,7 +4002,7 @@ async function createPinAccountV311({name,email,pin="",role="Tech",createdBy="Se
   const d=await api(APP_ACCOUNTS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
   return accountFromRecord(d.records?.[0]||{fields:{"Account ID":fields[AF.id],"Account Name":name,"Email":email,"Role":role,"Status":"Active","Personal PIN Salt":fields[AF.pinSalt]||"","Personal PIN Hash":fields[AF.pinHash]||""}});
 }
-// Keep the old function name for any internal account-creation call, but interpret the credential as a PIN in v30.11.
+// Keep the old function name for any internal account-creation call, but interpret the credential as a PIN in v30.14.
 createAppAccountV30=async function({name,email,password,pin,role="Tech",createdBy="Self signup"}){return createPinAccountV311({name,email,pin:pin??password,role,createdBy})};
 loginAppAccountV30=async function(email,pin){
   if(!token())throw new Error("This phone is not connected to Res-Com Cloud yet. An Admin must connect this phone once, or use Guest Mode.");
@@ -4012,7 +4059,7 @@ function openPinResetOverlayV311(prefillEmail="",trustedAccount=null){
       const email=String($('v311PinResetEmail')?.value||"").trim().toLowerCase();
       if(!/^\S+@\S+\.\S+$/.test(email))throw new Error("Enter the email used for the employee account.");
       let acct=trustedAccount;
-      if(!acct||String(acct.email||"").toLowerCase()!==email)acct=await findAppAccountByEmail(email);
+      if(!acct||String(acct.email||"").toLowerCase()!==email)acct=await findAppAccountByEmailFastV314(email);
       if(!acct)throw new Error("No Res-Com employee account was found for that email.");
       if(acct.status!=="Active")throw new Error("That employee account is not active.");
       if(!trusted&&!(await verifyCompanyPinV30($('v311PinResetCompany')?.value||"")))throw new Error("Incorrect 4-digit Company PIN. Ask a Res-Com Admin for the current PIN.");
@@ -4055,12 +4102,41 @@ renderAccountGateV30=async function(msg=""){
     bindAccountControlV304('v305GuestBtn',async()=>startGuestModeV305());return;
   }
   gate.innerHTML=accountGateHTMLV30('login',false,msg);
-  bindAccountControlV304('v311LoginBtn',async()=>{const b=$('v311LoginBtn'),m=$('v30GateMsg');if(b){b.disabled=true;b.textContent='SIGNING IN…'}if(m)m.textContent='';try{await loginAppAccountV30($('v311LoginEmail')?.value,$('v311LoginPin')?.value);gate.classList.add('hidden');show('home');applyCurrentUserUI();try{await refreshSharedEquipment()}catch(_){};window.rescomRefreshModernUI?.()}catch(e){if(m)m.textContent=e?.message||String(e);if(b){b.disabled=false;b.textContent='SIGN IN'}}});
+  bindAccountControlV304('v311LoginBtn',async()=>{const b=$('v311LoginBtn'),m=$('v30GateMsg');if(b){b.disabled=true;b.textContent='CHECKING PIN…'}if(m)m.textContent='';try{await loginAppAccountV30($('v311LoginEmail')?.value,$('v311LoginPin')?.value);gate.classList.add('hidden');show('home');applyCurrentUserUI();try{await refreshSharedEquipment()}catch(_){};window.rescomRefreshModernUI?.()}catch(e){if(m)m.textContent=e?.message||String(e);if(b){b.disabled=false;b.textContent='SIGN IN'}}});
   bindAccountControlV304('v311SetPinBtn',async()=>openPinResetOverlayV311($('v311LoginEmail')?.value||''));
   bindAccountControlV304('v311CreateAccountBtn',async()=>openPinSignupOverlayV311());
   bindAccountControlV304('v305GuestBtn',async()=>startGuestModeV305());
   $('v311LoginPin')?.addEventListener('keydown',e=>{if(e.key==='Enter')$('v311LoginBtn')?.click()});
 };
+
+function openAdminSetPinOverlayV313(acct){
+  const me=currentUser();
+  if(!me||me.role!=="Admin"||isGuestUserV305(me))throw new Error("Admin access is required to set another employee's PIN.");
+  if(!acct||acct.accountId===me.accountId){openPinResetOverlayV311(me.email,me);return}
+  closePinOverlayV311("v313AdminPinOverlay");
+  const ov=document.createElement("div");ov.id="v313AdminPinOverlay";ov.className="v308SignupOverlay";
+  ov.innerHTML=`<div class="v308SignupCard"><button class="gray" id="v313AdminPinBack" data-safe-bound="yes" type="button">← BACK TO TEAM</button><h2>Set Employee PIN</h2><p class="small">You are setting the 6-digit personal sign-in PIN for <b>${esc(acct.name)}</b>. Give this PIN directly to the employee after it saves.</p><label>Employee</label><input value="${esc(acct.name)} — ${esc(acct.email)}" readonly>${pinInputHTMLV311("v313AdminPin","New 6-Digit Personal PIN")}${pinInputHTMLV311("v313AdminPin2","Confirm Employee PIN")}<button class="orange" id="v313AdminPinSave" data-safe-bound="yes" type="button">SAVE EMPLOYEE PIN</button><div id="v313AdminPinMsg" class="v309ResetMsg"></div><div class="v308KeyboardSpacer" aria-hidden="true"></div></div>`;
+  document.body.appendChild(ov);
+  const back=$("v313AdminPinBack"),btn=$("v313AdminPinSave"),msg=$("v313AdminPinMsg");
+  back?.addEventListener("click",()=>closePinOverlayV311("v313AdminPinOverlay"));
+  btn?.addEventListener("click",async()=>{
+    btn.disabled=true;btn.textContent="SAVING PIN…";if(msg)msg.textContent="";
+    try{
+      const pin=normalizePersonalPinV311($("v313AdminPin")?.value),pin2=normalizePersonalPinV311($("v313AdminPin2")?.value);
+      if(!validPersonalPinV311(pin))throw new Error("Choose a 6-digit personal PIN.");
+      if(pin!==pin2)throw new Error("The two employee PIN entries do not match.");
+      const freshAcct=await findAppAccountByEmail(acct.email);
+      if(!freshAcct)throw new Error("That employee account is no longer in Airtable.");
+      if(freshAcct.status!=="Active")throw new Error("That employee account is not active.");
+      await setPersonalPinV311(freshAcct,pin);
+      if(msg)msg.textContent=`✓ PIN SAVED FOR ${String(freshAcct.name||acct.name||"EMPLOYEE").toUpperCase()}`;
+      btn.textContent="✓ PIN SAVED";
+      setTimeout(async()=>{closePinOverlayV311("v313AdminPinOverlay");try{await renderTeamV30()}catch(_){}},650);
+    }catch(e){if(msg)msg.textContent=e?.message||String(e);btn.disabled=false;btn.textContent="SAVE EMPLOYEE PIN"}
+  });
+  $("v313AdminPin2")?.addEventListener("keydown",e=>{if(e.key==="Enter")btn?.click()});
+  setTimeout(()=>{try{ov.scrollTop=0;$("v313AdminPin")?.focus({preventScroll:true})}catch(_){}},80);
+}
 
 renderTeamV30=async function(){
   const box=$('accountsScreen');if(!box)return;
@@ -4071,14 +4147,15 @@ renderTeamV30=async function(){
   }
   let accounts=[],loadError='';try{accounts=await allAppAccounts()}catch(e){loadError=e?.message||String(e)}
   me=accounts.find(a=>a.accountId===me.accountId)||me;const admin=me.role==='Admin';
-  box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><div class="sectionTitleRow"><div><h2>Team</h2><p class="small">Employees sign in with email + their own 6-digit personal PIN.</p></div><span class="badge ${admin?'synced':'pending'}">${esc(me.role)}</span></div><div class="teamMe"><b>${esc(me.name)}</b><span>${esc(me.email)} • ${me.pinHash?'PIN SET':'PIN NOT SET'}</span></div><button class="outline" id="v311ChangeMyPin" data-safe-bound="yes" type="button">CHOOSE / CHANGE MY PIN</button>${loadError?`<div class="unit"><b>Team cloud connection problem</b><div class="small">${esc(loadError)}</div></div>`:''}${admin?`<div class="unit adminPanel"><h3>Admin Controls</h3><p class="small">Admins manage employee accounts, roles, Staff Sign-In QR, and the 4-digit Company PIN. Temporary employee passwords are no longer used.</p><button class="orange" id="rotateCompanyPin" data-safe-bound="yes" type="button">GENERATE NEW 4-DIGIT COMPANY PIN</button><div id="companyPinResult" class="hidden companyPinResult"></div><button class="outline" id="emailCompanyPin" data-safe-bound="yes" type="button">EMAIL NEW PIN TO ALL ADMINS</button><hr><h3>Add Employee</h3><p class="small">Create the employee record here. On their phone they tap SET / RESET PIN and choose their own 6-digit personal PIN using the current Company PIN.</p><label>Name</label><input id="teamNewName"><label>Email</label><input id="teamNewEmail" type="email"><label>Role</label><select id="teamNewRole"><option value="Tech">Tech</option><option value="Admin">Admin</option></select><button class="orange" id="teamCreateAccount" data-safe-bound="yes" type="button">CREATE EMPLOYEE</button><div id="v311TeamCreateMsg" class="small"></div></div>`:''}<div class="unit"><h3>Company Accounts</h3><div id="teamList">${accounts.length?accounts.map(a=>`<div class="teamRow"><div><b>${esc(a.name)}</b><span>${esc(a.email)} • ${esc(a.role)} • ${a.pinHash?'PIN SET':'PIN NOT SET'}</span></div>${admin&&a.accountId!==me.accountId?`<div class="teamActions"><button class="outline teamRoleBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">${a.role==='Admin'?'MAKE TECH':'MAKE ADMIN'}</button><button class="outline teamQrBtnV311" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">SIGN-IN QR</button><button class="red teamDeleteBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">DELETE</button></div>`:''}</div>`).join(''):`<p class="small">No accounts found.</p>`}</div></div><button class="gray" id="teamLogout" data-safe-bound="yes" type="button">SIGN OUT</button></div>`;
+  box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><div class="sectionTitleRow"><div><h2>Team</h2><p class="small">Employees sign in with email + their own 6-digit personal PIN.</p></div><span class="badge ${admin?'synced':'pending'}">${esc(me.role)}</span></div><div class="teamMe"><b>${esc(me.name)}</b><span>${esc(me.email)} • ${me.pinHash?'PIN SET':'PIN NOT SET'}</span></div><button class="outline" id="v311ChangeMyPin" data-safe-bound="yes" type="button">CHOOSE / CHANGE MY PIN</button>${loadError?`<div class="unit"><b>Team cloud connection problem</b><div class="small">${esc(loadError)}</div></div>`:''}${admin?`<div class="unit adminPanel"><h3>Admin Controls</h3><p class="small">Admins manage employee accounts, roles, employee PINs, Staff Sign-In QR, and the 4-digit Company PIN. Temporary employee passwords are no longer used.</p><button class="orange" id="rotateCompanyPin" data-safe-bound="yes" type="button">GENERATE NEW 4-DIGIT COMPANY PIN</button><div id="companyPinResult" class="hidden companyPinResult"></div><button class="outline" id="emailCompanyPin" data-safe-bound="yes" type="button">EMAIL NEW PIN TO ALL ADMINS</button><hr><h3>Add Employee</h3><p class="small">You can give the employee a 6-digit personal PIN now, or leave the PIN blank and let them choose one later.</p><label>Name</label><input id="teamNewName"><label>Email</label><input id="teamNewEmail" type="email"><label>Role</label><select id="teamNewRole"><option value="Tech">Tech</option><option value="Admin">Admin</option></select>${pinInputHTMLV311("v313TeamNewPin","Employee PIN (optional)")}${pinInputHTMLV311("v313TeamNewPin2","Confirm Employee PIN (optional)")}<button class="orange" id="teamCreateAccount" data-safe-bound="yes" type="button">CREATE EMPLOYEE</button><div id="v311TeamCreateMsg" class="small"></div></div>`:''}<div class="unit"><h3>Company Accounts</h3><div id="teamList">${accounts.length?accounts.map(a=>`<div class="teamRow"><div><b>${esc(a.name)}</b><span>${esc(a.email)} • ${esc(a.role)} • ${a.pinHash?'PIN SET':'PIN NOT SET'}</span></div>${admin&&a.accountId!==me.accountId?`<div class="teamActions"><button class="outline teamRoleBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">${a.role==='Admin'?'MAKE TECH':'MAKE ADMIN'}</button><button class="outline teamSetPinBtnV313" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">SET PIN</button><button class="outline teamQrBtnV311" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">SIGN-IN QR</button><button class="red teamDeleteBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">DELETE</button></div>`:''}</div>`).join(''):`<p class="small">No accounts found.</p>`}</div></div><button class="gray" id="teamLogout" data-safe-bound="yes" type="button">SIGN OUT</button></div>`;
   bindHome();bindTeamControlV304($('teamLogout'),async()=>{clearCurrentUser();await renderAccountGateV30('Signed out.')});
   bindTeamControlV304($('v311ChangeMyPin'),async()=>openPinResetOverlayV311(me.email,me));
   if(admin){
     bindTeamControlV304($('rotateCompanyPin'),async()=>{const pin=await rotateCompanyPinV30();alert('New company PIN: '+pin+'\n\nEmployees use this only when creating an account or setting/resetting their personal PIN.')});
     bindTeamControlV304($('emailCompanyPin'),async()=>emailLastCompanyPinV30());
-    bindTeamControlV304($('teamCreateAccount'),async()=>{const btn=$('teamCreateAccount'),m=$('v311TeamCreateMsg');if(btn){btn.disabled=true;btn.textContent='CREATING EMPLOYEE…'}if(m)m.textContent='';try{const created=await createPinAccountV311({name:$('teamNewName')?.value,email:$('teamNewEmail')?.value,role:$('teamNewRole')?.value||'Tech',createdBy:me.email,allowNoPin:true});await renderTeamV30();setTimeout(()=>{const mm=$('v311TeamCreateMsg');if(mm)mm.textContent=created.name+' created. Have them tap SET / RESET PIN on their phone and choose a 6-digit PIN.'},30)}catch(e){if(m)m.textContent=e?.message||String(e);if(btn){btn.disabled=false;btn.textContent='CREATE EMPLOYEE'}}});
+    bindTeamControlV304($('teamCreateAccount'),async()=>{const btn=$('teamCreateAccount'),m=$('v311TeamCreateMsg');if(btn){btn.disabled=true;btn.textContent='CREATING EMPLOYEE…'}if(m)m.textContent='';try{const pin=normalizePersonalPinV311($('v313TeamNewPin')?.value),pin2=normalizePersonalPinV311($('v313TeamNewPin2')?.value);if((pin||pin2)&&!validPersonalPinV311(pin))throw new Error('Employee PIN must be exactly 6 digits.');if(pin!==pin2)throw new Error('The two employee PIN entries do not match.');const created=await createPinAccountV311({name:$('teamNewName')?.value,email:$('teamNewEmail')?.value,pin,role:$('teamNewRole')?.value||'Tech',createdBy:me.email,allowNoPin:!pin});await renderTeamV30();setTimeout(()=>{const mm=$('v311TeamCreateMsg');if(mm)mm.textContent=pin?created.name+' created with the 6-digit PIN you assigned.':created.name+' created. Use SET PIN beside their name, or let them choose one later.'},30)}catch(e){if(m)m.textContent=e?.message||String(e);if(btn){btn.disabled=false;btn.textContent='CREATE EMPLOYEE'}}});
     box.querySelectorAll('.teamRoleBtn').forEach(btn=>bindTeamControlV304(btn,async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;await updateAccountV30(a,{[AF.role]:a.role==='Admin'?'Tech':'Admin'});await renderTeamV30()}));
+    box.querySelectorAll('.teamSetPinBtnV313').forEach(btn=>bindTeamControlV304(btn,async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;openAdminSetPinOverlayV313(a)}));
     box.querySelectorAll('.teamQrBtnV311').forEach(btn=>bindTeamControlV304(btn,async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;btn.disabled=true;btn.textContent='GENERATING QR…';try{const info=await generateStaffQrV308(a);showStaffQrOverlayV308(a,info)}finally{btn.disabled=false;btn.textContent='SIGN-IN QR'}}));
     box.querySelectorAll('.teamDeleteBtn').forEach(btn=>bindTeamControlV304(btn,async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a){await renderTeamV30();return}const deleted=await deleteAppAccountV306(a,accounts);if(deleted)await renderTeamV30()}));
   }
@@ -4086,7 +4163,140 @@ renderTeamV30=async function(){
 };
 renderAccounts=renderTeamV30;
 
-bootResComV30();
+
+
+/* =========================
+   RES-COM v30.14 FAST PIN / FRESH CLOUD READS
+   Fix the older PIN delay at its source: never wait on redundant cloud requests after PIN entry.
+   ========================= */
+const COMPANY_PIN_CACHE_TTL_V314=10000;
+let companyPinSettingCacheV314={at:0,setting:null};
+const getAppSettingCoreV314=getAppSettingV30;
+getAppSettingV30=async function(key){
+  if(key==="company_pin_hash"&&companyPinSettingCacheV314.setting&&Date.now()-companyPinSettingCacheV314.at<COMPANY_PIN_CACHE_TTL_V314)return companyPinSettingCacheV314.setting;
+  const setting=await getAppSettingCoreV314(key);
+  if(key==="company_pin_hash")companyPinSettingCacheV314={at:Date.now(),setting};
+  return setting;
+};
+const setAppSettingCoreV314=setAppSettingV30;
+setAppSettingV30=async function(key,value){
+  const result=await setAppSettingCoreV314(key,value);
+  if(key==="company_pin_hash"){
+    const prior=companyPinSettingCacheV314.setting;
+    companyPinSettingCacheV314={at:Date.now(),setting:{recordId:prior?.recordId||result?.records?.[0]?.id||"",value}};
+  }
+  return result;
+};
+function primeCompanyPinV314(){
+  if(!token()||!navigator.onLine)return;
+  Promise.resolve().then(()=>getAppSettingV30("company_pin_hash")).catch(()=>{});
+}
+
+const ACCOUNT_CACHE_TTL_V314=45000;
+let accountCacheV314={at:0,items:[]};
+function rememberAccountsV314(items){
+  if(Array.isArray(items)){accountCacheV314={at:Date.now(),items:items.slice()};}
+  return items;
+}
+function cachedAccountByEmailV314(email){
+  const e=String(email||"").trim().toLowerCase();
+  if(!e||!accountCacheV314.items.length||Date.now()-accountCacheV314.at>ACCOUNT_CACHE_TTL_V314)return null;
+  return accountCacheV314.items.find(a=>String(a?.email||"").toLowerCase()===e)||null;
+}
+function upsertAccountCacheV314(acct){
+  if(!acct)return acct;
+  const items=accountCacheV314.items.slice();
+  const i=items.findIndex(a=>(acct.accountId&&a.accountId===acct.accountId)||(acct.email&&a.email===acct.email));
+  if(i>=0)items[i]={...items[i],...acct};else items.push(acct);
+  accountCacheV314={at:Date.now(),items};
+  return acct;
+}
+const allAppAccountsCoreV314=allAppAccounts;
+allAppAccounts=async function(){
+  const items=await allAppAccountsCoreV314();
+  rememberAccountsV314(items);
+  primeCompanyPinV314();
+  return items;
+};
+async function findAppAccountByEmailFastV314(email){
+  const cached=cachedAccountByEmailV314(email);
+  if(cached)return cached;
+  const e=String(email||"").trim().toLowerCase();
+  return (await allAppAccounts()).find(a=>a.email===e)||null;
+}
+function nextPaintV314(){
+  return new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+}
+
+// Keep the existing PBKDF2 protection, but remove network waits around it.
+loginAppAccountV30=async function(email,pin){
+  if(!token())throw new Error("This phone is not connected to Res-Com Cloud yet. An Admin must connect this phone once, or use Guest Mode.");
+  pin=normalizePersonalPinV311(pin);
+  if(!validPersonalPinV311(pin))throw new Error("Enter your 6-digit personal PIN.");
+  await nextPaintV314();
+  const acct=await findAppAccountByEmailFastV314(email);
+  if(!acct)throw new Error("No Res-Com account was found for that email.");
+  if(acct.status!=="Active")throw new Error("This account is not active. Contact a Res-Com Admin.");
+  if(!acct.pinSalt||!acct.pinHash)throw new Error("This account does not have a personal PIN yet. Tap SET / RESET PIN and choose one.");
+  const match=(await personalPinHashV311(pin,acct.pinSalt))===acct.pinHash;
+  if(!match)throw new Error("Incorrect personal PIN. Tap SET / RESET PIN if you need to choose a new one.");
+
+  // Correct PIN = enter now. Last Login is bookkeeping and must never hold the user on Sign In.
+  saveCurrentUser(acct);markSessionGraceV308(15*60*1000);upsertAccountCacheV314(acct);
+  Promise.resolve().then(()=>updateAccountV30(acct,{[AF.lastLogin]:new Date().toISOString()})).catch(e=>{
+    try{logBug("Airtable / Network",e?.message||String(e),"Background Last Login update",acct.email||"","AUTH")}catch(_){}
+  });
+  return acct;
+};
+
+// Any successful PIN write immediately refreshes this device's account cache.
+const setPersonalPinCoreV314=setPersonalPinV311;
+setPersonalPinV311=async function(acct,pin){
+  const fresh=await setPersonalPinCoreV314(acct,pin);
+  return upsertAccountCacheV314(fresh);
+};
+
+// When Team has just downloaded the employee, do not download the same record again before SET PIN.
+openAdminSetPinOverlayV313=function(acct){
+  const me=currentUser();
+  if(!me||me.role!=="Admin"||isGuestUserV305(me))throw new Error("Admin access is required to set another employee's PIN.");
+  if(!acct||acct.accountId===me.accountId){openPinResetOverlayV311(me.email,me);return}
+  closePinOverlayV311("v313AdminPinOverlay");
+  const ov=document.createElement("div");ov.id="v313AdminPinOverlay";ov.className="v308SignupOverlay";
+  ov.innerHTML=`<div class="v308SignupCard"><button class="gray" id="v313AdminPinBack" data-safe-bound="yes" type="button">← BACK TO TEAM</button><h2>Set Employee PIN</h2><p class="small">You are setting the 6-digit personal sign-in PIN for <b>${esc(acct.name)}</b>. Give this PIN directly to the employee after it saves.</p><label>Employee</label><input value="${esc(acct.name)} — ${esc(acct.email)}" readonly>${pinInputHTMLV311("v313AdminPin","New 6-Digit Personal PIN")}${pinInputHTMLV311("v313AdminPin2","Confirm Employee PIN")}<button class="orange" id="v313AdminPinSave" data-safe-bound="yes" type="button">SAVE EMPLOYEE PIN</button><div id="v313AdminPinMsg" class="v309ResetMsg"></div><div class="v308KeyboardSpacer" aria-hidden="true"></div></div>`;
+  document.body.appendChild(ov);
+  const back=$("v313AdminPinBack"),btn=$("v313AdminPinSave"),msg=$("v313AdminPinMsg");
+  back?.addEventListener("click",()=>closePinOverlayV311("v313AdminPinOverlay"));
+  btn?.addEventListener("click",async()=>{
+    btn.disabled=true;btn.textContent="SAVING PIN…";if(msg)msg.textContent="";
+    try{
+      const pin=normalizePersonalPinV311($("v313AdminPin")?.value),pin2=normalizePersonalPinV311($("v313AdminPin2")?.value);
+      if(!validPersonalPinV311(pin))throw new Error("Choose a 6-digit personal PIN.");
+      if(pin!==pin2)throw new Error("The two employee PIN entries do not match.");
+      if(acct.status!=="Active")throw new Error("That employee account is not active.");
+      await nextPaintV314();
+      const fresh=await setPersonalPinV311(acct,pin);
+      if(msg)msg.textContent=`✓ PIN SAVED FOR ${String(fresh.name||acct.name||"EMPLOYEE").toUpperCase()}`;
+      btn.textContent="✓ PIN SAVED";
+      setTimeout(async()=>{closePinOverlayV311("v313AdminPinOverlay");try{await renderTeamV30()}catch(_){}},350);
+    }catch(e){if(msg)msg.textContent=e?.message||String(e);btn.disabled=false;btn.textContent="SAVE EMPLOYEE PIN"}
+  });
+  $("v313AdminPin2")?.addEventListener("keydown",e=>{if(e.key==="Enter")btn?.click()});
+  setTimeout(()=>{try{ov.scrollTop=0;$("v313AdminPin")?.focus({preventScroll:true})}catch(_){}},80);
+};
+
+async function clearOldResComCachesV314(){
+  if(!("caches" in window))return;
+  try{
+    const keys=await caches.keys();
+    await Promise.all(keys.filter(k=>k.startsWith("rescom-qr")&&!k.includes("v30-14")).map(k=>caches.delete(k)));
+  }catch(_){}
+}
+
+(async()=>{
+  await clearOldResComCachesV314();
+  bootResComV30();
+})();
 
 
 
@@ -4107,5 +4317,5 @@ bootResComV30();
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
-<script src="./modern-ui.js?v=30.11"></script>
+<script src="./modern-ui.js?v=30.14"></script>
 </body></html>

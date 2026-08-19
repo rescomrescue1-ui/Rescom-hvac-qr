@@ -1,7 +1,15 @@
-RES-COM HVAC QR v30.11
+RES-COM HVAC QR v30.14
 
-Upload these files to the SAME GitHub repository root and SAME Pages path as your current Res-Com app. Replace files with the same names and commit the changes.
+Upload these files to the SAME GitHub repository / main branch / root used by the existing Res-Com app.
 
-Do NOT change the repository name, Pages path, or QR URL format. Existing printed equipment QR codes must keep working.
+1. Unzip this package.
+2. GitHub → Add file → Upload files.
+3. Upload/replace these files at the repo root.
+4. Commit the upload.
+5. Do NOT rename or move the repository or Pages path.
+6. Open the normal Res-Com website once online and wait about 5 seconds.
+7. Close it completely, reopen the Home Screen app, and confirm APP v30.14.
 
-After upload, open the normal Res-Com website once while online, then close/reopen the Home Screen app. Confirm it shows APP v30.11.
+The reopen matters for v30.14 because the new service worker deletes older caches that could contain stale Airtable account/PIN responses.
+
+Existing printed equipment QR codes keep the same URLs.

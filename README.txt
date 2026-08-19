@@ -1,28 +1,9 @@
-Res-Com HVAC QR v30.11 — Personal PIN Sign-In
+Res-Com HVAC QR v30.14 — Fast PIN / Fresh Cloud Reads
 
-This release replaces employee password sign-in with a simpler personal-PIN workflow.
+This release fixes the PIN delay at the cloud/cache layer. Older Res-Com service workers used cache-first behavior for every GET request, which could also cache Airtable account responses. That could leave another phone looking at an older PIN/account record after an Admin had already changed it.
 
-Employee sign-in:
-- Enter the employee email.
-- Enter the employee's 6-digit personal PIN.
+v30.14 never caches Airtable or other third-party cloud requests. Airtable GETs also use browser no-store mode. Sign In reuses the account list that is already on the login screen, and a correct PIN opens the app before the non-critical Last Login update finishes. PIN hashing/security is unchanged.
 
-Existing employee with no PIN yet:
-- Tap SET / RESET PIN.
-- Enter the existing employee email.
-- Enter the current 4-digit Company PIN.
-- Choose and confirm a new 6-digit personal PIN.
+UPLOAD: unzip this package and upload the files to the SAME GitHub repository, branch, root, and Pages path. Replace files with matching names. Do not move or rename the site.
 
-New employee self-signup:
-- Enter name and email.
-- Choose and confirm a 6-digit personal PIN.
-- Enter the 4-digit Company PIN.
-
-Admin Add Employee:
-- Admin creates the employee name/email/role only.
-- No temporary password is generated.
-- The employee chooses their own PIN on their phone using SET / RESET PIN.
-
-Signed-in employees can also use Team → CHOOSE / CHANGE MY PIN.
-Staff Sign-In QR remains available for Admins.
-
-Upload all files from this ZIP to the same GitHub Pages repo/path. Do not change the repo/path because already-printed equipment QR labels depend on that permanent address.
+IMPORTANT AFTER UPLOAD: open the normal Res-Com website once while online, wait about 5 seconds so v30.14 can activate and delete the old service-worker cache, close it completely, then reopen the Home Screen app. Confirm APP v30.14 before testing a newly assigned PIN on another phone.

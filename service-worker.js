@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-11-personal-pin-1749";
+const CACHE = "rescom-qr-v30-14-fast-pin-fresh-cloud-1810";
 const CORE = [
   "./index.html",
   "./version.json",
@@ -41,8 +41,21 @@ async function networkFirst(request,fallbackPath){
 self.addEventListener("fetch", event => {
   if(event.request.method!=="GET")return;
   const url=new URL(event.request.url);
+
+  // v30.14: Cloud/API data must always be live. The old cache-first rule could keep stale
+  // Airtable account/PIN responses and make a newly changed PIN fail until the cache changed.
+  if(url.origin!==self.location.origin){
+    event.respondWith(fetch(event.request,{cache:"no-store"}).catch(()=>Response.error()));
+    return;
+  }
+
   const navigation=event.request.mode==="navigate" || url.pathname.endsWith("/index.html") || url.pathname.endsWith("/Rescom-hvac-qr/");
   const fresh=navigation || /\/(version\.json|modern-ui\.css|modern-ui\.js|service-worker\.js)$/.test(url.pathname);
   if(fresh){event.respondWith(networkFirst(event.request,navigation?"./index.html":null));return}
-  event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(async response=>{if(response&&response.ok){const cache=await caches.open(CACHE);await cache.put(event.request,response.clone())}return response}).catch(()=>Response.error())));
+
+  // Only same-origin static app files use cache-first/offline behavior.
+  event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(async response=>{
+    if(response&&response.ok){const cache=await caches.open(CACHE);await cache.put(event.request,response.clone())}
+    return response;
+  }).catch(()=>Response.error())));
 });

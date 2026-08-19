@@ -1,3 +1,4 @@
+/* Res-Com HVAC QR v30.13 — Admin Give Employee PIN */
 /* Res-Com HVAC QR v30 — Modern Field UI */
 :root{
   --rc-bg:#f4f7fb;
@@ -469,4 +470,5 @@ body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
 /* v30.10 — temporary password and Staff QR authentication are separated in the data layer. */
 
 /* v30.11 personal PIN: auth forms reuse the keyboard-safe full-screen v308SignupOverlay. */
+/* v30.12: PIN save verification uses Airtable PATCH response + read-back retry; no visual regression changes. */
 #v311SignupOverlay input[inputmode="numeric"],#v311PinResetOverlay input[inputmode="numeric"],#pinGate input[inputmode="numeric"]{font-variant-numeric:tabular-nums;letter-spacing:.12em}

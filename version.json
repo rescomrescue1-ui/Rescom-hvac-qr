@@ -1,5 +1,5 @@
 {
-  "version": "30.11",
-  "build": "Aug 19, 2026 5:49 PM",
-  "notes": "Personal PIN sign-in: replaces active employee passwords with email + a 6-digit personal PIN, lets existing employees choose/reset a PIN with their email and the 4-digit Company PIN, removes temporary-password generation from Admin Add Employee, keeps Staff Sign-In QR, and preserves permanent equipment QR links."
+  "version": "30.14",
+  "build": "Aug 19, 2026 6:10 PM",
+  "notes": "Fast PIN / Fresh Cloud Reads: fixes the older PIN-delay source by preventing service-worker caching of Airtable/cloud GET responses, using browser no-store reads, reusing the already-loaded account list for PIN sign-in, and moving Last Login bookkeeping to the background without changing equipment QR links or PIN security."
 }
