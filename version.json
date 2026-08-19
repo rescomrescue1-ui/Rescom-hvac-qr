@@ -1,5 +1,5 @@
 {
-  "version": "30.6",
-  "build": "Aug 19, 2026 4:50 PM",
-  "notes": "Temporary-password one-time reset-token fallback, permanent employee delete, stale account cleanup, iPhone account-form scrolling fix, and sharper Res-Com header logo. Manual and Patch Notes updated."
+  "version": "30.7",
+  "build": "Aug 19, 2026 5:09 PM",
+  "notes": "Separate keyboard-safe employee signup screen and one-time 15-minute Staff Sign-In QR for individual employees. Existing equipment QR links remain unchanged."
 }

@@ -401,3 +401,37 @@ body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
 #v30CreateBox{scroll-margin-top:18px!important;padding-bottom:12px!important}
 .v30GateLogo{opacity:1!important;filter:contrast(1.08) saturate(1.08)!important}
 .teamDeleteBtn{background:#b42318!important;color:#fff!important;border:1px solid #912018!important;font-weight:900!important}
+
+/* v30.7 separate signup screen + one-time staff QR */
+#pinGate{
+  display:block!important;
+  overflow-y:scroll!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  min-height:100vh!important;
+  box-sizing:border-box!important;
+  padding:max(16px,env(safe-area-inset-top)) 14px calc(96px + env(safe-area-inset-bottom))!important;
+}
+#pinGate .v30Gate{
+  width:min(460px,100%)!important;
+  margin:0 auto!important;
+  max-height:none!important;
+  min-height:auto!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+  padding-bottom:28px!important;
+}
+#pinGate .v30Gate input,
+#pinGate .v30Gate button{
+  scroll-margin-top:22px!important;
+  scroll-margin-bottom:180px!important;
+}
+.v307SignupGate{padding-bottom:34px!important}
+.v307GateBottomSpacer{height:150px;pointer-events:none}
+.staffQrResult{margin-top:14px;padding:14px;border:2px solid #4f9bff;border-radius:14px;background:#17202b}
+.staffQrCode{width:244px;max-width:100%;margin:14px auto;padding:12px;background:#fff;border-radius:14px;display:flex;justify-content:center;align-items:center}
+.staffQrCode img,.staffQrCode canvas{display:block;max-width:100%;height:auto!important}
+.teamQrBtn{font-weight:900!important}

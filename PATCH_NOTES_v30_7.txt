@@ -1,0 +1,10 @@
+Res-Com HVAC QR v30.7 — Signup Scroll & Staff Sign-In QR
+Released: Aug 19, 2026 5:09 PM
+
+- Replaced the expandable Create Employee Account form with a separate full-screen signup screen.
+- Rebuilt iPhone account creation scrolling using a true vertical page scroll, dynamic viewport height, and keyboard-safe bottom space.
+- Added Admin SIGN-IN QR for an individual employee from Team.
+- Staff sign-in QR expires after 15 minutes and works once.
+- Scanning the staff QR signs the selected employee in without typing the temporary password.
+- Staff QR never contains the Airtable cloud token; a brand-new phone still needs the normal one-time cloud connection before company cloud access can be granted.
+- Existing equipment QR codes, unit IDs, service-history links, and printed labels remain unchanged.

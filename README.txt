@@ -1,19 +1,19 @@
-RES-COM HVAC QR — VERSION 30.6
-Build: Aug 19, 2026 4:50 PM
+RES-COM HVAC QR — VERSION 30.7
+Build: Aug 19, 2026 5:09 PM
 
-EMPLOYEE LOGIN / TEMP PASSWORD RECOVERY
-- Admin temporary passwords now use two checks: the normal password hash plus a dedicated 24-hour one-time reset token.
-- New temporary passwords use RC-XXXX-XXXX and accept pasted codes with or without hyphens/case differences.
-- A verified one-time reset code is promoted into the employee's normal password hash after sign-in.
+SIGNUP SCROLL RECOVERY
+- Create Employee Account is now its own full-screen form instead of expanding under Sign In.
+- The signup page uses a true vertical scroll area, dynamic viewport height, and extra keyboard-safe bottom space.
+- Name, Email, Employee Password, 4-Digit Company PIN, and Create are all on the dedicated signup screen.
 
-TEAM ACCOUNT CLEANUP
-- Replaced Disable/Enable with permanent DELETE for employee accounts.
-- Existing service history is not deleted when an employee login is removed.
-- Phones automatically sign out stale employee identities that were manually deleted from Airtable.
+ONE-TIME STAFF SIGN-IN QR
+- Admin Team controls now include SIGN-IN QR for an individual employee.
+- The QR expires after 15 minutes and works once.
+- Scanning it signs that employee in without typing the temporary password.
+- The staff QR does not contain the Airtable cloud token. Brand-new phones still need the normal one-time Res-Com Cloud connection before employee cloud access works.
 
-IPHONE / BRANDING
-- Fixed Create Employee Account scrolling so the 4-digit Company PIN and submit button remain reachable.
-- Top Res-Com logo now uses the higher-resolution icon at full opacity.
+COMPATIBILITY
+- Existing equipment QR labels, Unit IDs, service history, and GitHub Pages path are unchanged.
 
 Upload the CONTENTS of this folder to the SAME GitHub Pages repository/path and replace matching files.
-Do not change the Pages URL; existing QR labels remain compatible.
+Do not change the Pages URL; existing printed QR labels remain compatible.

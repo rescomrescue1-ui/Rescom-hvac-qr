@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-6-account-delete-temp-1652";
+const CACHE = "rescom-qr-v30-7-staff-qr-scroll-1709";
 const CORE = [
   "./index.html",
   "./version.json",
