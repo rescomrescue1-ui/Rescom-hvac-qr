@@ -1,28 +1,38 @@
 {
+  "id": "./",
   "name": "Res-Com HVAC QR Service History",
   "short_name": "Res-Com QR",
+  "description": "Res-Com technician HVAC QR service-history app with easier iPhone Home Screen setup, Team accounts, offline support, and automatic bug recovery.",
+  "lang": "en-US",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
-  "background_color": "#f4f7fb",
-  "theme_color": "#0b63d8",
-  "description": "Res-Com technician HVAC QR service-history app with Team accounts and responsive light/dark themes.",
+  "background_color": "#05070a",
+  "theme_color": "#0b4ea2",
   "categories": [
     "business",
     "productivity",
     "utilities"
   ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

@@ -323,3 +323,45 @@ html[data-theme="dark"] .card h1,html[data-theme="dark"] .card h2,html[data-them
 button,button *,#syncBadge,#syncBadge *,#appVersionBadge,#appVersionBadge *,#rcWelcomeStrip,#rcWelcomeStrip *,#rcCustomerNotice,#rcCustomerNotice *,#updateBanner,#updateBanner *{color:inherit!important}
 
 @media(max-width:620px){.teamRow{grid-template-columns:1fr}.teamActions{justify-content:flex-start}.teamActions button{flex:1 1 auto}.themeChoices{grid-template-columns:1fr 1fr}}
+
+
+/* v30.2 — installable PWA + iPhone Easy Install experience */
+.installAppCard{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:12px!important;align-items:center!important;padding:14px 16px!important}
+.installAppCopy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.installAppCopy b{font-size:15px!important;color:var(--rc-ink)!important}
+.installAppCopy span{font-size:12px!important;color:var(--rc-muted)!important;line-height:1.35}
+#installAppBtn{width:auto!important;min-height:44px!important;margin:0!important;padding:10px 14px!important;background:#0b63d8!important;color:#fff!important;border:1px solid #0b63d8!important;white-space:nowrap}
+#rcInstallBackdrop{position:fixed;inset:0;z-index:50000;background:rgba(3,7,18,.72);display:flex;align-items:flex-end;justify-content:center;padding:14px calc(14px + env(safe-area-inset-right)) calc(14px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));backdrop-filter:blur(7px)}
+#rcInstallSheet{width:min(520px,100%);max-height:min(82vh,720px);overflow:auto;background:#fff;color:#111827;border-radius:26px;padding:22px;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+#rcInstallSheet h2{margin:4px 0 6px!important;text-align:center;color:#111827!important}
+#rcInstallSheet>p{text-align:center;color:#667085!important;margin:0 0 14px}
+#rcInstallSheet ol{margin:10px 0 16px;padding-left:24px;color:#344054!important;line-height:1.55}
+#rcInstallSheet li{margin:8px 0;color:#344054!important}
+.installSheetLogo{display:flex;justify-content:center}.installSheetLogo img{width:74px;height:74px;object-fit:contain;border-radius:18px}
+.installBenefits{display:flex;flex-direction:column;gap:4px;background:#eef5ff;border:1px solid #cfe2ff;border-radius:16px;padding:12px;margin:14px 0}
+.installBenefits b{color:#174ea6!important}.installBenefits span{color:#475467!important;font-size:13px;line-height:1.4}
+#rcInstallClose{background:#0b63d8!important;color:#fff!important;border:1px solid #0b63d8!important;margin:8px 0 0!important}
+html[data-theme="dark"] .installAppCopy b{color:#f8fafc!important}
+html[data-theme="dark"] .installAppCopy span{color:#c3ccd8!important}
+@media(max-width:620px){.installAppCard{grid-template-columns:1fr!important}.installAppCard #installAppBtn{width:100%!important}.installAppCopy{text-align:left}}
+@media(min-width:700px){#rcInstallBackdrop{align-items:center}}
+@media (display-mode: standalone){#installAppCard{display:none!important}}
+
+/* v30.2 — iPhone Easy Install */
+.iphoneInstallCard{border:2px solid #0b63d8!important;background:linear-gradient(180deg,#f8fbff,#eef5ff)!important;box-shadow:0 8px 24px rgba(11,99,216,.12)!important}
+.iphoneInstallCard .installAppCopy b{font-size:17px!important}
+.iphoneInstallCard #installAppBtn{min-height:50px!important;font-size:15px!important}
+.iosInstallLead,.iosSafariWarning{display:flex;flex-direction:column;gap:4px;border-radius:16px;padding:13px 14px;margin:12px 0}
+.iosInstallLead{background:#f3f6fa;border:1px solid #d9e1ea}.iosInstallLead b{color:#111827!important;font-size:15px}.iosInstallLead span{color:#475467!important;font-size:13px;line-height:1.4}
+.iosSafariWarning{background:#fff4e5;border:1px solid #f1c27d}.iosSafariWarning b{color:#7a3d00!important}.iosSafariWarning span{color:#6b4d2e!important;font-size:13px;line-height:1.4}
+.iosInstallSteps{display:grid;gap:10px;margin:12px 0}
+.iosInstallStep{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:start;border:1px solid #d8e0ea;border-radius:17px;padding:12px;background:#fff}
+.iosStepNum{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:#0b63d8;color:#fff!important;font-weight:900;font-size:18px}
+.iosInstallStep b{display:block;color:#111827!important;font-size:16px;margin:2px 0 4px}.iosInstallStep p{margin:0!important;color:#475467!important;font-size:13px!important;line-height:1.4}
+.iosShareIcon{position:relative;display:inline-block;width:38px;height:31px;margin-top:10px;border:2px solid #0b63d8;border-radius:7px;color:#0b63d8!important}
+.iosShareIcon i{position:absolute;left:8px;right:8px;top:-5px;height:8px;background:#fff}.iosShareIcon em{position:absolute;left:50%;top:-19px;transform:translateX(-50%);font-style:normal;font-size:27px;font-weight:500;line-height:1;color:#0b63d8!important}
+.installSecondary{background:#fff!important;color:#0b63d8!important;border:2px solid #0b63d8!important}
+.installSheetActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.installSheetActions button{margin:0!important}
+#rcCopyInstallLink{margin:0 0 12px!important}
+@media(max-width:520px){#rcInstallSheet{padding:18px!important;border-radius:24px 24px 18px 18px!important}.installSheetActions{grid-template-columns:1fr}.iosInstallStep{grid-template-columns:38px 1fr}.iosStepNum{width:34px;height:34px}}
+html[data-theme="dark"] .iphoneInstallCard{background:#0d1828!important;border-color:#3b82f6!important}

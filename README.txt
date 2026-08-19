@@ -1,31 +1,20 @@
-RES-COM HVAC QR v30.0 — TEAM / SEARCH / THEME CLEANUP
-Build: Aug 19, 2026 11:43 AM
+RES-COM HVAC QR — VERSION 30.2
+Build: Aug 19, 2026 12:11 PM
 
 WHAT CHANGED
-- Replaced the confusing customer Accounts tab + separate Technician/Company User setup with one TEAM account system.
-- The first person who creates an App Account automatically becomes Admin.
-- Every Admin and Tech signs in with their own email and password.
-- New employee self-signups require the current 4-digit company PIN.
-- Only Admins can generate/manage the company PIN.
-- Admins can create users, promote Tech/Admin roles, disable/enable users, and reset passwords.
-- Admin PIN email action prepares one email addressed to all active Admins with the new 4-digit PIN.
-- Customer/Site Name, Customer Email and Customer Phone now save directly on the Equipment record. A separate customer account is no longer required.
-- Equipment search merges locally scanned/created QR units with every equipment record downloaded from Airtable.
-- Fixed the LOADING SHARED EQUIPMENT status so it always finishes as Equipment Ready, Local Equipment Ready, or Cloud Error — Local Equipment Ready.
-- Added WHITE and BLACK appearance choices in Settings.
-- Added strong contrast overrides so white text no longer disappears on white cards.
-- Updated the Home welcome strip to use the Res-Com app logo instead of a generic RC circle.
-- Updated the in-app Manual and Patch Notes for all v30 changes.
-- Old local Technician / Company User / shared-company-PIN identity data is cleared once during the v30 migration. Equipment and service history are NOT deleted.
-- Service History now saves the signed-in App Account email.
+- Easier iPhone/iPad install experience.
+- iPhone Home now shows ADD TO IPHONE.
+- Large three-step Safari guide: Share -> Add to Home Screen -> Add.
+- If opened in another iPhone browser, COPY RES-COM LINK FOR SAFARI provides the clean app URL.
+- One-time first-use iPhone guide, skipped when opening an equipment QR.
+- More -> Install Help reopens the instructions anytime.
+- Dedicated apple-touch-icon.png for a cleaner iPhone Home Screen icon.
+- Core app version synchronized to 30.2 so update checks do not falsely report an older installed version.
+- Automatic Bug & Recovery logging remains enabled.
+- Existing permanent QR links remain compatible.
 
-AIRTABLE CLEANUP / SCHEMA
-- Old legacy Company User records were cleared.
-- Old Customer account records were cleared.
-- App Accounts is the active Res-Com employee account table.
-- Added App Settings for the shared company PIN hash.
-- Added Customer Phone directly to Equipment.
+IMPORTANT FOR IPHONE
+Apple still requires the person to tap Safari's Share button and Add to Home Screen. A website cannot press that system control automatically. Version 30.2 makes those required taps much clearer and easier.
 
-IMPORTANT
-Upload ALL files from this package to the SAME GitHub Pages repository root and replace matching files.
-Do not change the GitHub Pages URL. Existing printed QR labels remain compatible.
+GITHUB UPLOAD
+Upload/replace every file in this folder in the SAME GitHub Pages repository root. Do not change the repository name, Pages address, or QR URL path.

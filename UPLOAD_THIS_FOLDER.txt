@@ -1,6 +1,6 @@
-RES-COM v30.0 FULL UPDATE
+UPLOAD EVERY FILE IN THIS FOLDER TO THE EXISTING Rescom-hvac-qr REPOSITORY ROOT.
 
-Upload every file in this folder to the ROOT of the existing Rescom-hvac-qr GitHub repository.
-Choose Replace/Overwrite for matching files.
+Replace matching files. Add the new apple-touch-icon.png file.
+Keep the SAME GitHub Pages address so printed QR labels keep working.
 
-Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.
+After upload, Res-Com should report APP v30.2 / Aug 19, 2026 12:11 PM.

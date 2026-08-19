@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-team-search-theme-1143";
+const CACHE = "rescom-qr-v30-2-iphone-easy-install";
 const CORE = [
   "./index.html",
   "./version.json",
@@ -6,6 +6,7 @@ const CORE = [
   "./qrcode.min.js",
   "./icon-192.png",
   "./icon-512.png",
+  "./apple-touch-icon.png",
   "./modern-ui.css",
   "./modern-ui.js"
 ];

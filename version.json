@@ -1,5 +1,5 @@
 {
-  "version": "30.0",
-  "build": "Aug 19, 2026 11:43 AM",
-  "notes": "Team employee accounts, Admin-managed company PIN, merged local/cloud equipment search, direct customer fields, black/white themes, fixed print layout, responsive modern UI, updated Home logo, Manual, and Patch Notes."
+  "version": "30.2",
+  "build": "Aug 19, 2026 12:11 PM",
+  "notes": "iPhone Easy Install: dedicated Add to iPhone card, 3-step Safari guide, clean-link copy for Safari, one-time first-use help, Apple touch icon, synchronized app version, preserved QR links, and automatic Bug & Recovery logging."
 }
