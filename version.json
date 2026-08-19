@@ -1,5 +1,5 @@
 {
-  "version": "29.2",
-  "build": "Aug 19, 2026 11:15 AM",
-  "notes": "Full loading recovery: app opens before background update checks, 2.5-second fail-open watchdog, complete upload package, and preserved modern technician UI."
+  "version": "30.0",
+  "build": "Aug 19, 2026 11:43 AM",
+  "notes": "Team employee accounts, Admin-managed company PIN, merged local/cloud equipment search, direct customer fields, black/white themes, fixed print layout, responsive modern UI, updated Home logo, Manual, and Patch Notes."
 }

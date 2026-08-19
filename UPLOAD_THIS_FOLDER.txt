@@ -1,3 +1,6 @@
-UPLOAD ALL FILES IN THIS ZIP TO THE ROOT OF Rescom-hvac-qr.
-Replace existing files when GitHub asks.
-The most important replacements are index.html, service-worker.js, version.json, modern-ui.css, and modern-ui.js.
+RES-COM v30.0 FULL UPDATE
+
+Upload every file in this folder to the ROOT of the existing Rescom-hvac-qr GitHub repository.
+Choose Replace/Overwrite for matching files.
+
+Keep the SAME GitHub Pages URL so existing printed QR labels continue to work.

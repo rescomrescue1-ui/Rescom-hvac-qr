@@ -1,4 +1,4 @@
-/* Res-Com HVAC QR v29 — Modern Field UI */
+/* Res-Com HVAC QR v30 — Modern Field UI */
 :root{
   --rc-bg:#f4f7fb;
   --rc-surface:#ffffff;
@@ -93,7 +93,8 @@ label{color:#344054!important;font-size:13px!important;font-weight:700!important
 #rcWelcomeStrip .copy{min-width:0}
 #rcWelcomeStrip h2{font-size:18px;margin:0;color:#fff!important}
 #rcWelcomeStrip p{font-size:12px;margin:3px 0 0;color:#dbeafe!important}
-#rcWelcomeStrip .avatar{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);display:grid;place-items:center;font-weight:900;flex:0 0 auto}
+#rcWelcomeStrip .avatar{width:46px;height:46px;border-radius:14px;background:#fff;display:grid;place-items:center;flex:0 0 auto;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.16);overflow:hidden}
+#rcWelcomeStrip .avatar img{width:100%;height:100%;display:block;object-fit:contain;border-radius:10px}
 
 /* Equipment list */
 .equipmentManager{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
@@ -228,3 +229,97 @@ label{color:#344054!important;font-size:13px!important;font-weight:700!important
   .print-label{width:3.0in!important;max-width:3.0in!important;border-radius:0!important;box-shadow:none!important;padding:.09in!important}
   .print-label .qr-cell{min-height:0!important}
 }
+
+/* ===== v30 account / team / theme layer ===== */
+html[data-theme="light"],html[data-theme="light"] body{--rc-bg:#f4f7fb;--rc-surface:#fff;--rc-ink:#111827;--rc-muted:#667085;--rc-line:#e4e7ec;background:var(--rc-bg)!important;color:var(--rc-ink)!important}
+html[data-theme="dark"],html[data-theme="dark"] body{--rc-bg:#080b10;--rc-surface:#141922;--rc-ink:#f8fafc;--rc-muted:#c3ccd8;--rc-line:#2d3746;background:var(--rc-bg)!important;color:var(--rc-ink)!important}
+
+html[data-theme="dark"] .appHeader{background:rgba(12,16,23,.95)!important;color:#f8fafc!important;border-bottom-color:#2d3746!important}
+html[data-theme="dark"] .headerCopy h1{color:#f8fafc!important}
+html[data-theme="dark"] .headerCopy p{color:#c3ccd8!important}
+html[data-theme="dark"] #appVersionBadge{background:#17233a!important;color:#9cc7ff!important}
+html[data-theme="dark"] .iconSquare{background:#171d27!important;color:#f8fafc!important;border-color:#344154!important}
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .unit,
+html[data-theme="dark"] .entry,
+html[data-theme="dark"] .account-card,
+html[data-theme="dark"] .manual-section,
+html[data-theme="dark"] .equipment-card,
+html[data-theme="dark"] .maintenanceSummary,
+html[data-theme="dark"] .archiveToggle,
+html[data-theme="dark"] .bug-entry,
+html[data-theme="dark"] .healthRow,
+html[data-theme="dark"] .healthOverall{background:#141922!important;color:#f8fafc!important;border-color:#2d3746!important}
+html[data-theme="dark"] .card h1,html[data-theme="dark"] .card h2,html[data-theme="dark"] .card h3,
+html[data-theme="dark"] .unit h1,html[data-theme="dark"] .unit h2,html[data-theme="dark"] .unit h3,
+html[data-theme="dark"] .entry b,html[data-theme="dark"] .account-card b,html[data-theme="dark"] .manual-section h3,
+html[data-theme="dark"] .equipment-card .equipment-title,html[data-theme="dark"] .bug-entry .bug-message,html[data-theme="dark"] .healthRow h3{color:#f8fafc!important}
+html[data-theme="dark"] .small,html[data-theme="dark"] .photo-note,html[data-theme="dark"] .equipment-meta,html[data-theme="dark"] .manual-section p,html[data-theme="dark"] .manual-section li,html[data-theme="dark"] .equipment-card .equipment-site,html[data-theme="dark"] .bug-entry .small,html[data-theme="dark"] .healthDetail{color:#c3ccd8!important}
+html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#0e131a!important;color:#f8fafc!important;border-color:#3a4657!important}
+html[data-theme="dark"] input::placeholder,html[data-theme="dark"] textarea::placeholder{color:#8995a5!important}
+html[data-theme="dark"] label{color:#e2e8f0!important}
+html[data-theme="dark"] button.outline,html[data-theme="dark"] .outline{background:#151d28!important;color:#9cc7ff!important;border-color:#345b87!important}
+html[data-theme="dark"] button.gray,html[data-theme="dark"] .gray{background:#202834!important;color:#f8fafc!important;border-color:#394658!important}
+html[data-theme="dark"] button.dark,html[data-theme="dark"] .dark{background:#02050a!important;color:#fff!important}
+html[data-theme="dark"] .homeHero button{background:#141922!important;color:#f8fafc!important;border-color:#2d3746!important}
+html[data-theme="dark"] .homeMiniCard{background:#111d2e!important;color:#d7e7fb!important}
+html[data-theme="dark"] .homeMiniCard b{color:#9cc7ff!important}
+html[data-theme="dark"] .equipment-card .equipment-id{background:#0d1219!important;color:#c3ccd8!important}
+html[data-theme="dark"] .equipment-card .openUnitBtn{background:#111d2e!important;color:#9cc7ff!important;border-color:#315783!important}
+html[data-theme="dark"] #globalNav{background:rgba(10,14,20,.97)!important;border-top-color:#2d3746!important}
+html[data-theme="dark"] #globalNav button{color:#aeb9c7!important}
+html[data-theme="dark"] #globalNav button.homeNav,html[data-theme="dark"] #globalNav button.rc-active{background:#12233a!important;color:#8fc1ff!important}
+html[data-theme="dark"] #rcMoreSheet{background:#151b24!important;color:#f8fafc!important}
+html[data-theme="dark"] #rcMoreSheet h3{color:#f8fafc!important}
+html[data-theme="dark"] .rcMoreGrid button{background:#202834!important;color:#f8fafc!important;border-color:#394658!important}
+html[data-theme="dark"] .printOptions{background:#141922!important;border-color:#2d3746!important}
+html[data-theme="dark"] .quickQty button{background:#202834!important;color:#f8fafc!important;border-color:#394658!important}
+html[data-theme="dark"] #rcPrintSummary{color:#c3ccd8!important}
+
+/* Printed labels are always white/black regardless of app theme. */
+.print-label,.print-label *{color:#111827!important}
+.print-label{background:#fff!important}
+.print-label .tech-only{color:#b42318!important}
+
+/* V30 sign-in / first-admin gate */
+#pinGate .v30Gate{width:min(460px,100%)!important;background:#fff!important;color:#111827!important;border:0!important;border-radius:26px!important;padding:24px!important;box-shadow:0 25px 70px rgba(0,0,0,.32)!important}
+#pinGate .v30Gate h2,#pinGate .v30Gate h3{color:#111827!important;text-align:center}
+#pinGate .v30Gate p{color:#667085!important;text-align:center}
+#pinGate .v30Gate label{color:#344054!important;text-align:left!important;display:block}
+#pinGate .v30Gate input,#pinGate .v30Gate select{background:#f8fafc!important;color:#111827!important;border:1px solid #d0d5dd!important;letter-spacing:normal!important;text-align:left!important;font-size:16px!important;font-weight:500!important}
+.v30GateLogo{width:70px;height:70px;object-fit:contain;display:block;margin:0 auto 12px;border-radius:18px;background:#fff}
+#v30CreateBox{margin-top:10px;padding-top:4px}
+#v30SignupCompanyPin{letter-spacing:6px!important;text-align:center!important;font-size:24px!important;font-weight:900!important}
+#v30GateMsg{min-height:18px;margin-top:8px;color:#b42318!important;text-align:center}
+
+/* Team screen */
+.teamCard{max-width:760px;margin:0 auto!important}
+.teamMe{display:flex;flex-direction:column;gap:3px;background:#eef5ff;border:1px solid #d8e8fb;border-radius:16px;padding:13px 14px;margin:12px 0}
+.teamMe b{color:#174ea6!important}.teamMe span{color:#475467!important;font-size:12px}
+.teamRow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rc-line)}
+.teamRow:last-child{border-bottom:0}.teamRow>div:first-child{min-width:0}.teamRow b{display:block;color:var(--rc-ink)!important}.teamRow span{display:block;color:var(--rc-muted)!important;font-size:12px;word-break:break-word}
+.teamActions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.teamActions button{width:auto!important;min-height:38px!important;margin:0!important;padding:7px 9px!important;font-size:11px!important}
+.adminPanel{margin:12px 0!important}.companyPinResult{padding:12px;border-radius:14px;background:#fff7d6;border:1px solid #e9c84c;margin:8px 0;color:#5f4a00!important}.companyPinResult b,.companyPinResult span{color:inherit!important}
+html[data-theme="dark"] .teamMe{background:#111d2e;border-color:#315783}.teamMe b{color:#174ea6!important}html[data-theme="dark"] .teamMe b{color:#9cc7ff!important}html[data-theme="dark"] .teamMe span{color:#c3ccd8!important}
+html[data-theme="dark"] .companyPinResult{background:#342c10;border-color:#8f741c;color:#ffeaa3!important}
+
+/* Appearance choice */
+.themeChoices{display:grid;grid-template-columns:1fr 1fr;gap:8px}.themeChoices button{margin:0!important;background:#f2f4f7!important;color:#344054!important;border:1px solid #d0d5dd!important}.themeChoices button.selected{background:#0b63d8!important;color:#fff!important;border-color:#0b63d8!important}
+html[data-theme="dark"] .themeChoices button{background:#202834!important;color:#f8fafc!important;border-color:#394658!important}
+html[data-theme="dark"] .themeChoices button.selected{background:#0b63d8!important;color:#fff!important;border-color:#4f9bff!important}
+
+/* Hide old identity controls so there is only one Team system. */
+#companyUsersAdmin,#newCompanyPin,#confirmCompanyPin,#changeCompanyPin,#lockAppNow,#techNameInput,#addTechnician,#technicianList{display:none!important}
+
+/* Make status messages fit and never look like a permanent loading state. */
+#syncBadge{max-width:min(72vw,420px);white-space:normal;text-align:left;line-height:1.2}
+
+/* Strong contrast safety net */
+html[data-theme="light"] .card p,html[data-theme="light"] .card div,html[data-theme="light"] .card span,html[data-theme="light"] .card li{color:#344054}
+html[data-theme="light"] .card h1,html[data-theme="light"] .card h2,html[data-theme="light"] .card h3,html[data-theme="light"] .card b,html[data-theme="light"] .card strong{color:#111827}
+html[data-theme="dark"] .card p,html[data-theme="dark"] .card div,html[data-theme="dark"] .card span,html[data-theme="dark"] .card li{color:#d5dde7}
+html[data-theme="dark"] .card h1,html[data-theme="dark"] .card h2,html[data-theme="dark"] .card h3,html[data-theme="dark"] .card b,html[data-theme="dark"] .card strong{color:#f8fafc}
+/* keep button text and status colors intentional */
+button,button *,#syncBadge,#syncBadge *,#appVersionBadge,#appVersionBadge *,#rcWelcomeStrip,#rcWelcomeStrip *,#rcCustomerNotice,#rcCustomerNotice *,#updateBanner,#updateBanner *{color:inherit!important}
+
+@media(max-width:620px){.teamRow{grid-template-columns:1fr}.teamActions{justify-content:flex-start}.teamActions button{flex:1 1 auto}.themeChoices{grid-template-columns:1fr 1fr}}

@@ -7,10 +7,22 @@
   "orientation": "any",
   "background_color": "#f4f7fb",
   "theme_color": "#0b63d8",
-  "description": "Fast technician-focused HVAC equipment QR and service history app.",
-  "categories": ["business", "productivity", "utilities"],
+  "description": "Res-Com technician HVAC QR service-history app with Team accounts and responsive light/dark themes.",
+  "categories": [
+    "business",
+    "productivity",
+    "utilities"
+  ],
   "icons": [
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }

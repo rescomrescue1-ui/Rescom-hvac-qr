@@ -9,6 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Res-Com HVAC QR</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("rescom_theme_v30")||"light"}catch(e){document.documentElement.dataset.theme="light"}</script>
 <style>
 *{box-sizing:border-box}
 :root{--orange:#f97316;--bg:#f3f4f6;--ink:#1f2937;--muted:#6b7280;--green:#15803d;--red:#b91c1c}
@@ -523,7 +524,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=29.2">
+<link rel="stylesheet" href="./modern-ui.css?v=30.0">
 </head>
 <body>
 <div id="loadingScreen">
@@ -532,7 +533,7 @@ body{padding-bottom:88px!important}
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
     <div id="loadingStatus">Opening Res-Com…</div>
-    <div id="loadingVersion" class="small">Installed v29.2</div>
+    <div id="loadingVersion" class="small">Installed v30.0</div>
   </div>
 </div>
 <script>
@@ -563,7 +564,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v29.2 • UPDATED Aug 19, 2026 11:15 AM</span>
+    <span id="appVersionBadge">APP v30.0 • UPDATED Aug 19, 2026 11:43 AM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -683,7 +684,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
       <button class="outline manualJump" type="button" data-target="m-token">Airtable Token</button>
       <button class="outline manualJump" type="button" data-target="m-qr">QR Workflow</button>
       <button class="outline manualJump" type="button" data-target="m-service">Service History</button>
-      <button class="outline manualJump" type="button" data-target="m-accounts">Accounts</button>
+      <button class="outline manualJump" type="button" data-target="m-accounts">Team</button>
       <button class="outline manualJump" type="button" data-target="m-bugs">Bug Center</button>
       <button class="outline manualJump" type="button" data-target="m-health">System Health</button>
       <button class="outline manualJump" type="button" data-target="m-help">Troubleshooting</button>
@@ -691,73 +692,76 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
     
     <div class="manual-section">
-      <h3>Company Access</h3>
-      <p>For now, Res-Com uses the 4-digit company PIN instead of individual passwords, phone-number login, password reset, or Face ID.</p>
-      <p>Enter the company PIN when the app opens or when a protected equipment QR is opened.</p>
-      <p>Company User profiles remain available for technician names and Admin/Technician organization.</p>
+      <h3>Company Access — v30</h3>
+      <p>Every Res-Com Admin and Tech now signs in with their own <b>email and password</b>. The first App Account created becomes Admin automatically.</p>
+      <p>New employee self-signups require the current <b>4-digit company PIN</b>. The PIN is only for authorizing new employee account creation; it is not the employee login password.</p>
+      <p>Admins manage the Team list, roles, account status, temporary password resets, and the company PIN.</p>
     </div>
-<div class="manual-section" id="m-start">
+
+    <div class="manual-section" id="m-start">
       <h3>1. Getting Started</h3>
-      <p>The Home screen is now a simple QR dashboard. Use it to create blank QR labels, search a QR by ID/link, open Camera scan instructions, or report a problem. The Equipment tab contains the full searchable equipment manager.</p>
-      <p><b>New device:</b> open the Res-Com app, enter the company PIN, then open Settings and save the Airtable token to that device.</p>
+      <p>The Home screen is a simple QR dashboard with the Res-Com logo and fast actions to create labels, search a QR by ID/link, open Camera scan instructions, or report a problem. The Equipment tab contains the full searchable equipment manager.</p>
+      <p><b>First setup:</b> connect the device with the restricted Res-Com Airtable token. If no App Account exists yet, the first person creates the first Admin account. After that, Admins and Techs sign in with their own email and password.</p>
+      <p>The app is responsive for phone, tablet, and desktop layouts and keeps the same GitHub Pages address so existing printed QR labels continue to work.</p>
     </div>
 
     <div class="manual-section">
       <h3>2. Company PIN</h3>
-      <p>The 4-digit company PIN protects equipment records from casual access. The current default PIN is <b>2468</b>. It can be changed in Settings.</p>
-      <p>The PIN is different from the Airtable token. The PIN unlocks the app. The Airtable token authorizes cloud access.</p>
+      <p>The 4-digit company PIN is now an <b>Admin-managed employee signup code</b>. It is required when a new Tech creates an account from the sign-in screen.</p>
+      <p>Admins can generate a new PIN from Team and prepare an email to the active Admins with the new code. Keep the PIN with Res-Com staff only.</p>
+      <p>The PIN is different from an employee password and different from the Airtable token.</p>
     </div>
 
     <div class="manual-section" id="m-token">
       <h3>3. What the Airtable Token Is</h3>
-      <p>The Airtable token is a private digital key. It allows the Res-Com app to read and write the company Airtable database over the internet.</p>
-      <p><b>Internet = connection.</b> Wi-Fi or cellular data gives the phone internet access.</p>
-      <p><b>Token = permission.</b> The token proves the app is authorized to use the Res-Com Airtable records.</p>
-      <p>To connect a new device: Settings → paste token → SAVE TOKEN TO THIS DEVICE → VERIFY TOKEN ON THIS DEVICE.</p>
+      <p>The Airtable token is a private digital key that allows the Res-Com app to read and write the company Airtable database over the internet.</p>
+      <p><b>Internet = connection.</b> Wi-Fi or cellular data gives the phone internet access. <b>Token = permission.</b> The token proves the app is authorized to use the Res-Com records.</p>
+      <p>On a device that has never been connected, an Admin enters the restricted token once in the Connect This Device screen. The token stays on that device.</p>
       <p class="small">Do not put the token in GitHub source code, QR labels, customer emails, or public documents.</p>
     </div>
 
     <div class="manual-section">
       <h3>4. Online and Offline</h3>
-      <p>When the phone is online and the token is valid, equipment and history sync with Airtable. Without internet, cloud records cannot refresh and photos cannot upload.</p>
+      <p>When the phone is online and the token is valid, equipment and history sync with Airtable. Without internet, cloud records cannot refresh and photos cannot upload. Saved local equipment remains available as a fallback.</p>
     </div>
 
     <div class="manual-section" id="m-qr">
       <h3>5. QR Workflow & Printing</h3>
-      <p><b>Create Blank QR Label</b> opens the label printer. Choose 1 label or enter a quantity up to 50. Every label receives a different permanent RC code.</p>
-      <p>The printed label now shows <b>QR CODE: RC-…</b> directly underneath the QR so the equipment can still be searched if the camera cannot scan it.</p>
+      <p><b>Create Blank QR Label</b> opens the label printer. Choose 1 label or enter a quantity up to 50, then generate the labels. Every generated label receives a different permanent RC code.</p>
+      <p>Print labels use a fixed, centered two-column Letter layout so each QR tag keeps the same width, height, QR size, and spacing.</p>
+      <p>The printed label shows <b>QR CODE: RC-…</b> directly underneath the QR so the equipment can still be searched if the camera cannot scan it.</p>
       <p><b>Search QR by ID</b> accepts either the printed RC code or the complete QR web link copied from Safari.</p>
-      <p>When the phone Camera opens a Res-Com QR in Safari, you can copy the QR ID or full QR link and paste it into Search QR by ID inside the app.</p>
+      <p>When the phone Camera opens a Res-Com QR in Safari, copy the QR ID or full QR link and paste it into Search QR by ID inside the app.</p>
     </div>
 
     <div class="manual-section">
       <h3>6. Creating New Equipment</h3>
       <ol>
         <li>Tap Create Blank QR Label.</li>
-        <li>Print and place the QR on one unit.</li>
+        <li>Choose the quantity, generate the labels, then print and place one QR on each unit.</li>
         <li>Open the Unit ID through the QR workflow.</li>
-        <li>Enter account, equipment type, manufacturer, model, serial, location, dates, notes, and photos.</li>
+        <li>Enter Customer / Site Name, Customer Email, Customer Phone, equipment type, manufacturer, model, serial, location, dates, notes, and photos.</li>
         <li>Save and confirm cloud sync.</li>
       </ol>
-      <p>Equipment Type can be selected from suggestions or typed manually.</p>
+      <p>Customer information now saves directly on the Equipment record; a separate customer Account is no longer required. Equipment Type can be selected from suggestions or typed manually.</p>
     </div>
 
     <div class="manual-section" id="m-accounts">
-      <h3>Accounts</h3>
-      <p>Tap <b>ACCOUNTS</b> from the bottom navigation to create, search, and view customer/company accounts.</p>
-      <p><b>Tap any account card to open it.</b> From the account screen you can edit Account Name, Email, Phone, and Notes.</p>
-      <p>Multiple equipment records can use the same customer account. Account Email is used for warranty and maintenance reminder emails.</p>
+      <h3>7. Team Accounts</h3>
+      <p>Tap <b>TEAM</b> from the bottom navigation to view the signed-in employee and the Res-Com employee account list.</p>
+      <p>The first App Account is Admin. New self-signups use the company PIN and start as Tech. Admins can create employees, switch Tech/Admin roles, disable or enable accounts, reset a temporary password, and generate the company PIN.</p>
+      <p>Each employee signs in with their own email and password. Service History saves the signed-in App Account email so entries are tied to the technician who performed the work.</p>
     </div>
 
     <div class="manual-section" id="m-service">
       <h3>8. Service History</h3>
       <p>Open an equipment record and add one of these entries: Service Call, Tune-Up / Preventive Maintenance, or Parts Replacement.</p>
-      <p>Select the technician, enter notes, parts information when needed, and add service photos.</p>
+      <p>Enter the work notes, parts information when needed, and add service photos. The signed-in Res-Com App Account is used as the technician identity and email on new cloud history entries.</p>
     </div>
 
     <div class="manual-section">
       <h3>9. Warranty and Maintenance</h3>
-      <p>Enter Warranty Expiration and Next Maintenance Due on each equipment record. Automated daily checks can email the Account Email when either date is due.</p>
+      <p>Enter Warranty Expiration and Next Maintenance Due on each equipment record. Automated daily checks can email the Customer Email when either date is due.</p>
     </div>
 
     <div class="manual-section">
@@ -767,14 +771,15 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
     </div>
 
     <div class="manual-section">
-      <h3>11. App Updates</h3>
-      <p>Settings includes CHECK FOR APP UPDATE, System Health, and Patch Notes. Keep the same GitHub Pages web address so existing printed QR labels continue to work.</p>
+      <h3>11. App Updates & Appearance</h3>
+      <p>Settings includes CHECK FOR APP UPDATE, System Health, Patch Notes, and WHITE / BLACK appearance choices. Strong contrast rules keep text readable in either appearance.</p>
+      <p>Keep the same GitHub Pages web address so existing printed QR labels continue to work.</p>
     </div>
 
     <div class="manual-section">
       <h3>Bottom Navigation</h3>
-      <p>The bottom bar is swipeable left/right in portrait mode. Tabs are Home, Equipment, Accounts, Settings, Manual, Patch Notes, and Bugs.</p>
-      <p>Swipe across the bottom bar to reach any tab without rotating the phone.</p>
+      <p>The main tabs are Home, Equipment, Team, and Bugs. The More menu contains Settings, Manual, What’s New, and System Health.</p>
+      <p>The layout is touch-friendly and responsive across phones, tablets, and desktop screens.</p>
     </div>
 <div class="manual-section">
       <h3>Loading Screen & Automatic Update Check</h3>
@@ -899,6 +904,21 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 30.0</h3>
+      <p><b>Released:</b> Aug 19, 2026 11:43 AM</p>
+      <p>• Replaced the old customer Accounts / separate technician setup with one TEAM employee account system.</p>
+      <p>• The first App Account becomes Admin; every Admin and Tech now signs in with their own email and password.</p>
+      <p>• New employee self-signups require the Admin-managed 4-digit company PIN.</p>
+      <p>• Admins can create employees, manage Tech/Admin roles, disable or enable users, reset temporary passwords, and generate/email the company PIN.</p>
+      <p>• Customer / Site Name, Customer Email, and Customer Phone now save directly on Equipment instead of requiring a separate customer account.</p>
+      <p>• Equipment search now merges locally created/scanned QR units with equipment downloaded from Airtable.</p>
+      <p>• Fixed the LOADING SHARED EQUIPMENT status so it always finishes with a clear ready or local fallback state.</p>
+      <p>• Added WHITE and BLACK appearance choices with stronger text contrast.</p>
+      <p>• Improved the modern responsive phone/tablet/desktop layout, technician-only QR notice, fixed-size multi-label printing, and Home branding.</p>
+      <p>• The Home welcome strip now displays the Res-Com app logo instead of a generic RC circle.</p>
+      <p>• Updated the in-app Manual for all v30 changes.</p>
+    </div>
     <div class="unit">
       <h3>Version 29.2</h3>
       <p><b>Released:</b> Aug 19, 2026 11:15 AM</p>
@@ -1279,8 +1299,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="29.2";
-const APP_BUILD="Aug 19, 2026 11:15 AM";
+const APP_VERSION="30.0";
+const APP_BUILD="Aug 19, 2026 11:43 AM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -2344,7 +2364,7 @@ async function saveHistory(u,e){
     if(!r)throw new Error("Equipment record missing");
     const fields={
       [H.id]:e.id,[H.equipment]:[r.id],[H.date]:e.date,[H.tech]:e.tech,[H.type]:e.kind,
-      [H.work]:e.notes,[H.part]:e.part||"",[H.partnotes]:e.partnotes||""
+      [H.work]:e.notes,[H.part]:e.part||"",[H.partnotes]:e.partnotes||"",[H.userEmail]:currentUser()?.email||null
     };
     const created=await api(HIST_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
     e.rid=created.records?.[0]?.id||null;
@@ -2378,7 +2398,7 @@ async function flushQueue(){
         if(!r){await saveEquipment(u);r=await findRemoteEquipment(u.id)}
         const fields={
           [H.id]:op.data.id,[H.equipment]:[r.id],[H.date]:op.data.date,[H.tech]:op.data.tech,[H.type]:op.data.kind,
-          [H.work]:op.data.notes,[H.part]:op.data.part||"",[H.partnotes]:op.data.partnotes||""
+          [H.work]:op.data.notes,[H.part]:op.data.part||"",[H.partnotes]:op.data.partnotes||"",[H.userEmail]:currentUser()?.email||null
         };
         const check=new URLSearchParams({filterByFormula:`{Entry ID}='${formulaEscape(op.data.id)}'`,maxRecords:"1"});
         const exists=(await api(HIST_TABLE+"?"+check.toString())).records?.[0];
@@ -3021,7 +3041,311 @@ async function bootResCom(){
     else show("home");
   }
 }
-bootResCom();
+
+
+/* =========================
+   RES-COM v30 ACCOUNT / EQUIPMENT CORE
+   ========================= */
+const APP_ACCOUNTS_TABLE="tblFxZShPnLovWNwE";
+const APP_SETTINGS_TABLE="tblKs7fDb0DLJ1OYy";
+const AF={
+  id:"fldAmhY6QtwgILeeV",name:"flddg7EPQQxzmE7be",email:"fldoUUB6vbyAsBvmj",role:"fldw7aj2CiiQd0dtO",status:"flddoDG7MEU255yYB",
+  salt:"fld3Nvg0KRyR0i7fw",hash:"fldGc8I8CTeVupdFI",created:"fldUZ7TN62RFhQjMu",createdBy:"fldJL0hUuqxbJcJww",lastLogin:"fldKhsusSHqzrzIps",notes:"fldQUooRjtgboxtHj"
+};
+const SF={key:"fld7GuhFfMGnQM8Ei",value:"fldJwQjXIt7UVkcRN",updated:"fldiF3SH7PTJKvJlZ",updatedBy:"fldR6Z3HI8fV000OE"};
+F.customerPhone="fldBjZ32JRGqU6wyq";
+const V30_MIGRATION_KEY="rescom_v30_identity_cleanup_done";
+const V30_THEME_KEY="rescom_theme_v30";
+
+function normalizeRole(v){return typeof v==="string"?v:(v?.name||"")}
+function normalizeStatus(v){return typeof v==="string"?v:(v?.name||"")}
+function accountFromRecord(r){
+  const f=r?.fields||{};
+  return {
+    recordId:r?.id||"",accountId:f["Account ID"]||"",name:f["Account Name"]||"Res-Com User",
+    email:(f["Email"]||"").toLowerCase(),role:normalizeRole(f["Role"])||"Tech",status:normalizeStatus(f["Status"])||"Active",
+    salt:f["Password Salt"]||"",hash:f["Password Hash"]||"",createdAt:f["Created At"]||"",lastLogin:f["Last Login"]||""
+  };
+}
+async function allAppAccountRecords(){
+  if(!token())throw new Error("Save the Res-Com Airtable token on this device first.");
+  let offset="",out=[];
+  do{
+    const p=new URLSearchParams({pageSize:"100"});if(offset)p.set("offset",offset);
+    const d=await api(APP_ACCOUNTS_TABLE+"?"+p.toString());
+    out.push(...(d.records||[]));offset=d.offset||"";
+  }while(offset);
+  return out;
+}
+async function allAppAccounts(){return (await allAppAccountRecords()).map(accountFromRecord)}
+async function findAppAccountByEmail(email){
+  const e=String(email||"").trim().toLowerCase();
+  return (await allAppAccounts()).find(x=>x.email===e)||null;
+}
+function accountIdV30(){return "AC-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
+function randomSaltV30(){const a=crypto.getRandomValues(new Uint8Array(16));return Array.from(a).map(b=>b.toString(16).padStart(2,"0")).join("")}
+async function passwordHashV30(password,saltHex){
+  const enc=new TextEncoder();
+  const key=await crypto.subtle.importKey("raw",enc.encode(password),"PBKDF2",false,["deriveBits"]);
+  const salt=new Uint8Array((saltHex.match(/.{1,2}/g)||[]).map(x=>parseInt(x,16)));
+  const bits=await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt,iterations:120000},key,256);
+  return Array.from(new Uint8Array(bits)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function createAppAccountV30({name,email,password,role="Tech",createdBy="Self signup"}){
+  name=String(name||"").trim();email=String(email||"").trim().toLowerCase();password=String(password||"");
+  if(!name)throw new Error("Enter your name.");
+  if(!/^\S+@\S+\.\S+$/.test(email))throw new Error("Enter a valid email address.");
+  if(password.length<6)throw new Error("Password must be at least 6 characters.");
+  if(await findAppAccountByEmail(email))throw new Error("An account already exists for that email.");
+  const salt=randomSaltV30();const hash=await passwordHashV30(password,salt);const now=new Date().toISOString();
+  const fields={
+    [AF.id]:accountIdV30(),[AF.name]:name,[AF.email]:email,[AF.role]:role,[AF.status]:"Active",
+    [AF.salt]:salt,[AF.hash]:hash,[AF.created]:now,[AF.createdBy]:createdBy
+  };
+  const d=await api(APP_ACCOUNTS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+  return accountFromRecord(d.records?.[0]||{fields:{"Account Name":name,"Email":email,"Role":role,"Status":"Active","Password Salt":salt,"Password Hash":hash}});
+}
+async function loginAppAccountV30(email,password){
+  const acct=await findAppAccountByEmail(email);
+  if(!acct)throw new Error("No Res-Com account was found for that email.");
+  if(acct.status!=="Active")throw new Error("This account is not active. Contact a Res-Com Admin.");
+  const got=await passwordHashV30(String(password||""),acct.salt);
+  if(got!==acct.hash)throw new Error("Incorrect password.");
+  try{await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields:{[AF.lastLogin]:new Date().toISOString()}}],typecast:true})})}catch(e){}
+  saveCurrentUser(acct);
+  return acct;
+}
+async function getAppSettingV30(key){
+  const d=await api(APP_SETTINGS_TABLE+"?pageSize=100");
+  const r=(d.records||[]).find(x=>(x.fields?.["Setting Key"]||"")===key);
+  return r?{recordId:r.id,value:r.fields?.["Setting Value"]||""}:null;
+}
+async function setAppSettingV30(key,value){
+  const existing=await getAppSettingV30(key);const me=currentUser();const fields={[SF.key]:key,[SF.value]:value,[SF.updated]:new Date().toISOString(),[SF.updatedBy]:me?.email||null};
+  if(existing)return api(APP_SETTINGS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:existing.recordId,fields}],typecast:true})});
+  return api(APP_SETTINGS_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+}
+async function verifyCompanyPinV30(pin){
+  if(!/^\d{4}$/.test(String(pin||"")))return false;
+  const s=await getAppSettingV30("company_pin_hash");if(!s?.value)return false;
+  return (await sha256Text(String(pin)))===s.value;
+}
+function adminEmailLinkV30(pin,emails){
+  const list=[...new Set((emails||[]).filter(Boolean))];
+  const subject=encodeURIComponent("Res-Com HVAC QR — New Company PIN");
+  const body=encodeURIComponent("Res-Com Admins,\n\nThe company 4-digit account-creation PIN has been changed.\n\nNew PIN: "+pin+"\n\nKeep this PIN with Admins only. Technicians should use their own email/password account to sign in.\n\nRes-Com HVAC QR");
+  return "mailto:"+encodeURIComponent(list.join(","))+"?subject="+subject+"&body="+body;
+}
+async function rotateCompanyPinV30({autoEmail=false}={}){
+  const me=currentUser();if(!me||me.role!=="Admin")throw new Error("Admin access is required to change the company PIN.");
+  const pin=String(crypto.getRandomValues(new Uint32Array(1))[0]%9000+1000);
+  await setAppSettingV30("company_pin_hash",await sha256Text(pin));
+  const admins=(await allAppAccounts()).filter(a=>a.role==="Admin"&&a.status==="Active"&&a.email);
+  const result=$("companyPinResult");
+  if(result){result.classList.remove("hidden");result.innerHTML=`<b>NEW COMPANY PIN: <span class="mono">${esc(pin)}</span></b><br><span class="small">Only Admins should keep this PIN. It is used to authorize new employee account creation.</span>`}
+  window.__lastCompanyPinV30=pin;window.__lastAdminEmailsV30=admins.map(a=>a.email);
+  if(autoEmail){
+    setTimeout(()=>{try{location.href=adminEmailLinkV30(pin,window.__lastAdminEmailsV30)}catch(e){}},150);
+  }
+  return pin;
+}
+function emailLastCompanyPinV30(){
+  if(!window.__lastCompanyPinV30){alert("Rotate the company PIN first.");return}
+  location.href=adminEmailLinkV30(window.__lastCompanyPinV30,window.__lastAdminEmailsV30||[]);
+}
+
+function migrateV30Identity(){
+  if(localStorage.getItem(V30_MIGRATION_KEY)==="yes")return;
+  try{
+    localStorage.removeItem("rescom_technicians_v1");
+    localStorage.removeItem("rescom_current_company_user_simple_v1");
+    localStorage.removeItem("rescom_company_pin_hash_v1");
+    sessionStorage.removeItem("rescom_company_unlocked_v1");
+    localStorage.removeItem("rescom_onboarded_v29");
+    const units=loadLocal().map(u=>({...u,site:u.site||u.accountName||"",accountRecordId:"",accountName:""}));
+    saveLocal(units);
+  }catch(e){}
+  localStorage.setItem(V30_MIGRATION_KEY,"yes");
+}
+
+function accountGateHTMLV30(mode,firstAdmin=false,msg=""){
+  if(mode==="token")return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Connect This Device</h2><p>One-time Admin setup: enter the restricted Res-Com Airtable token. It stays on this device.</p><label>Airtable Token</label><input id="v30GateToken" type="password" autocomplete="off" placeholder="pat..."><button class="orange" id="v30SaveToken" type="button">CONNECT DEVICE</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  if(firstAdmin)return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Create the First Res-Com Account</h2><p>The first person to create an account automatically becomes <b>Admin</b>.</p><label>Your Name</label><input id="v30CreateName" autocomplete="name"><label>Email</label><input id="v30CreateEmail" type="email" autocomplete="email"><label>Password</label><input id="v30CreatePassword" type="password" autocomplete="new-password"><button class="orange" id="v30CreateFirstAdmin" type="button">CREATE ADMIN ACCOUNT</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins use their own account.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username"><label>Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password"><button class="orange" id="v30LoginBtn" type="button">SIGN IN</button><button class="outline" id="v30ShowCreate" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30CreateBox" class="hidden"><hr><h3>Create Employee Account</h3><p class="small">Ask an Admin for the current 4-digit company PIN. New accounts start as Tech.</p><label>Name</label><input id="v30SignupName"><label>Email</label><input id="v30SignupEmail" type="email"><label>Password</label><input id="v30SignupPassword" type="password"><label>4-Digit Company PIN</label><input id="v30SignupCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*"><button class="orange" id="v30SignupBtn" type="button">CREATE TECH ACCOUNT</button></div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+}
+async function renderAccountGateV30(msg=""){
+  const gate=$("pinGate");if(!gate)return;
+  gate.classList.remove("hidden");
+  gate.innerHTML=accountGateHTMLV30(!token()?"token":"login",false,msg);
+  if(!token()){
+    $("v30SaveToken")?.addEventListener("click",async()=>{
+      const t=($("v30GateToken")?.value||"").trim();if(!t){$("v30GateMsg").textContent="Enter the Airtable token.";return}
+      localStorage.setItem(TOKEN,t);
+      try{await allAppAccounts();await renderAccountGateV30()}catch(e){localStorage.removeItem(TOKEN);await renderAccountGateV30("That token could not connect to the Res-Com database.")}
+    });return;
+  }
+  try{
+    const accounts=await allAppAccounts();
+    if(!accounts.length){
+      gate.innerHTML=accountGateHTMLV30("login",true,msg);
+      $("v30CreateFirstAdmin")?.addEventListener("click",async()=>{
+        const btn=$("v30CreateFirstAdmin");if(btn){btn.disabled=true;btn.textContent="CREATING ADMIN…"}
+        try{
+          const a=await createAppAccountV30({name:$("v30CreateName").value,email:$("v30CreateEmail").value,password:$("v30CreatePassword").value,role:"Admin",createdBy:"First account bootstrap"});
+          saveCurrentUser(a);gate.classList.add("hidden");show("home");applyCurrentUserUI();try{await rotateCompanyPinV30({autoEmail:true})}catch(e){}
+          try{await refreshSharedEquipment()}catch(e){};window.rescomRefreshModernUI?.();
+        }catch(e){$("v30GateMsg").textContent=e.message||String(e);if(btn){btn.disabled=false;btn.textContent="CREATE ADMIN ACCOUNT"}}
+      });return;
+    }
+  }catch(e){
+    gate.innerHTML=accountGateHTMLV30("token",false,"Cloud connection failed. Re-enter the Airtable token for this device.");
+    $("v30SaveToken")?.addEventListener("click",async()=>{localStorage.setItem(TOKEN,($("v30GateToken")?.value||"").trim());await renderAccountGateV30()});return;
+  }
+  $("v30LoginBtn")?.addEventListener("click",async()=>{
+    const b=$("v30LoginBtn");if(b){b.disabled=true;b.textContent="SIGNING IN…"}
+    try{await loginAppAccountV30($("v30LoginEmail").value,$("v30LoginPassword").value);gate.classList.add("hidden");show("home");applyCurrentUserUI();await refreshSharedEquipment();window.rescomRefreshModernUI?.()}
+    catch(e){$("v30GateMsg").textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="SIGN IN"}}
+  });
+  $("v30ShowCreate")?.addEventListener("click",()=>$("v30CreateBox")?.classList.toggle("hidden"));
+  $("v30SignupBtn")?.addEventListener("click",async()=>{
+    const b=$("v30SignupBtn");if(b){b.disabled=true;b.textContent="CREATING…"}
+    try{
+      const ok=await verifyCompanyPinV30($("v30SignupCompanyPin").value);if(!ok)throw new Error("Incorrect company PIN. Ask an Admin for the current 4-digit PIN.");
+      const a=await createAppAccountV30({name:$("v30SignupName").value,email:$("v30SignupEmail").value,password:$("v30SignupPassword").value,role:"Tech",createdBy:"Company PIN signup"});
+      saveCurrentUser(a);gate.classList.add("hidden");show("home");applyCurrentUserUI();await refreshSharedEquipment();window.rescomRefreshModernUI?.();
+    }catch(e){$("v30GateMsg").textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="CREATE TECH ACCOUNT"}}
+  });
+}
+
+clearCurrentUser = function(){localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI()};
+
+async function updateAccountV30(acct,fields){
+  await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields}],typecast:true})});
+}
+async function renderTeamV30(){
+  const box=$("accountsScreen");if(!box)return;
+  const me=currentUser();if(!me){await renderAccountGateV30();return}
+  let accounts=[];try{accounts=await allAppAccounts()}catch(e){}
+  const admin=me.role==="Admin";
+  box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><div class="sectionTitleRow"><div><h2>Team</h2><p class="small">One simple account list for Res-Com Admins and Techs.</p></div><span class="badge ${admin?"synced":"pending"}">${esc(me.role)}</span></div>
+    <div class="teamMe"><b>${esc(me.name)}</b><span>${esc(me.email)}</span></div>
+    ${admin?`<div class="unit adminPanel"><h3>Admin Controls</h3><p class="small">Only Admins can manage the company PIN or other employee accounts.</p><button class="orange" id="rotateCompanyPin" type="button">GENERATE NEW 4-DIGIT COMPANY PIN</button><div id="companyPinResult" class="hidden companyPinResult"></div><button class="outline" id="emailCompanyPin" type="button">EMAIL NEW PIN TO ALL ADMINS</button><hr><h3>Add Employee</h3><label>Name</label><input id="teamNewName"><label>Email</label><input id="teamNewEmail" type="email"><label>Temporary Password</label><input id="teamNewPassword" type="password"><label>Role</label><select id="teamNewRole"><option value="Tech">Tech</option><option value="Admin">Admin</option></select><button class="orange" id="teamCreateAccount" type="button">CREATE EMPLOYEE ACCOUNT</button></div>`:""}
+    <div class="unit"><h3>Company Accounts</h3><div id="teamList">${accounts.length?accounts.map(a=>`<div class="teamRow"><div><b>${esc(a.name)}</b><span>${esc(a.email)} • ${esc(a.role)} • ${esc(a.status)}</span></div>${admin&&a.accountId!==me.accountId?`<div class="teamActions"><button class="outline teamRoleBtn" data-id="${esc(a.accountId)}" type="button">${a.role==="Admin"?"MAKE TECH":"MAKE ADMIN"}</button><button class="gray teamStatusBtn" data-id="${esc(a.accountId)}" type="button">${a.status==="Active"?"DISABLE":"ENABLE"}</button><button class="gray teamResetBtn" data-id="${esc(a.accountId)}" type="button">RESET PASSWORD</button></div>`:""}</div>`).join(""):"<p class='small'>No accounts found.</p>"}</div></div>
+    <button class="gray" id="teamLogout" type="button">SIGN OUT</button></div>`;
+  bindHome();
+  $("teamLogout")?.addEventListener("click",()=>{clearCurrentUser();renderAccountGateV30("Signed out.")});
+  if(admin){
+    $("rotateCompanyPin")?.addEventListener("click",async()=>{try{const pin=await rotateCompanyPinV30();alert("New company PIN: "+pin+"\n\nUse Email New PIN to All Admins to send it.")}catch(e){alert(e.message)}});
+    $("emailCompanyPin")?.addEventListener("click",emailLastCompanyPinV30);
+    $("teamCreateAccount")?.addEventListener("click",async()=>{try{await createAppAccountV30({name:$("teamNewName").value,email:$("teamNewEmail").value,password:$("teamNewPassword").value,role:$("teamNewRole").value,createdBy:me.email});await renderTeamV30()}catch(e){alert(e.message)}});
+    box.querySelectorAll(".teamRoleBtn").forEach(btn=>btn.addEventListener("click",async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;await updateAccountV30(a,{[AF.role]:a.role==="Admin"?"Tech":"Admin"});await renderTeamV30()}));
+    box.querySelectorAll(".teamStatusBtn").forEach(btn=>btn.addEventListener("click",async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;await updateAccountV30(a,{[AF.status]:a.status==="Active"?"Disabled":"Active"});await renderTeamV30()}));
+    box.querySelectorAll(".teamResetBtn").forEach(btn=>btn.addEventListener("click",async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;const pw=prompt("Enter a new temporary password for "+a.name+" (minimum 6 characters):");if(!pw)return;if(pw.length<6){alert("Password must be at least 6 characters.");return}const salt=randomSaltV30();const hash=await passwordHashV30(pw,salt);await updateAccountV30(a,{[AF.salt]:salt,[AF.hash]:hash});alert("Password reset for "+a.name)}));
+  }
+  show("accountsScreen");window.rescomRefreshModernUI?.();
+}
+renderAccounts = renderTeamV30;
+
+fromRecord = function(r){
+  const f=r.fields||{};
+  return {id:f["Unit ID"]||"",assigned:true,recordId:r.id,unit:f["Unit ID"]||"",
+    type:f["Equipment Type (Custom)"]||f["Equipment Type"]||"",mfr:f["Manufacturer"]||"",model:f["Model Number"]||"",
+    serial:f["Serial Number"]||"",location:f["Location"]||"",thermo:f["Thermostat Location(s)"]||"",
+    site:f["Customer / Site Name"]||"",install:f["Install Date"]||"",warranty:f["Warranty Expiration"]||"",
+    due:f["Next Maintenance Due"]||"",archived:!!f["Archived"],accountRecordId:"",accountEmail:f["Account Email"]||"",accountName:"",accountPhone:f["Customer Phone"]||"",photos:f["Equipment Photos"]||[],notes:f["Notes"]||"",history:[]};
+};
+remoteHistory = async function(recordId){
+  let offset="",found=[];
+  do{
+    const params=new URLSearchParams({pageSize:"100"});if(offset)params.set("offset",offset);
+    const data=await api(HIST_TABLE+"?"+params.toString());
+    for(const r of (data.records||[])){
+      const links=r.fields["Equipment"]||[];
+      const match=Array.isArray(links)&&links.some(x=>typeof x==="string"?x===recordId:x?.id===recordId);
+      if(match)found.push({rid:r.id,id:r.fields["Entry ID"]||"",date:r.fields["Date"]||"",tech:r.fields["Technician"]||"",kind:r.fields["Visit Type"]||"",notes:r.fields["Work Performed / Notes"]||"",part:r.fields["Part / Component"]||"",partnotes:r.fields["Part Notes"]||"",photos:r.fields["Service Photos"]||[],userEmail:r.fields["Company User Email"]||""});
+    }
+    offset=data.offset||"";
+  }while(offset);
+  return found.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+};
+loadUnit = async function(id){
+  let local=getLocal(id)||blankUnit(id);
+  if(!token()||!navigator.onLine)return local;
+  try{const r=await findRemoteEquipment(id);if(!r)return local;const u=fromRecord(r);u.history=await remoteHistory(r.id);upsertLocal(u);currentRecordId=r.id;return u}catch(e){return local}
+};
+async function fetchAllRemoteEquipmentV30(){
+  let offset="",out=[];
+  do{const p=new URLSearchParams({pageSize:"100"});if(offset)p.set("offset",offset);const d=await api(EQUIP_TABLE+"?"+p.toString());out.push(...(d.records||[]));offset=d.offset||""}while(offset);
+  return out;
+}
+async function refreshSharedEquipment(){
+  const local=loadLocal();const map=new Map(local.map(u=>[u.id,u]));
+  if(!token()){renderList();setStatus("pending","LOCAL EQUIPMENT READY");return local}
+  if(!navigator.onLine){renderList();setStatus("offline","OFFLINE — LOCAL EQUIPMENT READY");return local}
+  setStatus("pending","LOADING SHARED EQUIPMENT...");
+  try{
+    const records=await fetchAllRemoteEquipmentV30();
+    for(const r of records){const cloud=fromRecord(r);if(!cloud.id)continue;const prev=map.get(cloud.id);map.set(cloud.id,{...(prev||{}),...cloud,history:prev?.history||[]})}
+    const merged=[...map.values()];saveLocal(merged);renderList();setStatus("synced","✓ EQUIPMENT READY");return merged;
+  }catch(e){renderList();setStatus("offline","CLOUD ERROR — LOCAL EQUIPMENT READY");try{logBug("Airtable / Network",e?.message||String(e),"Refresh shared equipment","","NET")}catch(_){}return local}
+}
+
+saveEquipment = async function(u){
+  upsertLocal(u);setStatus("pending","SAVING...");
+  if(!token()||!navigator.onLine){enqueue({kind:"equipment",data:u});setStatus("pending","OFFLINE — WILL SYNC");return false}
+  try{
+    const existing=await findRemoteEquipment(u.id);
+    const fields={
+      [F.unit]:u.id,[F.type]:(["Gas Furnace","Boiler","Air Handler","Condenser","Heat Pump","Other"].includes(u.type)?u.type:"Other"),[F.customType]:u.type||"",
+      [F.mfr]:u.mfr||"",[F.model]:u.model||"",[F.serial]:u.serial||"",[F.loc]:u.location||"",[F.thermo]:u.thermo||"",[F.site]:u.site||"",
+      [F.install]:u.install||null,[F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.account]:[],[F.accountEmail]:u.accountEmail||null,[F.customerPhone]:u.accountPhone||null,[F.lastUpdatedBy]:currentUser()?.email||null,[F.notes]:u.notes||""
+    };
+    let out;if(existing){out=await api(EQUIP_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:existing.id,fields}],typecast:true})});currentRecordId=existing.id}else{out=await api(EQUIP_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});currentRecordId=out.records?.[0]?.id||null}
+    u.recordId=currentRecordId;u.accountRecordId="";u.accountName="";upsertLocal(u);setStatus("synced","✓ SAVED & SYNCED");return true;
+  }catch(e){enqueue({kind:"equipment",data:u});setStatus("pending","SAVED LOCALLY — CLOUD SYNC PENDING");return false}
+};
+
+setupForm = function(u){
+  $("detail").innerHTML=`<div class="card"><button class="gray" data-home type="button">← HOME</button><span class="badge pending">${u.assigned?"EDIT EQUIPMENT":"NEW QR"}</span><h2>${u.assigned?"Edit Equipment":"Set Up This Equipment"}</h2>
+  <div class="grid"><div><label>Customer / Site Name</label><input id="f_site" value="${esc(u.site||"")}" placeholder="Customer, building, property..."></div><div><label>Customer Email</label><input id="f_account_email" type="email" value="${esc(u.accountEmail||"")}" placeholder="customer@example.com"></div><div><label>Customer Phone</label><input id="f_account_phone" type="tel" value="${esc(u.accountPhone||"")}" placeholder="Phone"></div><div><label>Equipment Type</label><input id="f_type" list="equipmentTypeOptions" value="${esc(u.type||"")}" placeholder="Tap to choose or type your own"><datalist id="equipmentTypeOptions"><option value="Gas Furnace"></option><option value="Boiler"></option><option value="Air Handler"></option><option value="Condenser"></option><option value="Heat Pump"></option><option value="AC Coil"></option><option value="Air Filter"></option><option value="Bypass Humidifier"></option><option value="Power Humidifier"></option><option value="Steam Humidifier"></option><option value="External Hot Water Coil"></option><option value="Ductless Split"></option><option value="Hot Water Heater"></option><option value="Indirect Hot Water Maker"></option><option value="Tankless Water Heater"></option><option value="Combi"></option><option value="Other"></option></datalist></div><div><label>Location</label><input id="f_loc" value="${esc(u.location||"")}" placeholder="Basement, attic, roof..."></div><div><label>Manufacturer</label><input id="f_mfr" value="${esc(u.mfr||"")}"></div><div><label>Model Number</label><input id="f_model" value="${esc(u.model||"")}"></div><div><label>Serial Number</label><input id="f_serial" value="${esc(u.serial||"")}"></div><div><label>Thermostat Location(s)</label><input id="f_thermo" value="${esc(u.thermo||"")}"></div><div><label>Install Date</label><input id="f_install" type="date" value="${esc(u.install||"")}"></div><div><label>Warranty Expiration</label><input id="f_warranty" type="date" value="${esc(u.warranty||"")}"></div><div><label>Next Maintenance Due</label><input id="f_due" type="date" value="${esc(u.due||"")}"></div></div>
+  <label>Equipment Notes</label><textarea id="f_notes">${esc(u.notes||"")}</textarea><div class="photo-picker"><b>Equipment Photos</b><input id="f_photos" type="file" accept="image/*" capture="environment" multiple><div class="photo-note">Take photos or choose them from the photo library.</div></div>${photoGrid(u.photos)}<button class="orange" id="saveSetup">SAVE EQUIPMENT</button><div class="small mono">${esc(u.id)}</div></div>`;
+  bindHome();
+  $("saveSetup").onclick=async()=>{const b=$("saveSetup");b.disabled=true;b.textContent="SAVING...";Object.assign(u,{assigned:true,type:$("f_type").value.trim()||"Other",site:$("f_site").value.trim(),accountEmail:$("f_account_email").value.trim(),accountPhone:$("f_account_phone").value.trim(),location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),model:$("f_model").value.trim(),serial:$("f_serial").value.trim(),thermo:$("f_thermo").value.trim(),install:$("f_install").value,warranty:$("f_warranty").value,due:$("f_due").value,notes:$("f_notes").value.trim(),accountRecordId:"",accountName:""});const files=$("f_photos").files;const ok=await saveEquipment(u);if(ok&&files?.length){try{setStatus("pending","UPLOADING EQUIPMENT PHOTOS...");await uploadMany(currentRecordId,F.photos,files);setStatus("synced","✓ EQUIPMENT + PHOTOS SAVED")}catch(err){alert("Equipment saved, but photos did not finish uploading. "+err.message)}}renderList();await renderDetail(await loadUnit(u.id))};
+};
+
+const renderDetailV29Base=renderDetail;
+renderDetail = async function(u){
+  await renderDetailV29Base(u);
+  const card=$("detail")?.querySelector(".card");
+  if(card){
+    card.querySelectorAll("p").forEach(p=>{const t=p.textContent||"";if(t.startsWith("Account:"))p.remove();if(t.startsWith("Account Email:"))p.innerHTML=`<b>Customer Email:</b> ${esc(u.accountEmail||"Not entered")}`;if(t.startsWith("Account Phone:"))p.innerHTML=`<b>Customer Phone:</b> ${esc(u.accountPhone||"Not entered")}`});
+  }
+};
+
+window.openUnit = async function(id){
+  const clean=(id||"").trim().toUpperCase();if(!currentUser()){pendingProtectedUnit=clean;await renderAccountGateV30("Sign in to open this equipment.");return}
+  currentId=clean;let u=await loadUnit(clean);if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u)
+};
+
+async function bootResComV30(){
+  migrateV30Identity();
+  const failOpen=setTimeout(()=>{try{hideLoadingScreen()}catch(e){}},2200);
+  try{renderList();renderBugLog()}catch(e){}
+  if(token())setStatus("pending","STARTING CLOUD SYNC...");else setStatus("pending","DEVICE SETUP NEEDED");
+  applyCurrentUserUI();
+  hideLoadingScreen();clearTimeout(failOpen);
+  const qp=new URLSearchParams(location.search),requested=(qp.get("unit")||qp.get("equipment")||"").trim().toUpperCase();
+  if(requested&&!isStandaloneApp()){showQRHandoff(requested)}
+  else if(!currentUser()){await renderAccountGateV30()}
+  else if(requested){openUnit(requested)}
+  else show("home");
+  if(currentUser()&&token())refreshSharedEquipment();
+  if(navigator.onLine)setTimeout(()=>checkForAppUpdate().catch?.(()=>{}),1200);
+}
+
+const oldLogoutBtn=$("logoutUser");if(oldLogoutBtn){oldLogoutBtn.onclick=()=>{clearCurrentUser();renderAccountGateV30("Signed out.")}}
+
+bootResComV30();
 
 
 
@@ -3035,12 +3359,12 @@ bootResCom();
 <nav id="globalNav" aria-label="Main navigation">
   <button class="homeNav" type="button" id="navHome" data-nav="home">🏠 HOME</button>
   <button type="button" id="navEquipment" data-nav="equipment">🧰 EQUIPMENT</button>
-  <button type="button" id="navAccounts" data-nav="accounts">👤 ACCOUNTS</button>
+  <button type="button" id="navAccounts" data-nav="accounts">👥 TEAM</button>
   <button type="button" id="navSettings" data-nav="settings">⚙️ SETTINGS</button>
   <button type="button" id="navManual" data-nav="manual">📘 MANUAL</button>
   <button type="button" id="navPatchNotes" data-nav="patchnotes">📝 PATCH NOTES</button>
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
-<script src="./modern-ui.js?v=29.2"></script>
+<script src="./modern-ui.js?v=30.0"></script>
 </body></html>
