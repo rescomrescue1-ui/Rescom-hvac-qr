@@ -1,7 +1,8 @@
-UPLOAD THESE FILES TO THE SAME GITHUB PAGES LOCATION.
-Replace files with the same names; do not change the repository path.
+UPLOAD THESE FILES TO THE SAME GITHUB PAGES REPOSITORY/PATH.
+Replace matching files. Do not change the Pages address.
 
-Expected app version after refresh: APP v30.3
-Build: Aug 19, 2026 12:37 PM
+Expected app version after refresh: APP v30.4
+Build: Aug 19, 2026 4:12 PM
 
-This release fixes the iPhone Home Screen startup freeze and preserves all permanent QR links.
+Main changed files: index.html, modern-ui.js, modern-ui.css, service-worker.js, version.json.
+Existing QR links remain compatible.

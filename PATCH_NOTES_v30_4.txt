@@ -1,0 +1,25 @@
+RES-COM HVAC QR — PATCH NOTES
+
+Version 30.4 — Account & Sign-In Recovery — Aug 19, 2026 4:12 PM
+- Fixed Sign In controls appearing before event handlers were attached while the app waited on Airtable.
+- Wrong 4-digit company PIN on Sign In now clearly explains that the PIN is for account creation, not employee login.
+- Admin Add Employee automatically generates a temporary password and provides a copy button.
+- Admin password reset automatically generates a new temporary password that matches the new stored salted hash.
+- Added reliable top-bar SIGN IN / SIGN OUT behavior and Account / Sign In in the More menu.
+- Marked dynamic Team/account buttons correctly so Bug Center no longer reports false missing-action errors.
+- Prevented Airtable bug-report failures from recursively logging/uploading more bug reports.
+- Added guards for accounts with missing password salt/hash.
+- Permanent QR links, equipment IDs, service history, local device data, and Airtable Team records are preserved.
+
+Version 30.3 — Home Screen Recovery
+- Fixed iPhone Home Screen startup/resume blank-screen and UI recovery problems.
+- Refreshed the service-worker cache and preserved QR compatibility.
+
+Version 30.2 — iPhone Easy Install
+- Improved iPhone/iPad install guidance and Home Screen setup.
+
+Version 30.1 — Installable PWA
+- Improved installable PWA behavior and app assets.
+
+Version 30.0 — Accounts & Search Cleanup
+- Added Team employee accounts, Admin-managed company PIN, direct customer fields, merged local/cloud equipment search, themes, print improvements, Manual and Patch Notes updates.

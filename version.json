@@ -1,5 +1,5 @@
 {
-  "version": "30.3",
-  "build": "Aug 19, 2026 12:37 PM",
-  "notes": "Home Screen Recovery: fixes an iPhone launch freeze caused by a repeating UI mutation loop, adds blank-screen startup/resume recovery, forces fresh CSS/JS/service-worker cache, preserves permanent QR links, and includes updated Manual and Patch Notes."
+  "version": "30.4",
+  "build": "Aug 19, 2026 4:12 PM",
+  "notes": "Account and sign-in recovery: login controls wait for account loading; company PIN and employee password are clearly separated; Admin employee creation/reset now generates and copies working temporary passwords; Sign In menu access is restored; false and recursive bug logging is prevented."
 }

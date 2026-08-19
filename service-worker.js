@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-3-home-screen-recovery";
+const CACHE = "rescom-qr-v30-4-account-signin-recovery";
 const CORE = [
   "./index.html",
   "./version.json",

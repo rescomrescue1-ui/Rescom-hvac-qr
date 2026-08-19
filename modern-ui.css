@@ -368,3 +368,10 @@ html[data-theme="dark"] .iphoneInstallCard{background:#0d1828!important;border-c
 
 
 /* v30.3 — Home Screen Recovery: launch fix is primarily JavaScript; cache-bust forces repaired UI layer. */
+
+/* v30.4 — Account & Sign-In Recovery */
+.tempPasswordResult{padding:14px;border-radius:14px;background:#eaf4ff;border:2px solid #4f9bff;margin:12px 0;color:#0b2b50!important}
+.tempPasswordResult b,.tempPasswordResult .small{color:inherit!important}
+.tempPasswordCode{font-size:24px;font-weight:900;letter-spacing:2px;padding:10px 0;color:#0b2b50!important;word-break:break-all}
+html[data-theme="dark"] .tempPasswordResult{background:#15283c;border-color:#4f9bff;color:#dbeeff!important}
+html[data-theme="dark"] .tempPasswordCode{color:#fff!important}

@@ -1,15 +1,13 @@
-RES-COM HVAC QR — VERSION 30.3
-Build: Aug 19, 2026 12:37 PM
+RES-COM HVAC QR — VERSION 30.4
+Build: Aug 19, 2026 4:12 PM
 
-HOME SCREEN RECOVERY UPDATE
-- Fixes the iPhone Home Screen launch freeze found in v30.2.
-- Removes the repeating interface MutationObserver loop that could keep the app busy indefinitely.
-- Adds a startup/resume watchdog that restores Home, QR handoff, or sign-in if iOS resumes to a blank shell.
-- Forces fresh 30.3 CSS, JavaScript, and service-worker cache files.
-- Keeps the existing GitHub Pages address and every printed RC QR link unchanged.
-- Keeps equipment data, Team accounts, Airtable configuration, Manual, Bug Center, and prior Patch Notes.
+ACCOUNT & SIGN-IN RECOVERY
+- Fixes Sign In buttons appearing before their handlers were attached.
+- Clarifies company PIN vs employee password.
+- Admin Add Employee now generates a temporary password automatically.
+- Admin password reset generates a new matching temporary password.
+- Adds reliable Sign In / Sign Out account controls.
+- Stops false dynamic-button bug reports and recursive bug-upload storms.
+- Keeps all permanent QR links, equipment IDs, Airtable records, and local data unchanged.
 
-MANUAL GITHUB UPLOAD
-Upload the CONTENTS of this ZIP to the SAME repository and SAME folder/path already used by GitHub Pages. Replace files with the same names. Do not move the site to a new path.
-
-After uploading, open the normal Res-Com web link in Safari once while online, wait a few seconds, then close and reopen the Home Screen icon.
+Upload the CONTENTS of this folder to the SAME GitHub Pages repository/path and replace matching files.

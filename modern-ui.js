@@ -1,9 +1,9 @@
-/* Res-Com HVAC QR v30.3 — Home Screen Recovery + modern field UX */
+/* Res-Com HVAC QR v30.4 — Account & Sign-In Recovery + modern field UX */
 (() => {
   "use strict";
 
-  const MODERN_VERSION = "30.3";
-  const MODERN_BUILD = "Aug 19, 2026 12:37 PM";
+  const MODERN_VERSION = "30.4";
+  const MODERN_BUILD = "Aug 19, 2026 4:12 PM";
   const THEME_KEY = "rescom_theme_v30";
   let bugUploadBusy = false;
   let deferredInstallPrompt = null;
@@ -191,19 +191,20 @@
     }
     if(byId("rcMoreBackdrop"))return;
     const wrap=document.createElement("div");wrap.id="rcMoreBackdrop";
-    wrap.innerHTML=`<div id="rcMoreSheet" role="dialog" aria-modal="true" aria-label="More menu"><div class="handle"></div><h3>More</h3><div class="rcMoreGrid"><button type="button" data-rc-more="settings">⚙️ Settings</button><button type="button" data-rc-more="manual">📘 Manual</button><button type="button" data-rc-more="patchnotes">📝 What’s New</button><button type="button" data-rc-more="health">🩺 System Health</button><button type="button" data-rc-more="install">📱 Install Help</button></div></div>`;
+    wrap.innerHTML=`<div id="rcMoreSheet" role="dialog" aria-modal="true" aria-label="More menu"><div class="handle"></div><h3>More</h3><div class="rcMoreGrid"><button type="button" data-rc-more="account">👤 Account / Sign In</button><button type="button" data-rc-more="settings">⚙️ Settings</button><button type="button" data-rc-more="manual">📘 Manual</button><button type="button" data-rc-more="patchnotes">📝 What’s New</button><button type="button" data-rc-more="health">🩺 System Health</button><button type="button" data-rc-more="install">📱 Install Help</button></div></div>`;
     document.body.appendChild(wrap);
     more.addEventListener("click",()=>wrap.classList.add("open"));
     wrap.addEventListener("click",e=>{if(e.target===wrap)wrap.classList.remove("open")});
-    wrap.querySelectorAll("[data-rc-more]").forEach(btn=>btn.addEventListener("click",async()=>{
+    wrap.querySelectorAll("[data-rc-more]").forEach(btn=>{btn.dataset.safeBound="yes";btn.addEventListener("click",async()=>{
       wrap.classList.remove("open");
       const target=btn.dataset.rcMore;
+      if(target==="account"){try{if(currentUser?.())await renderTeamV30();else await renderAccountGateV30("Sign in to continue.")}catch{try{await renderAccountGateV30("Sign in to continue.")}catch{}}}
       if(target==="settings"){try{await navGoSettings()}catch{show("settings")}}
       if(target==="manual"){show("manualScreen");scrollTo(0,0)}
       if(target==="patchnotes"){show("patchNotes");scrollTo(0,0)}
       if(target==="health"){try{await openSystemHealth()}catch{show("healthScreen")}}
       if(target==="install"){if(installedAsApp())alert("Res-Com is already installed on this device.");else showInstallGuide()}
-    }));
+    })});
   }
 
   function updateActiveNav(){
@@ -259,7 +260,7 @@
       const card=document.querySelector("#settings .card");if(card){
         const box=document.createElement("div");box.id="rcAppearanceCard";box.className="unit";box.innerHTML=`<h3>App Appearance</h3><p class="small">Choose the background that is easiest to read on this device.</p><div class="themeChoices"><button type="button" data-theme-choice="light">☀️ WHITE</button><button type="button" data-theme-choice="dark">🌙 BLACK</button></div>`;
         const firstHr=card.querySelector("hr");card.insertBefore(box,firstHr||card.firstChild);
-        box.querySelectorAll("[data-theme-choice]").forEach(b=>b.addEventListener("click",()=>applyTheme(b.dataset.themeChoice)));
+        box.querySelectorAll("[data-theme-choice]").forEach(b=>{b.dataset.safeBound="yes";b.addEventListener("click",()=>applyTheme(b.dataset.themeChoice))});
       }
     }
     applyTheme(currentTheme());
@@ -269,6 +270,9 @@
     const navBtn=document.querySelector('.manualJump[data-target="m-accounts"]');if(navBtn)navBtn.textContent="Team";
     const acctSec=byId("m-accounts");if(acctSec&&acctSec.dataset.rcManualTeam!==MODERN_VERSION){acctSec.innerHTML=`<h3>Team Accounts</h3><p>Res-Com now uses one simple Team account system. The first person who creates an account becomes Admin automatically.</p><p>Every Admin and Tech signs in with their own email and password. New employee self-signups require the current 4-digit company PIN, which only Admins manage.</p><p>Admins can create accounts, promote Techs to Admin, disable accounts, reset passwords, and rotate the company PIN from the Team tab.</p>`;acctSec.dataset.rcManualTeam=MODERN_VERSION;}
     const manualCard=document.querySelector("#manualScreen .card");
+    if(manualCard&&!byId("m-account-recovery-v304")){
+      const sec=document.createElement("div");sec.className="manual-section";sec.id="m-account-recovery-v304";sec.innerHTML=`<h3>Version 30.4 — Account & Sign-In Recovery</h3><p><b>Sign-in recovery:</b> Res-Com waits for the Team account list before showing tappable login buttons, preventing the unbound-button problem seen on iPhone.</p><p><b>Wrong PIN:</b> entering the 4-digit company PIN on the employee password screen now explains the difference instead of failing unclearly.</p><p><b>Admin-created employees:</b> Admins no longer type a temporary password. Res-Com generates one, stores only its salted hash, and shows the plain temporary password with a Copy button.</p><p><b>Password reset:</b> Admins can generate a fresh temporary password for an employee in one tap.</p><p><b>Menu account access:</b> Account / Sign In is available from More, and the top account bar shows SIGN IN or SIGN OUT correctly.</p><p><b>Bug Center:</b> dynamic account buttons are marked as bound, and failed bug uploads cannot recursively create more bug uploads.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
+    }
     if(manualCard&&!byId("m-home-recovery")){
       const sec=document.createElement("div");sec.className="manual-section";sec.id="m-home-recovery";sec.innerHTML=`<h3>Version 30.3 — Home Screen Recovery</h3><p><b>Fixed:</b> removed a repeating page-change watcher that could keep rewriting parts of the interface and freeze the iPhone Home Screen app during launch.</p><p><b>Recovery watchdog:</b> if iOS resumes Res-Com with no visible screen, the app now restores Home, the equipment QR screen, or the sign-in screen automatically instead of leaving a blank page.</p><p><b>Resume handling:</b> Home Screen launches and returns from the background now re-check that a usable screen is visible.</p><p><b>Cache refresh:</b> CSS, JavaScript and the service-worker cache were bumped to 30.3 so the repaired launch code replaces the stuck 30.2 files.</p><p><b>QR safety:</b> all existing printed RC QR links and the GitHub Pages address remain unchanged.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
@@ -282,6 +286,9 @@
       const sec=document.createElement("div");sec.className="manual-section";sec.id="m-v30";sec.innerHTML=`<h3>Version 30 — Simplified Accounts, Equipment Search & Themes</h3><p><b>Accounts:</b> customer account records and separate technician lists are no longer part of the app workflow. Customer name, email and phone are stored directly on each equipment record.</p><p><b>Team:</b> the first Res-Com employee to create an App Account is automatically Admin. Everyone else is a Tech unless an Admin changes the role.</p><p><b>Company PIN:</b> only Admins can generate and manage the 4-digit company PIN. It authorizes new employee account creation; Techs sign in with their own email and password.</p><p><b>Equipment:</b> Equipment search combines QR units scanned/created on this device with every equipment record downloaded from the shared Airtable database.</p><p><b>Status:</b> Loading Shared Equipment always finishes as Equipment Ready, Local Equipment Ready, or Cloud Error — Local Equipment Ready.</p><p><b>Appearance:</b> Settings now has White and Black app themes with explicit text/background contrast.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
     const patch=document.querySelector("#patchNotes .card");
+    if(patch&&!byId("rcPatch304")){
+      const b=document.createElement("div");b.className="unit";b.id="rcPatch304";b.innerHTML=`<h3>Version 30.4 — Account & Sign-In Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:12 PM</p><p>• Fixed sign-in controls appearing before their event handlers were ready.</p><p>• Added a clear message when the 4-digit company PIN is entered as an employee password.</p><p>• Admin Add Employee now generates a temporary password automatically and provides a Copy button.</p><p>• NEW TEMP PASSWORD now generates a matching working password instead of using a manual prompt.</p><p>• Added reliable Account / Sign In access from the More menu and top account bar.</p><p>• Stopped false missing-action bug reports for Team/sign-in controls.</p><p>• Stopped recursive Airtable bug-upload failures from creating bug storms.</p><p>• Existing equipment QR links, service history, local data, and Team records remain unchanged.</p>`;const first=patch.querySelector(".unit");patch.insertBefore(b,first||null)
+    }
     if(patch&&!byId("rcPatch303")){
       const b=document.createElement("div");b.className="unit";b.id="rcPatch303";b.innerHTML=`<h3>Version 30.3 — Home Screen Recovery</h3><p><b>Released:</b> Aug 19, 2026 12:37 PM</p><p>• Fixed the iPhone Home Screen launch freeze caused by a repeating interface MutationObserver loop.</p><p>• Removed the unsafe global page watcher and kept only targeted, one-time UI setup.</p><p>• Added a Home Screen startup/resume recovery watchdog so a blank app shell restores the correct screen automatically.</p><p>• Made install-card text updates idempotent to prevent unnecessary DOM churn.</p><p>• Bumped CSS/JavaScript cache-busting and the service-worker cache to v30.3.</p><p>• Kept permanent QR links, equipment IDs, local data, Airtable settings, Team accounts, Manual, and prior Patch Notes intact.</p>`;const first=patch.querySelector(".unit");patch.insertBefore(b,first||null)
     }
@@ -331,7 +338,7 @@
       maybeShowIOSInstallNudge();
     }catch(err){
       try{console.error("Res-Com modern UI recovery",err)}catch{}
-      try{logBug?.("JavaScript",err?.message||String(err),"Modern UI startup","v30.3 continued with core app UI.","BOOT")}catch{}
+      try{logBug?.("JavaScript",err?.message||String(err),"Modern UI startup","v30.4 continued with core app UI.","BOOT")}catch{}
     }
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initialize,{once:true});else initialize();
