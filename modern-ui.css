@@ -29,7 +29,7 @@ body *{letter-spacing:normal}
   padding:calc(9px + env(safe-area-inset-top)) 16px 9px!important;
   min-height:72px!important;
 }
-.headerLogo{width:46px!important;height:46px!important;border-radius:13px!important;background:#fff!important;padding:3px!important;box-shadow:0 3px 12px rgba(16,24,40,.09)!important}
+.headerLogo{width:46px!important;height:46px!important;border-radius:13px!important;background:#fff!important;padding:2px!important;box-shadow:0 3px 12px rgba(16,24,40,.09)!important;opacity:1!important;filter:contrast(1.08) saturate(1.08)!important;image-rendering:auto!important}
 .headerCopy{min-width:0!important}
 .headerCopy h1{font-size:18px!important;font-weight:800!important;color:var(--rc-ink)!important;line-height:1.1!important}
 .headerCopy p{font-size:11px!important;color:var(--rc-muted)!important;margin:2px 0 3px!important;font-weight:600!important}
@@ -382,3 +382,22 @@ html[data-theme="dark"] .tempPasswordCode{color:#fff!important}
 .tempVerifyWarn{margin-top:8px;font-weight:800}
 body[data-theme="light"] .guestGateNote,
 body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
+
+/* v30.6 iPhone account scrolling + sharper branding + destructive account action */
+#pinGate{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  padding-top:max(18px,env(safe-area-inset-top))!important;
+  padding-bottom:calc(34px + env(safe-area-inset-bottom))!important;
+}
+#pinGate .v30Gate{
+  margin:0 auto 30px!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#v30CreateBox{scroll-margin-top:18px!important;padding-bottom:12px!important}
+.v30GateLogo{opacity:1!important;filter:contrast(1.08) saturate(1.08)!important}
+.teamDeleteBtn{background:#b42318!important;color:#fff!important;border:1px solid #912018!important;font-weight:900!important}

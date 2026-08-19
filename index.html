@@ -527,7 +527,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=30.5">
+<link rel="stylesheet" href="./modern-ui.css?v=30.6">
 </head>
 <body>
 <div id="loadingScreen">
@@ -536,7 +536,7 @@ body{padding-bottom:88px!important}
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
     <div id="loadingStatus">Opening Res-Com…</div>
-    <div id="loadingVersion" class="small">Installed v30.5</div>
+    <div id="loadingVersion" class="small">Installed v30.6</div>
   </div>
 </div>
 <script>
@@ -563,11 +563,11 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 </div>
 <div id="updateBanner" class="updated hidden"></div>
 <header class="appHeader">
-  <img class="headerLogo" src="icon-192.png" alt="Res-Com">
+  <img class="headerLogo" src="icon-512.png" alt="Res-Com">
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v30.5 • UPDATED Aug 19, 2026 4:28 PM</span>
+    <span id="appVersionBadge">APP v30.6 • UPDATED Aug 19, 2026 4:50 PM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -710,6 +710,13 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
     </div>
 
     <div class="manual-section" id="m-account-recovery-v304">
+      <h3>Version 30.6 — Employee Login, Delete & iPhone Form Fix</h3>
+      <p><b>Temporary passwords:</b> Admin-generated codes now have a dedicated 24-hour one-time reset token in addition to the normal password hash. If the normal hash check fails on another phone, the one-time reset token provides a second verified sign-in path.</p>
+      <p><b>New format:</b> temporary passwords use an easier-to-read RC-XXXX-XXXX format. Hyphens and letter case do not matter when signing in.</p>
+      <p><b>Deleted accounts:</b> Team now uses DELETE instead of Disable. Deleting an employee removes the App Account from Airtable; old service-history entries are kept.</p>
+      <p><b>Stale employee cleanup:</b> when Airtable no longer contains the employee currently saved on a phone, Res-Com signs that stale local account out automatically instead of continuing to show it.</p>
+      <p><b>Create-account scrolling:</b> the full-screen account panel now scrolls correctly on iPhone, including when the keyboard is open, so the 4-digit company PIN and CREATE TECH ACCOUNT button stay reachable.</p>
+      <p><b>Header logo:</b> the top Res-Com logo now uses the higher-resolution app icon and forced full opacity for a stronger, clearer appearance.</p>
       <h3>Version 30.5 — Guest Tech & Cross-Phone Password Recovery</h3>
       <p><b>Guest Tech:</b> a new CONTINUE AS GUEST option lets someone open Res-Com with Tech-style access without an employee account. Guest work stays on that device only and is never written or queued to Airtable.</p>
       <p><b>Cloud safety:</b> Guest can read shared equipment only when that phone already has the Res-Com cloud connection. Cloud writes, photo uploads, queue syncing, account changes, and service uploads are blocked in Guest mode.</p>
@@ -929,6 +936,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
 <section id="patchNotes" class="hidden">
   <div class="card">
+<div class="unit" id="rcPatch306"><h3>Version 30.6 — Employee Login, Delete & iPhone Form Fix</h3><p><b>Released:</b> Aug 19, 2026 4:50 PM</p><p>• Added a dedicated 24-hour one-time reset-token fallback for Admin temporary passwords.</p><p>• New temp passwords use RC-XXXX-XXXX and accept pasted codes with or without hyphens/case differences.</p><p>• Temp-password sign-in promotes the verified reset code into the normal password hash and consumes the one-time reset token.</p><p>• Team now uses permanent DELETE instead of Disable for employee accounts; service-history records remain intact.</p><p>• Phones automatically sign out stale employee identities that were deleted from Airtable.</p><p>• Fixed iPhone Create Employee Account scrolling so the 4-digit company PIN and submit button can always be reached.</p><p>• Upgraded the top Res-Com logo to the 512px icon and forced full opacity/contrast.</p><p>• Existing QR links, equipment IDs, and service-history records remain compatible.</p></div>
 <div class="unit" id="rcPatch305"><h3>Version 30.5 — Guest Tech & Cross-Phone Password Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:28 PM</p><p>• Added CONTINUE AS GUEST with Tech-style app access.</p><p>• Guest mode is local/read-only for cloud data: it never writes or queues equipment, service history, photos, account changes, or bug uploads to Airtable.</p><p>• Guest can still view cloud equipment on a device that already has the Res-Com Airtable connection; otherwise it works from local/device data only.</p><p>• Temporary-password sign-in now trims accidental whitespace and accepts RC temp passwords even if iPhone changes letter case or the code is pasted with a space/hyphen.</p><p>• Admin-created/reset temporary passwords are verified after Airtable saves the new hash before the app marks them ready.</p><p>• New phones now clearly explain that employee sign-in needs a one-time Res-Com cloud connection; Guest remains available without one.</p><p>• Strengthened dynamic-button bug filtering and Guest-mode cloud safeguards.</p><p>• Existing QR links, equipment IDs, service history, Team accounts, and prior patch notes remain unchanged.</p></div>
 <div class="unit" id="rcPatch304"><h3>Version 30.4 — Account & Sign-In Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:12 PM</p><p>• Fixed visible sign-in buttons appearing before their click handlers were attached.</p><p>• Wrong 4-digit company PIN on Sign In now gives a clear employee-password message instead of behaving like a broken login.</p><p>• Admin Add Employee now auto-generates a temporary password and provides a copy button.</p><p>• Password reset now auto-generates a new temporary password that matches the stored hash.</p><p>• Added a reliable SIGN IN / SIGN OUT account control at the top of the app.</p><p>• Marked dynamic Team/account controls correctly so the Bug Center stops reporting false missing-button-action errors.</p><p>• Prevented recursive Airtable bug-upload failures from creating bug storms.</p></div>
 
@@ -1329,7 +1337,7 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="30.5";
+const APP_VERSION="30.6";
 const APP_BUILD="Aug 19, 2026 4:28 PM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
@@ -2349,7 +2357,6 @@ async function remoteHistory(recordId){
 }
 async function loadUnit(id){
   let local=getLocal(id)||{id,assigned:false,history:[]};
-  if(isGuestUserV305())return local;
   if(!token()||!navigator.onLine)return local;
   try{
     const r=await findRemoteEquipment(id);
@@ -3091,7 +3098,8 @@ const APP_ACCOUNTS_TABLE="tblFxZShPnLovWNwE";
 const APP_SETTINGS_TABLE="tblKs7fDb0DLJ1OYy";
 const AF={
   id:"fldAmhY6QtwgILeeV",name:"flddg7EPQQxzmE7be",email:"fldoUUB6vbyAsBvmj",role:"fldw7aj2CiiQd0dtO",status:"flddoDG7MEU255yYB",
-  salt:"fld3Nvg0KRyR0i7fw",hash:"fldGc8I8CTeVupdFI",created:"fldUZ7TN62RFhQjMu",createdBy:"fldJL0hUuqxbJcJww",lastLogin:"fldKhsusSHqzrzIps",notes:"fldQUooRjtgboxtHj"
+  salt:"fld3Nvg0KRyR0i7fw",hash:"fldGc8I8CTeVupdFI",created:"fldUZ7TN62RFhQjMu",createdBy:"fldJL0hUuqxbJcJww",lastLogin:"fldKhsusSHqzrzIps",notes:"fldQUooRjtgboxtHj",
+  resetHash:"fldBZUG3W0IognwGv",resetExpires:"fldMVJ405MjNaKiQa"
 };
 const SF={key:"fld7GuhFfMGnQM8Ei",value:"fldJwQjXIt7UVkcRN",updated:"fldiF3SH7PTJKvJlZ",updatedBy:"fldR6Z3HI8fV000OE"};
 F.customerPhone="fldBjZ32JRGqU6wyq";
@@ -3116,24 +3124,37 @@ function startGuestModeV305(){
 function normalizeEmployeePasswordV305(password){
   let pw=String(password??"").replace(/\u00a0/g," ").trim();
   const compact=pw.replace(/[\s-]+/g,"");
-  if(/^rc\d{6}$/i.test(compact))return compact.toUpperCase();
+  // v30.6 accepts both legacy RC123456 codes and the clearer RC-ABCD-EFGH reset codes.
+  if(/^rc(?:\d{6}|[a-z0-9]{8})$/i.test(compact))return compact.toUpperCase();
   return pw;
+}
+async function resetTokenHashV306(acct,password){
+  return sha256Text("RESCOM-TEMP-V306|"+String(acct?.accountId||acct?.email||"")+"|"+normalizeEmployeePasswordV305(password));
 }
 async function verifyStoredPasswordV305(email,password){
   const acct=await findAppAccountByEmail(email);
-  if(!acct||!acct.salt||!acct.hash)return false;
-  const got=await passwordHashV30(normalizeEmployeePasswordV305(password),acct.salt);
-  return got===acct.hash;
+  if(!acct)return false;
+  const pw=normalizeEmployeePasswordV305(password);
+  let normal=false,reset=false;
+  if(acct.salt&&acct.hash){
+    try{normal=(await passwordHashV30(pw,acct.salt))===acct.hash}catch(_){}
+  }
+  if(acct.resetHash&&acct.resetExpires&&Date.parse(acct.resetExpires)>Date.now()){
+    try{reset=(await resetTokenHashV306(acct,pw))===acct.resetHash}catch(_){}
+  }
+  return normal||reset;
 }
 
 function normalizeRole(v){return typeof v==="string"?v:(v?.name||"")}
 function normalizeStatus(v){return typeof v==="string"?v:(v?.name||"")}
 function accountFromRecord(r){
   const f=r?.fields||{};
+  const fv=(name,id)=>f[name]!==undefined?f[name]:f[id];
   return {
-    recordId:r?.id||"",accountId:f["Account ID"]||"",name:f["Account Name"]||"Res-Com User",
-    email:(f["Email"]||"").toLowerCase(),role:normalizeRole(f["Role"])||"Tech",status:normalizeStatus(f["Status"])||"Active",
-    salt:f["Password Salt"]||"",hash:f["Password Hash"]||"",createdAt:f["Created At"]||"",lastLogin:f["Last Login"]||""
+    recordId:r?.id||"",accountId:fv("Account ID",AF.id)||"",name:fv("Account Name",AF.name)||"Res-Com User",
+    email:String(fv("Email",AF.email)||"").toLowerCase(),role:normalizeRole(fv("Role",AF.role))||"Tech",status:normalizeStatus(fv("Status",AF.status))||"Active",
+    salt:fv("Password Salt",AF.salt)||"",hash:fv("Password Hash",AF.hash)||"",createdAt:fv("Created At",AF.created)||"",lastLogin:fv("Last Login",AF.lastLogin)||"",
+    resetHash:fv("Reset Token Hash",AF.resetHash)||"",resetExpires:fv("Reset Expires",AF.resetExpires)||""
   };
 }
 async function allAppAccountRecords(){
@@ -3181,16 +3202,52 @@ async function loginAppAccountV30(email,password){
   if(acct.status!=="Active")throw new Error("This account is not active. Contact a Res-Com Admin.");
   const pw=normalizeEmployeePasswordV305(password);
   if(!pw)throw new Error("Enter your employee password.");
-  if(!acct.salt||!acct.hash)throw new Error("This account does not have a working password yet. Ask an Admin to reset the temporary password.");
-  const got=await passwordHashV30(pw,acct.salt);
-  if(got!==acct.hash){
-    if(/^\d{4}$/.test(pw))throw new Error("That looks like the 4-digit company PIN. The company PIN does not sign you in — use your employee password.");
-    throw new Error("Incorrect employee password.");
+
+  let normalMatch=false;
+  if(acct.salt&&acct.hash){
+    try{normalMatch=(await passwordHashV30(pw,acct.salt))===acct.hash}catch(_){}
   }
-  try{await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields:{[AF.lastLogin]:new Date().toISOString()}}],typecast:true})})}catch(e){}
+
+  let tempMatch=false,tempExpired=false;
+  if(acct.resetHash){
+    const expiry=Date.parse(acct.resetExpires||"");
+    tempExpired=!!expiry && expiry<=Date.now();
+    if(!tempExpired){
+      try{tempMatch=(await resetTokenHashV306(acct,pw))===acct.resetHash}catch(_){}
+    }
+  }
+
+  if(!normalMatch&&!tempMatch){
+    if(/^RC/i.test(pw)){
+      try{logBug("JavaScript","Temporary password rejected for an existing account. resetTokenPresent="+!!acct.resetHash+" expired="+tempExpired,"Employee sign in",acct.email||"","AUTH")}catch(_){}
+    }
+    if(/^\d{4}$/.test(pw))throw new Error("That looks like the 4-digit company PIN. The company PIN does not sign you in — use your employee password.");
+    if(tempExpired && /^RC/i.test(pw))throw new Error("That temporary password expired. Ask an Admin for NEW TEMP PASSWORD.");
+    throw new Error("Incorrect employee password. If this is a temporary password, ask an Admin to generate a fresh one from Team.");
+  }
+
+  const fields={[AF.lastLogin]:new Date().toISOString()};
+  // If the dedicated one-time temp token matched, promote that exact code into the normal password hash
+  // on this phone and clear the temp token. This gives the cross-phone reset flow two independent checks.
+  if(tempMatch){
+    const salt=randomSaltV30(),hash=await passwordHashV30(pw,salt);
+    fields[AF.salt]=salt;fields[AF.hash]=hash;fields[AF.resetHash]="";fields[AF.resetExpires]=null;
+    acct.salt=salt;acct.hash=hash;acct.resetHash="";acct.resetExpires="";
+  }else if(normalMatch && acct.resetHash){
+    // Using the newly generated temp password through the normal hash also consumes the one-time reset token.
+    try{
+      const tempHash=await resetTokenHashV306(acct,pw);
+      if(tempHash===acct.resetHash){fields[AF.resetHash]="";fields[AF.resetExpires]=null;acct.resetHash="";acct.resetExpires=""}
+    }catch(_){}
+  }
+
+  try{await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields}],typecast:true})})}catch(e){
+    if(String(e?.message||e).includes("ROW_DOES_NOT_EXIST"))throw new Error("That employee account was deleted. Ask an Admin to create it again.");
+  }
   saveCurrentUser(acct);
   return acct;
 }
+
 async function getAppSettingV30(key){
   const d=await api(APP_SETTINGS_TABLE+"?pageSize=100");
   const r=(d.records||[]).find(x=>(x.fields?.["Setting Key"]||"")===key);
@@ -3245,10 +3302,10 @@ function migrateV30Identity(){
 }
 
 function accountGateHTMLV30(mode,firstAdmin=false,msg=""){
-  if(mode==="checking")return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Checking Res-Com Accounts</h2><p>Please wait while this device connects to the company account list.</p><div class="loadingSpinner" aria-hidden="true"></div><div id="v30GateMsg" class="small">${esc(msg||"Connecting…")}</div></div>`;
-  if(mode==="token")return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Connect This Phone</h2><p><b>Employee sign-in on a brand-new phone needs a one-time Res-Com cloud connection.</b> An Admin can connect this device with the restricted Airtable token.</p><label>Res-Com Cloud Token</label><input id="v30GateToken" type="password" autocomplete="off" placeholder="pat..."><button class="orange" id="v30SaveToken" data-safe-bound="yes" type="button">CONNECT THIS PHONE</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div class="small guestGateNote">Guest gets Tech-style access but cannot save or queue anything to the cloud. Without a cloud connection, Guest sees local/device data only.</div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
-  if(firstAdmin)return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Create the First Res-Com Account</h2><p>The first person to create an account automatically becomes <b>Admin</b>.</p><label>Your Name</label><input id="v30CreateName" autocomplete="name"><label>Email</label><input id="v30CreateEmail" type="email" autocomplete="email"><label>Password</label><input id="v30CreatePassword" type="password" autocomplete="new-password"><button class="orange" id="v30CreateFirstAdmin" data-safe-bound="yes" type="button">CREATE ADMIN ACCOUNT</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
-  return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins sign in with their own employee password.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"><div class="small">Temporary passwords begin with <b>RC</b>. Paste is supported. The 4-digit company PIN is only for creating a new employee account and is <b>not</b> your sign-in password.</div><button class="orange" id="v30LoginBtn" data-safe-bound="yes" type="button">SIGN IN</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><button class="outline" id="v30ShowCreate" data-safe-bound="yes" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30CreateBox" class="hidden"><hr><h3>Create Employee Account</h3><p class="small">Ask an Admin for the current 4-digit company PIN. Choose your own employee password below.</p><label>Name</label><input id="v30SignupName"><label>Email</label><input id="v30SignupEmail" type="email" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30SignupPassword" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><label>4-Digit Company PIN</label><input id="v30SignupCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*"><button class="orange" id="v30SignupBtn" data-safe-bound="yes" type="button">CREATE TECH ACCOUNT</button></div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  if(mode==="checking")return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Checking Res-Com Accounts</h2><p>Please wait while this device connects to the company account list.</p><div class="loadingSpinner" aria-hidden="true"></div><div id="v30GateMsg" class="small">${esc(msg||"Connecting…")}</div></div>`;
+  if(mode==="token")return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Connect This Phone</h2><p><b>Employee sign-in on a brand-new phone needs a one-time Res-Com cloud connection.</b> An Admin can connect this device with the restricted Airtable token.</p><label>Res-Com Cloud Token</label><input id="v30GateToken" type="password" autocomplete="off" placeholder="pat..."><button class="orange" id="v30SaveToken" data-safe-bound="yes" type="button">CONNECT THIS PHONE</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div class="small guestGateNote">Guest gets Tech-style access but cannot save or queue anything to the cloud. Without a cloud connection, Guest sees local/device data only.</div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  if(firstAdmin)return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Create the First Res-Com Account</h2><p>The first person to create an account automatically becomes <b>Admin</b>.</p><label>Your Name</label><input id="v30CreateName" autocomplete="name"><label>Email</label><input id="v30CreateEmail" type="email" autocomplete="email"><label>Password</label><input id="v30CreatePassword" type="password" autocomplete="new-password"><button class="orange" id="v30CreateFirstAdmin" data-safe-bound="yes" type="button">CREATE ADMIN ACCOUNT</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins sign in with their own employee password.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"><div class="small">Temporary passwords begin with <b>RC</b>. Paste is supported. v30.6 also accepts the code with or without the printed hyphens. The 4-digit company PIN is only for creating a new employee account and is <b>not</b> your sign-in password.</div><button class="orange" id="v30LoginBtn" data-safe-bound="yes" type="button">SIGN IN</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><button class="outline" id="v30ShowCreate" data-safe-bound="yes" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30CreateBox" class="hidden"><hr><h3>Create Employee Account</h3><p class="small">Ask an Admin for the current 4-digit company PIN. Choose your own employee password below.</p><label>Name</label><input id="v30SignupName"><label>Email</label><input id="v30SignupEmail" type="email" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30SignupPassword" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><label>4-Digit Company PIN</label><input id="v30SignupCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*"><button class="orange" id="v30SignupBtn" data-safe-bound="yes" type="button">CREATE TECH ACCOUNT</button></div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
 }
 function bindAccountControlV304(id,handler){
   const el=$(id);if(!el)return null;
@@ -3312,7 +3369,11 @@ async function renderAccountGateV30(msg=""){
     }catch(e){if(m)m.textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="SIGN IN"}}
   });
   bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
-  bindAccountControlV304("v30ShowCreate",async()=>{$("v30CreateBox")?.classList.toggle("hidden")});
+  bindAccountControlV304("v30ShowCreate",async()=>{
+    const box=$("v30CreateBox");if(!box)return;
+    box.classList.toggle("hidden");
+    if(!box.classList.contains("hidden"))setTimeout(()=>{try{box.scrollIntoView({behavior:"smooth",block:"start"});$("v30SignupName")?.focus({preventScroll:true})}catch(_){}},80);
+  });
   bindAccountControlV304("v30SignupBtn",async()=>{
     const b=$("v30SignupBtn");if(b){b.disabled=true;b.textContent="CREATING…"}
     const m=$("v30GateMsg");if(m)m.textContent="";
@@ -3329,11 +3390,63 @@ async function renderAccountGateV30(msg=""){
 clearCurrentUser = function(){localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI();setStatus(token()?"pending":"offline",token()?"SIGNED OUT":"SIGNED OUT • LOCAL ONLY")};
 
 async function updateAccountV30(acct,fields){
-  await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields}],typecast:true})});
+  try{
+    await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields}],typecast:true})});
+  }catch(e){
+    if(String(e?.message||e).includes("ROW_DOES_NOT_EXIST"))throw new Error("That account was already deleted from Airtable. Refreshing Team will remove the stale copy.");
+    throw e;
+  }
 }
 function generateTemporaryPasswordV304(){
-  const n=crypto.getRandomValues(new Uint32Array(1))[0]%1000000;
-  return "RC"+String(n).padStart(6,"0");
+  const alphabet="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes=crypto.getRandomValues(new Uint8Array(8));
+  let code="";for(const b of bytes)code+=alphabet[b%alphabet.length];
+  return "RC-"+code.slice(0,4)+"-"+code.slice(4);
+}
+async function setTemporaryPasswordV306(acct,password){
+  const pw=normalizeEmployeePasswordV305(password);
+  const salt=randomSaltV30(),hash=await passwordHashV30(pw,salt);
+  const resetHash=await resetTokenHashV306(acct,pw);
+  const resetExpires=new Date(Date.now()+24*60*60*1000).toISOString();
+  await updateAccountV30(acct,{[AF.salt]:salt,[AF.hash]:hash,[AF.resetHash]:resetHash,[AF.resetExpires]:resetExpires});
+  const fresh=await findAppAccountByEmail(acct.email);
+  const verified=!!fresh && await verifyStoredPasswordV305(acct.email,pw);
+  return {verified,expires:resetExpires,account:fresh||acct};
+}
+async function deleteAppAccountV306(acct,accounts){
+  const me=currentUser();
+  if(!me||me.role!=="Admin")throw new Error("Admin access is required.");
+  if(!acct?.recordId)throw new Error("This account no longer exists in Airtable.");
+  if(acct.accountId===me.accountId||acct.email===me.email)throw new Error("You cannot delete the account you are currently signed in with.");
+  if(acct.role==="Admin"){
+    const otherAdmins=(accounts||[]).filter(a=>a.role==="Admin"&&a.accountId!==acct.accountId);
+    if(!otherAdmins.length)throw new Error("You cannot delete the last Admin account.");
+  }
+  if(!confirm("DELETE "+acct.name+"?\n\nThis permanently removes the employee login from Airtable. Existing service history stays intact."))return false;
+  try{
+    await api(APP_ACCOUNTS_TABLE+"/"+encodeURIComponent(acct.recordId),{method:"DELETE"});
+  }catch(e){
+    if(!String(e?.message||e).includes("ROW_DOES_NOT_EXIST"))throw e;
+  }
+  return true;
+}
+async function syncCurrentUserFromCloudV306(){
+  const me=currentUser();
+  if(!me||isGuestUserV305(me)||!token()||!navigator.onLine)return me;
+  try{
+    const accounts=await allAppAccounts();
+    const live=accounts.find(a=>(me.accountId&&a.accountId===me.accountId)||(me.email&&a.email===String(me.email).toLowerCase()));
+    if(!live){
+      localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI();
+      return null;
+    }
+    if(live.status!=="Active"){
+      localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI();
+      return null;
+    }
+    saveCurrentUser(live);
+    return live;
+  }catch(_){return me}
 }
 async function copyTextV304(text){
   if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return true}
@@ -3342,7 +3455,7 @@ async function copyTextV304(text){
 function showTemporaryPasswordV304(info){
   const box=$("teamTempResult");if(!box||!info)return;
   box.classList.remove("hidden");
-  box.innerHTML=`<b>${esc(info.action||"Temporary password ready")}</b><div class="small">${esc(info.name||"")} • ${esc(info.email||"")}</div><div class="tempPasswordCode mono">${esc(info.password||"")}</div>${info.verified===true?'<div class="small tempVerified">✓ VERIFIED AGAINST AIRTABLE</div>':info.verified===false?'<div class="small tempVerifyWarn">⚠ Verification failed — use NEW TEMP PASSWORD again before giving this code to the employee.</div>':""}<button class="outline" id="copyTeamTempPassword" data-safe-bound="yes" type="button">COPY TEMPORARY PASSWORD</button><div class="small">This password is shown only here. It is not stored in Airtable as plain text.</div>`;
+  box.innerHTML=`<b>${esc(info.action||"Temporary password ready")}</b><div class="small">${esc(info.name||"")} • ${esc(info.email||"")}</div><div class="tempPasswordCode mono">${esc(info.password||"")}</div>${info.verified===true?'<div class="small tempVerified">✓ VERIFIED AGAINST AIRTABLE</div>':info.verified===false?'<div class="small tempVerifyWarn">⚠ Verification failed — use NEW TEMP PASSWORD again before giving this code to the employee.</div>':""}${info.expires?'<div class="small">One-time recovery code expires in 24 hours. Hyphens are optional when signing in.</div>':""}<button class="outline" id="copyTeamTempPassword" data-safe-bound="yes" type="button">COPY TEMPORARY PASSWORD</button><div class="small">The plain password is shown only here. Airtable stores hashes, not this readable code.</div>`;
   const copy=$("copyTeamTempPassword");if(copy)copy.addEventListener("click",async()=>{try{await copyTextV304(info.password);copy.textContent="✓ PASSWORD COPIED"}catch(e){alert("Temporary password: "+info.password)}});
 }
 function bindTeamControlV304(el,handler){
@@ -3352,7 +3465,8 @@ function bindTeamControlV304(el,handler){
 }
 async function renderTeamV30(){
   const box=$("accountsScreen");if(!box)return;
-  const me=currentUser();if(!me){await renderAccountGateV30("Sign in to open Team.");return}
+  let me=currentUser();if(me&&!isGuestUserV305(me)&&token()&&navigator.onLine)me=await syncCurrentUserFromCloudV306();
+  if(!me){await renderAccountGateV30("That saved employee account is no longer in Airtable. Sign in again.");return}
   if(isGuestUserV305(me)){
     box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><h2>Guest Technician</h2><div class="unit"><b>Tech-style Guest Mode</b><p class="small">You can open and use the app, but Guest cannot save, queue, delete, upload photos, or change anything in the Res-Com cloud. Local device changes stay on this phone only.</p><div class="badge pending">${esc(guestStatusTextV305())}</div></div><button class="gray" id="teamLogout" data-safe-bound="yes" type="button">EXIT GUEST / SIGN IN</button></div>`;
     bindHome();bindTeamControlV304($("teamLogout"),async()=>{clearCurrentUser();await renderAccountGateV30("Guest mode ended. Sign in with an employee account, or continue as Guest again.")});show("accountsScreen");window.rescomRefreshModernUI?.();return;
@@ -3362,8 +3476,8 @@ async function renderTeamV30(){
   box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><div class="sectionTitleRow"><div><h2>Team</h2><p class="small">One simple account list for Res-Com Admins and Techs.</p></div><span class="badge ${admin?"synced":"pending"}">${esc(me.role)}</span></div>
     <div class="teamMe"><b>${esc(me.name)}</b><span>${esc(me.email)}</span></div>
     ${loadError?`<div class="unit"><b>Team cloud connection problem</b><div class="small">${esc(loadError)}</div></div>`:""}
-    ${admin?`<div class="unit adminPanel"><h3>Admin Controls</h3><p class="small">Only Admins can manage the company PIN or employee accounts.</p><button class="orange" id="rotateCompanyPin" data-safe-bound="yes" type="button">GENERATE NEW 4-DIGIT COMPANY PIN</button><div id="companyPinResult" class="hidden companyPinResult"></div><button class="outline" id="emailCompanyPin" data-safe-bound="yes" type="button">EMAIL NEW PIN TO ALL ADMINS</button><hr><h3>Add Employee</h3><p class="small">Enter the employee name/email. Res-Com will generate a working temporary password automatically.</p><label>Name</label><input id="teamNewName"><label>Email</label><input id="teamNewEmail" type="email"><label>Role</label><select id="teamNewRole"><option value="Tech">Tech</option><option value="Admin">Admin</option></select><button class="orange" id="teamCreateAccount" data-safe-bound="yes" type="button">CREATE EMPLOYEE + TEMP PASSWORD</button><div id="teamTempResult" class="hidden tempPasswordResult"></div></div>`:""}
-    <div class="unit"><h3>Company Accounts</h3><div id="teamList">${accounts.length?accounts.map(a=>`<div class="teamRow"><div><b>${esc(a.name)}</b><span>${esc(a.email)} • ${esc(a.role)} • ${esc(a.status)}</span></div>${admin&&a.accountId!==me.accountId?`<div class="teamActions"><button class="outline teamRoleBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">${a.role==="Admin"?"MAKE TECH":"MAKE ADMIN"}</button><button class="gray teamStatusBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">${a.status==="Active"?"DISABLE":"ENABLE"}</button><button class="gray teamResetBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">NEW TEMP PASSWORD</button></div>`:""}</div>`).join(""):"<p class='small'>No accounts found.</p>"}</div></div>
+    ${admin?`<div class="unit adminPanel"><h3>Admin Controls</h3><p class="small">Only Admins can manage the company PIN or employee accounts. Deleted employees are removed from Airtable instead of being left disabled.</p><button class="orange" id="rotateCompanyPin" data-safe-bound="yes" type="button">GENERATE NEW 4-DIGIT COMPANY PIN</button><div id="companyPinResult" class="hidden companyPinResult"></div><button class="outline" id="emailCompanyPin" data-safe-bound="yes" type="button">EMAIL NEW PIN TO ALL ADMINS</button><hr><h3>Add Employee</h3><p class="small">Enter the employee name/email. Res-Com will generate a one-time temporary password and verify it against Airtable before you give it to the employee.</p><label>Name</label><input id="teamNewName"><label>Email</label><input id="teamNewEmail" type="email"><label>Role</label><select id="teamNewRole"><option value="Tech">Tech</option><option value="Admin">Admin</option></select><button class="orange" id="teamCreateAccount" data-safe-bound="yes" type="button">CREATE EMPLOYEE + TEMP PASSWORD</button><div id="teamTempResult" class="hidden tempPasswordResult"></div></div>`:""}
+    <div class="unit"><h3>Company Accounts</h3><div id="teamList">${accounts.length?accounts.map(a=>`<div class="teamRow"><div><b>${esc(a.name)}</b><span>${esc(a.email)} • ${esc(a.role)}</span></div>${admin&&a.accountId!==me.accountId?`<div class="teamActions"><button class="outline teamRoleBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">${a.role==="Admin"?"MAKE TECH":"MAKE ADMIN"}</button><button class="gray teamResetBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">NEW TEMP PASSWORD</button><button class="red teamDeleteBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">DELETE</button></div>`:""}</div>`).join(""):"<p class='small'>No accounts found.</p>"}</div></div>
     <button class="gray" id="teamLogout" data-safe-bound="yes" type="button">SIGN OUT</button></div>`;
   bindHome();
   bindTeamControlV304($("teamLogout"),async()=>{clearCurrentUser();await renderAccountGateV30("Signed out.")});
@@ -3376,20 +3490,23 @@ async function renderTeamV30(){
       try{
         const pw=generateTemporaryPasswordV304();
         const created=await createAppAccountV30({name,email,password:pw,role,createdBy:me.email});
-        const verified=await verifyStoredPasswordV305(created.email,pw);
-        window.__lastTempPasswordV304={action:verified?"Employee created — VERIFIED temporary password":"Employee created — temporary password needs reset",name:created.name,email:created.email,password:pw,verified};
+        const temp=await setTemporaryPasswordV306(created,pw);
+        window.__lastTempPasswordV304={action:temp.verified?"Employee created — VERIFIED one-time password":"Employee created — temporary password verification failed",name:created.name,email:created.email,password:pw,verified:temp.verified,expires:temp.expires};
         await renderTeamV30();
       }catch(e){if(btn){btn.disabled=false;btn.textContent="CREATE EMPLOYEE + TEMP PASSWORD"}throw e}
     });
     box.querySelectorAll(".teamRoleBtn").forEach(btn=>bindTeamControlV304(btn,async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;await updateAccountV30(a,{[AF.role]:a.role==="Admin"?"Tech":"Admin"});await renderTeamV30()}));
-    box.querySelectorAll(".teamStatusBtn").forEach(btn=>bindTeamControlV304(btn,async()=>{const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;await updateAccountV30(a,{[AF.status]:a.status==="Active"?"Disabled":"Active"});await renderTeamV30()}));
     box.querySelectorAll(".teamResetBtn").forEach(btn=>bindTeamControlV304(btn,async()=>{
       const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;
-      const pw=generateTemporaryPasswordV304(),salt=randomSaltV30(),hash=await passwordHashV30(pw,salt);
-      await updateAccountV30(a,{[AF.salt]:salt,[AF.hash]:hash});
-      const verified=await verifyStoredPasswordV305(a.email,pw);
-      window.__lastTempPasswordV304={action:verified?"VERIFIED new temporary password":"Temporary password reset needs retry",name:a.name,email:a.email,password:pw,verified};
+      const pw=generateTemporaryPasswordV304();
+      const temp=await setTemporaryPasswordV306(a,pw);
+      window.__lastTempPasswordV304={action:temp.verified?"VERIFIED new one-time temporary password":"Temporary password verification failed",name:a.name,email:a.email,password:pw,verified:temp.verified,expires:temp.expires};
       await renderTeamV30();
+    }));
+    box.querySelectorAll(".teamDeleteBtn").forEach(btn=>bindTeamControlV304(btn,async()=>{
+      const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a){await renderTeamV30();return}
+      const deleted=await deleteAppAccountV306(a,accounts);
+      if(deleted){window.__lastTempPasswordV304=null;await renderTeamV30()}
     }));
     if(window.__lastTempPasswordV304)showTemporaryPasswordV304(window.__lastTempPasswordV304);
   }
@@ -3502,6 +3619,10 @@ async function bootResComV30(){
   try{renderList();renderBugLog()}catch(e){}
   if(isGuestUserV305())setStatus("pending",guestStatusTextV305());else if(token())setStatus("pending","STARTING CLOUD SYNC...");else setStatus("pending","DEVICE SETUP NEEDED");
   applyCurrentUserUI();
+  if(currentUser()&&!isGuestUserV305()&&token()&&navigator.onLine){
+    const live=await syncCurrentUserFromCloudV306();
+    if(!live)setStatus("pending","EMPLOYEE ACCOUNT REMOVED — SIGN IN AGAIN");
+  }
   hideLoadingScreen();clearTimeout(failOpen);
   const qp=new URLSearchParams(location.search),requested=(qp.get("unit")||qp.get("equipment")||"").trim().toUpperCase();
   if(requested&&!isStandaloneApp()){showQRHandoff(requested)}
@@ -3564,5 +3685,5 @@ bootResComV30();
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
-<script src="./modern-ui.js?v=30.5"></script>
+<script src="./modern-ui.js?v=30.6"></script>
 </body></html>

@@ -1,14 +1,19 @@
-RES-COM HVAC QR — VERSION 30.5
-Build: Aug 19, 2026 4:28 PM
+RES-COM HVAC QR — VERSION 30.6
+Build: Aug 19, 2026 4:50 PM
 
-GUEST TECH & CROSS-PHONE PASSWORD RECOVERY
-- Adds CONTINUE AS GUEST with Tech-style local/read-only access.
-- Guest never writes or queues changes to Airtable.
-- Guest photo uploads, account changes, and cloud queue syncing are blocked.
-- Temporary passwords now tolerate pasted whitespace, lowercase RC, and optional spaces/hyphens.
-- Admin-created/reset temporary passwords are verified against Airtable before being marked ready.
-- New-phone setup clearly explains that real employee sign-in needs a one-time Res-Com cloud connection.
-- Includes the v30.4 account/sign-in recovery fixes.
-- Keeps permanent QR links, equipment IDs, Team records, service history, and local data compatible.
+EMPLOYEE LOGIN / TEMP PASSWORD RECOVERY
+- Admin temporary passwords now use two checks: the normal password hash plus a dedicated 24-hour one-time reset token.
+- New temporary passwords use RC-XXXX-XXXX and accept pasted codes with or without hyphens/case differences.
+- A verified one-time reset code is promoted into the employee's normal password hash after sign-in.
+
+TEAM ACCOUNT CLEANUP
+- Replaced Disable/Enable with permanent DELETE for employee accounts.
+- Existing service history is not deleted when an employee login is removed.
+- Phones automatically sign out stale employee identities that were manually deleted from Airtable.
+
+IPHONE / BRANDING
+- Fixed Create Employee Account scrolling so the 4-digit Company PIN and submit button remain reachable.
+- Top Res-Com logo now uses the higher-resolution icon at full opacity.
 
 Upload the CONTENTS of this folder to the SAME GitHub Pages repository/path and replace matching files.
+Do not change the Pages URL; existing QR labels remain compatible.

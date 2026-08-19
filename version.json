@@ -1,5 +1,5 @@
 {
-  "version": "30.5",
-  "build": "Aug 19, 2026 4:28 PM",
-  "notes": "Guest Tech and cross-phone password recovery: Guest mode provides Tech-style local/read-only access with all cloud writes and queue syncing blocked; temporary passwords normalize pasted whitespace/case/hyphens and Admin-generated/reset passwords are verified against Airtable; new-phone setup clearly explains the one-time cloud connection required for employee sign-in."
+  "version": "30.6",
+  "build": "Aug 19, 2026 4:50 PM",
+  "notes": "Temporary-password one-time reset-token fallback, permanent employee delete, stale account cleanup, iPhone account-form scrolling fix, and sharper Res-Com header logo. Manual and Patch Notes updated."
 }
