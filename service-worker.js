@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-4-account-signin-recovery";
+const CACHE = "rescom-qr-v30-5-guest-crossphone-password";
 const CORE = [
   "./index.html",
   "./version.json",

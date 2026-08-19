@@ -1,8 +1,8 @@
 UPLOAD THESE FILES TO THE SAME GITHUB PAGES REPOSITORY/PATH.
 Replace matching files. Do not change the Pages address.
 
-Expected app version after refresh: APP v30.4
-Build: Aug 19, 2026 4:12 PM
+Expected app version after refresh: APP v30.5
+Build: Aug 19, 2026 4:28 PM
 
 Main changed files: index.html, modern-ui.js, modern-ui.css, service-worker.js, version.json.
 Existing QR links remain compatible.

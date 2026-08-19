@@ -527,7 +527,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=30.4">
+<link rel="stylesheet" href="./modern-ui.css?v=30.5">
 </head>
 <body>
 <div id="loadingScreen">
@@ -536,7 +536,7 @@ body{padding-bottom:88px!important}
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
     <div id="loadingStatus">Opening Res-Com…</div>
-    <div id="loadingVersion" class="small">Installed v30.4</div>
+    <div id="loadingVersion" class="small">Installed v30.5</div>
   </div>
 </div>
 <script>
@@ -567,7 +567,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v30.4 • UPDATED Aug 19, 2026 4:12 PM</span>
+    <span id="appVersionBadge">APP v30.5 • UPDATED Aug 19, 2026 4:28 PM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -710,6 +710,12 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
     </div>
 
     <div class="manual-section" id="m-account-recovery-v304">
+      <h3>Version 30.5 — Guest Tech & Cross-Phone Password Recovery</h3>
+      <p><b>Guest Tech:</b> a new CONTINUE AS GUEST option lets someone open Res-Com with Tech-style access without an employee account. Guest work stays on that device only and is never written or queued to Airtable.</p>
+      <p><b>Cloud safety:</b> Guest can read shared equipment only when that phone already has the Res-Com cloud connection. Cloud writes, photo uploads, queue syncing, account changes, and service uploads are blocked in Guest mode.</p>
+      <p><b>Temporary passwords:</b> copied temporary passwords now ignore accidental leading/trailing spaces, accept RC temp codes with lowercase letters, spaces, or a hyphen, and are normalized before hashing.</p>
+      <p><b>Admin verification:</b> newly generated and reset temporary passwords are re-read from Airtable and verified against the stored salt/hash before Res-Com shows them as ready.</p>
+      <p><b>New-phone sign-in:</b> a brand-new phone clearly explains that employee sign-in requires a one-time Res-Com cloud connection on that device. Guest mode remains available without cloud setup.</p>
       <h3>Version 30.4 — Account & Sign-In Recovery</h3>
       <p><b>Sign in:</b> Res-Com now waits for the Team account list to finish loading before it shows tappable sign-in controls.</p>
       <p><b>Company PIN:</b> if a 4-digit company PIN is entered on Sign In, the app explains that the PIN is only for account creation and that employees use their own password.</p>
@@ -923,6 +929,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
 <section id="patchNotes" class="hidden">
   <div class="card">
+<div class="unit" id="rcPatch305"><h3>Version 30.5 — Guest Tech & Cross-Phone Password Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:28 PM</p><p>• Added CONTINUE AS GUEST with Tech-style app access.</p><p>• Guest mode is local/read-only for cloud data: it never writes or queues equipment, service history, photos, account changes, or bug uploads to Airtable.</p><p>• Guest can still view cloud equipment on a device that already has the Res-Com Airtable connection; otherwise it works from local/device data only.</p><p>• Temporary-password sign-in now trims accidental whitespace and accepts RC temp passwords even if iPhone changes letter case or the code is pasted with a space/hyphen.</p><p>• Admin-created/reset temporary passwords are verified after Airtable saves the new hash before the app marks them ready.</p><p>• New phones now clearly explain that employee sign-in needs a one-time Res-Com cloud connection; Guest remains available without one.</p><p>• Strengthened dynamic-button bug filtering and Guest-mode cloud safeguards.</p><p>• Existing QR links, equipment IDs, service history, Team accounts, and prior patch notes remain unchanged.</p></div>
 <div class="unit" id="rcPatch304"><h3>Version 30.4 — Account & Sign-In Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:12 PM</p><p>• Fixed visible sign-in buttons appearing before their click handlers were attached.</p><p>• Wrong 4-digit company PIN on Sign In now gives a clear employee-password message instead of behaving like a broken login.</p><p>• Admin Add Employee now auto-generates a temporary password and provides a copy button.</p><p>• Password reset now auto-generates a new temporary password that matches the stored hash.</p><p>• Added a reliable SIGN IN / SIGN OUT account control at the top of the app.</p><p>• Marked dynamic Team/account controls correctly so the Bug Center stops reporting false missing-button-action errors.</p><p>• Prevented recursive Airtable bug-upload failures from creating bug storms.</p></div>
 
     <button class="gray" data-home type="button">← HOME</button>
@@ -1322,8 +1329,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="30.4";
-const APP_BUILD="Aug 19, 2026 4:12 PM";
+const APP_VERSION="30.5";
+const APP_BUILD="Aug 19, 2026 4:28 PM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -1861,8 +1868,8 @@ function applyCurrentUserUI(){
   const u=currentUser(),bar=document.getElementById("signedUserBar"),text=document.getElementById("signedUserText"),accountBtn=document.getElementById("logoutUser");
   // v30.4: keep an account control visible even when nobody is signed in.
   bar?.classList.remove("hidden");
-  if(text)text.textContent=u?`${u.name||"Res-Com User"} • ${u.role||"Tech"}`:"Not signed in";
-  if(accountBtn){accountBtn.textContent=u?"SIGN OUT":"SIGN IN";accountBtn.dataset.safeBound="yes"}
+  if(text)text.textContent=u?(isGuestUserV305(u)?`${u.name||"Guest Technician"} • Tech • LOCAL ONLY`:`${u.name||"Res-Com User"} • ${u.role||"Tech"}`):"Not signed in";
+  if(accountBtn){accountBtn.textContent=u?(isGuestUserV305(u)?"EXIT GUEST":"SIGN OUT"):"SIGN IN";accountBtn.dataset.safeBound="yes"}
   document.querySelectorAll(".admin-only").forEach(el=>el.classList.toggle("hidden",!(u&&u.role==="Admin")));
 }
 async function allCompanyUsers(){
@@ -2083,6 +2090,8 @@ function syncAlert(msg){
   }catch(e){}
 }
 async function api(path,opts={},meta={}){
+  const method=String(opts?.method||"GET").toUpperCase();
+  if(isGuestUserV305() && !["GET","HEAD"].includes(method))throw new Error("GUEST MODE — cloud saving is disabled. Sign in as an employee to save to Airtable.");
   if(!token())throw new Error("NO_TOKEN");
   const res=await fetch("https://api.airtable.com/v0/"+BASE+"/"+path,{
     ...opts,
@@ -2140,6 +2149,7 @@ async function fileToUpload(file){
   };
 }
 async function uploadAttachment(recordId,fieldId,file){
+  if(isGuestUserV305())throw new Error("Guest mode does not upload photos to the cloud.");
   if(!token())throw new Error("Airtable connection is not set up.");
   if(!navigator.onLine)throw new Error("Photo upload needs an internet connection.");
   const payload=await fileToUpload(file);
@@ -2339,6 +2349,7 @@ async function remoteHistory(recordId){
 }
 async function loadUnit(id){
   let local=getLocal(id)||{id,assigned:false,history:[]};
+  if(isGuestUserV305())return local;
   if(!token()||!navigator.onLine)return local;
   try{
     const r=await findRemoteEquipment(id);
@@ -2403,6 +2414,7 @@ async function saveHistory(u,e){
   }
 }
 function enqueue(op){
+  if(isGuestUserV305())return;
   const q=queue();
   if(op.kind==="equipment"){
     const i=q.findIndex(x=>x.kind==="equipment"&&x.data.id===op.data.id);
@@ -2411,7 +2423,7 @@ function enqueue(op){
   setQueue(q);
 }
 async function flushQueue(){
-  if(!token()||!navigator.onLine||!queue().length)return;
+  if(isGuestUserV305()||!token()||!navigator.onLine||!queue().length)return;
   setStatus("pending","SYNCING...");
   const q=queue(),remain=[];
   for(const op of q){
@@ -2715,7 +2727,8 @@ window.historyForm=function(kind){
     ${parts?'<label>Part / Component</label><input id="h_part" placeholder="Capacitor, motor, contactor...">':""}
     <label>${parts?"Part Notes / Work Performed":"Work Performed / Notes"}</label><textarea id="h_notes"></textarea>
     <div class="photo-picker"><b>Service Photos</b><input id="h_photos" type="file" accept="image/*" capture="environment" multiple>    <div class="photo-note">Add equipment condition, readings, failed parts, completed repair, or installation photos.</div></div>
-    <button class="orange" id="saveHist">SAVE SERVICE + PHOTOS</button></div>`;
+    ${isGuestUserV305()?'<div class="small guestLocalNote">Guest mode: service entries stay on this device only. Photos are not uploaded.</div>':""}
+    <button class="orange" id="saveHist">${isGuestUserV305()?"SAVE LOCALLY — GUEST":"SAVE SERVICE + PHOTOS"}</button></div>`;
   $("saveHist").onclick=async()=>{
     const b=$("saveHist");b.disabled=true;b.textContent="SAVING...";
     const u=getLocal(currentId);
@@ -2726,7 +2739,8 @@ window.historyForm=function(kind){
     const files=$("h_photos").files;
     const result=await saveHistory(u,e);
     if(files && files.length){
-      if(!navigator.onLine){alert("The service entry was saved locally, but photos need an internet connection. Re-add the photos when online.");}
+      if(isGuestUserV305()){alert("Guest mode saved the service entry on this device only. Photos were not uploaded.");}
+      else if(!navigator.onLine){alert("The service entry was saved locally, but photos need an internet connection. Re-add the photos when online.");}
       else if(typeof result==="string"){
         try{setStatus("pending","UPLOADING SERVICE PHOTOS...");await uploadMany(result,H.photos,files);setStatus("synced","✓ SERVICE + PHOTOS SAVED TO CLOUD")}
         catch(err){alert("Service saved, but one or more photos did not upload. "+err.message);}
@@ -2989,7 +3003,8 @@ document.addEventListener("click",e=>{
   const b=e.target.closest&&e.target.closest("button");
   if(!b||b.disabled)return;
   if(b.dataset.safeBound==="yes")return;
-  if(b.matches("[data-nav],[data-home],.manualJump,.qtyBtn,.openUnitBtn"))return;
+  if(b.matches("[data-nav],[data-home],[data-safe-bound='yes'],.manualJump,.qtyBtn,.openUnitBtn"))return;
+  if(b.closest("#pinGate,#accountsScreen,#rcMoreBackdrop,#rcAppearanceCard"))return;
   if(typeof b.onclick==="function")return;
   setTimeout(()=>{
     try{
@@ -3082,6 +3097,34 @@ const SF={key:"fld7GuhFfMGnQM8Ei",value:"fldJwQjXIt7UVkcRN",updated:"fldiF3SH7PT
 F.customerPhone="fldBjZ32JRGqU6wyq";
 const V30_MIGRATION_KEY="rescom_v30_identity_cleanup_done";
 const V30_THEME_KEY="rescom_theme_v30";
+const V305_GUEST_ID="GUEST-TECH";
+function isGuestUserV305(u=currentUser()){return !!(u&&u.guest===true)}
+function guestStatusTextV305(){
+  if(token()&&navigator.onLine)return "GUEST • CLOUD READ-ONLY";
+  return navigator.onLine?"GUEST • LOCAL ONLY":"GUEST • OFFLINE / LOCAL ONLY";
+}
+function startGuestModeV305(){
+  const guest={accountId:V305_GUEST_ID,name:"Guest Technician",email:"",role:"Tech",status:"Active",guest:true};
+  saveCurrentUser(guest);
+  const gate=$("pinGate");if(gate)gate.classList.add("hidden");
+  show("home");applyCurrentUserUI();renderList();
+  setStatus("pending",guestStatusTextV305());
+  if(token()&&navigator.onLine)refreshSharedEquipment().catch(()=>setStatus("pending",guestStatusTextV305()));
+  window.rescomRefreshModernUI?.();
+  return guest;
+}
+function normalizeEmployeePasswordV305(password){
+  let pw=String(password??"").replace(/\u00a0/g," ").trim();
+  const compact=pw.replace(/[\s-]+/g,"");
+  if(/^rc\d{6}$/i.test(compact))return compact.toUpperCase();
+  return pw;
+}
+async function verifyStoredPasswordV305(email,password){
+  const acct=await findAppAccountByEmail(email);
+  if(!acct||!acct.salt||!acct.hash)return false;
+  const got=await passwordHashV30(normalizeEmployeePasswordV305(password),acct.salt);
+  return got===acct.hash;
+}
 
 function normalizeRole(v){return typeof v==="string"?v:(v?.name||"")}
 function normalizeStatus(v){return typeof v==="string"?v:(v?.name||"")}
@@ -3118,7 +3161,7 @@ async function passwordHashV30(password,saltHex){
   return Array.from(new Uint8Array(bits)).map(b=>b.toString(16).padStart(2,"0")).join("");
 }
 async function createAppAccountV30({name,email,password,role="Tech",createdBy="Self signup"}){
-  name=String(name||"").trim();email=String(email||"").trim().toLowerCase();password=String(password||"");
+  name=String(name||"").trim();email=String(email||"").trim().toLowerCase();password=normalizeEmployeePasswordV305(password);
   if(!name)throw new Error("Enter your name.");
   if(!/^\S+@\S+\.\S+$/.test(email))throw new Error("Enter a valid email address.");
   if(password.length<6)throw new Error("Password must be at least 6 characters.");
@@ -3132,10 +3175,11 @@ async function createAppAccountV30({name,email,password,role="Tech",createdBy="S
   return accountFromRecord(d.records?.[0]||{fields:{"Account Name":name,"Email":email,"Role":role,"Status":"Active","Password Salt":salt,"Password Hash":hash}});
 }
 async function loginAppAccountV30(email,password){
+  if(!token())throw new Error("This phone is not connected to Res-Com Cloud yet. An Admin must connect this phone once, or use Guest Mode.");
   const acct=await findAppAccountByEmail(email);
   if(!acct)throw new Error("No Res-Com account was found for that email.");
   if(acct.status!=="Active")throw new Error("This account is not active. Contact a Res-Com Admin.");
-  const pw=String(password||"");
+  const pw=normalizeEmployeePasswordV305(password);
   if(!pw)throw new Error("Enter your employee password.");
   if(!acct.salt||!acct.hash)throw new Error("This account does not have a working password yet. Ask an Admin to reset the temporary password.");
   const got=await passwordHashV30(pw,acct.salt);
@@ -3202,9 +3246,9 @@ function migrateV30Identity(){
 
 function accountGateHTMLV30(mode,firstAdmin=false,msg=""){
   if(mode==="checking")return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Checking Res-Com Accounts</h2><p>Please wait while this device connects to the company account list.</p><div class="loadingSpinner" aria-hidden="true"></div><div id="v30GateMsg" class="small">${esc(msg||"Connecting…")}</div></div>`;
-  if(mode==="token")return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Connect This Device</h2><p>One-time Admin setup: enter the restricted Res-Com Airtable token. It stays on this device.</p><label>Airtable Token</label><input id="v30GateToken" type="password" autocomplete="off" placeholder="pat..."><button class="orange" id="v30SaveToken" data-safe-bound="yes" type="button">CONNECT DEVICE</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
-  if(firstAdmin)return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Create the First Res-Com Account</h2><p>The first person to create an account automatically becomes <b>Admin</b>.</p><label>Your Name</label><input id="v30CreateName" autocomplete="name"><label>Email</label><input id="v30CreateEmail" type="email" autocomplete="email"><label>Password</label><input id="v30CreatePassword" type="password" autocomplete="new-password"><button class="orange" id="v30CreateFirstAdmin" data-safe-bound="yes" type="button">CREATE ADMIN ACCOUNT</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
-  return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins sign in with their own employee password.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username"><label>Employee Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password"><div class="small">The 4-digit company PIN is only for creating a new employee account. It is <b>not</b> your sign-in password.</div><button class="orange" id="v30LoginBtn" data-safe-bound="yes" type="button">SIGN IN</button><button class="outline" id="v30ShowCreate" data-safe-bound="yes" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30CreateBox" class="hidden"><hr><h3>Create Employee Account</h3><p class="small">Ask an Admin for the current 4-digit company PIN. Choose your own employee password below.</p><label>Name</label><input id="v30SignupName"><label>Email</label><input id="v30SignupEmail" type="email"><label>Employee Password</label><input id="v30SignupPassword" type="password" autocomplete="new-password"><label>4-Digit Company PIN</label><input id="v30SignupCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*"><button class="orange" id="v30SignupBtn" data-safe-bound="yes" type="button">CREATE TECH ACCOUNT</button></div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  if(mode==="token")return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Connect This Phone</h2><p><b>Employee sign-in on a brand-new phone needs a one-time Res-Com cloud connection.</b> An Admin can connect this device with the restricted Airtable token.</p><label>Res-Com Cloud Token</label><input id="v30GateToken" type="password" autocomplete="off" placeholder="pat..."><button class="orange" id="v30SaveToken" data-safe-bound="yes" type="button">CONNECT THIS PHONE</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div class="small guestGateNote">Guest gets Tech-style access but cannot save or queue anything to the cloud. Without a cloud connection, Guest sees local/device data only.</div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  if(firstAdmin)return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Create the First Res-Com Account</h2><p>The first person to create an account automatically becomes <b>Admin</b>.</p><label>Your Name</label><input id="v30CreateName" autocomplete="name"><label>Email</label><input id="v30CreateEmail" type="email" autocomplete="email"><label>Password</label><input id="v30CreatePassword" type="password" autocomplete="new-password"><button class="orange" id="v30CreateFirstAdmin" data-safe-bound="yes" type="button">CREATE ADMIN ACCOUNT</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  return `<div class="pin-card v30Gate"><img src="icon-192.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins sign in with their own employee password.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"><div class="small">Temporary passwords begin with <b>RC</b>. Paste is supported. The 4-digit company PIN is only for creating a new employee account and is <b>not</b> your sign-in password.</div><button class="orange" id="v30LoginBtn" data-safe-bound="yes" type="button">SIGN IN</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><button class="outline" id="v30ShowCreate" data-safe-bound="yes" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30CreateBox" class="hidden"><hr><h3>Create Employee Account</h3><p class="small">Ask an Admin for the current 4-digit company PIN. Choose your own employee password below.</p><label>Name</label><input id="v30SignupName"><label>Email</label><input id="v30SignupEmail" type="email" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30SignupPassword" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><label>4-Digit Company PIN</label><input id="v30SignupCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*"><button class="orange" id="v30SignupBtn" data-safe-bound="yes" type="button">CREATE TECH ACCOUNT</button></div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
 }
 function bindAccountControlV304(id,handler){
   const el=$(id);if(!el)return null;
@@ -3226,8 +3270,9 @@ async function renderAccountGateV30(msg=""){
       const t=($("v30GateToken")?.value||"").trim();if(!t){$("v30GateMsg").textContent="Enter the Airtable token.";return}
       const btn=$("v30SaveToken");if(btn){btn.disabled=true;btn.textContent="CONNECTING…"}
       localStorage.setItem(TOKEN,t);
-      try{await allAppAccounts();await renderAccountGateV30()}catch(e){localStorage.removeItem(TOKEN);await renderAccountGateV30("That token could not connect to the Res-Com database.")}
+      try{await allAppAccounts();await renderAccountGateV30("Phone connected. Sign in with the employee email and password.")}catch(e){localStorage.removeItem(TOKEN);await renderAccountGateV30("That token could not connect to the Res-Com database.")}
     });
+    bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
     return;
   }
 
@@ -3236,8 +3281,9 @@ async function renderAccountGateV30(msg=""){
   let accounts=[];
   try{accounts=await allAppAccounts()}
   catch(e){
-    gate.innerHTML=accountGateHTMLV30("token",false,"Cloud connection failed. Re-enter the Airtable token for this device.");
+    gate.innerHTML=accountGateHTMLV30("token",false,"Cloud connection failed. Re-enter the Airtable token for this device, or continue as Guest.");
     bindAccountControlV304("v30SaveToken",async()=>{const t=($("v30GateToken")?.value||"").trim();if(!t)throw new Error("Enter the Airtable token.");localStorage.setItem(TOKEN,t);await renderAccountGateV30()});
+    bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
     return;
   }
 
@@ -3251,6 +3297,7 @@ async function renderAccountGateV30(msg=""){
         try{await refreshSharedEquipment()}catch(e){};window.rescomRefreshModernUI?.();
       }catch(e){const m=$("v30GateMsg");if(m)m.textContent=e.message||String(e);if(btn){btn.disabled=false;btn.textContent="CREATE ADMIN ACCOUNT"}}
     });
+    bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
     $("v30CreatePassword")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("v30CreateFirstAdmin")?.click()});
     return;
   }
@@ -3264,6 +3311,7 @@ async function renderAccountGateV30(msg=""){
       gate.classList.add("hidden");show("home");applyCurrentUserUI();try{await refreshSharedEquipment()}catch(e){};window.rescomRefreshModernUI?.();
     }catch(e){if(m)m.textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="SIGN IN"}}
   });
+  bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
   bindAccountControlV304("v30ShowCreate",async()=>{$("v30CreateBox")?.classList.toggle("hidden")});
   bindAccountControlV304("v30SignupBtn",async()=>{
     const b=$("v30SignupBtn");if(b){b.disabled=true;b.textContent="CREATING…"}
@@ -3278,7 +3326,7 @@ async function renderAccountGateV30(msg=""){
   $("v30SignupCompanyPin")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("v30SignupBtn")?.click()});
 }
 
-clearCurrentUser = function(){localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI()};
+clearCurrentUser = function(){localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI();setStatus(token()?"pending":"offline",token()?"SIGNED OUT":"SIGNED OUT • LOCAL ONLY")};
 
 async function updateAccountV30(acct,fields){
   await api(APP_ACCOUNTS_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:acct.recordId,fields}],typecast:true})});
@@ -3294,7 +3342,7 @@ async function copyTextV304(text){
 function showTemporaryPasswordV304(info){
   const box=$("teamTempResult");if(!box||!info)return;
   box.classList.remove("hidden");
-  box.innerHTML=`<b>${esc(info.action||"Temporary password ready")}</b><div class="small">${esc(info.name||"")} • ${esc(info.email||"")}</div><div class="tempPasswordCode mono">${esc(info.password||"")}</div><button class="outline" id="copyTeamTempPassword" data-safe-bound="yes" type="button">COPY TEMPORARY PASSWORD</button><div class="small">This password is shown only here. It is not stored in Airtable as plain text.</div>`;
+  box.innerHTML=`<b>${esc(info.action||"Temporary password ready")}</b><div class="small">${esc(info.name||"")} • ${esc(info.email||"")}</div><div class="tempPasswordCode mono">${esc(info.password||"")}</div>${info.verified===true?'<div class="small tempVerified">✓ VERIFIED AGAINST AIRTABLE</div>':info.verified===false?'<div class="small tempVerifyWarn">⚠ Verification failed — use NEW TEMP PASSWORD again before giving this code to the employee.</div>':""}<button class="outline" id="copyTeamTempPassword" data-safe-bound="yes" type="button">COPY TEMPORARY PASSWORD</button><div class="small">This password is shown only here. It is not stored in Airtable as plain text.</div>`;
   const copy=$("copyTeamTempPassword");if(copy)copy.addEventListener("click",async()=>{try{await copyTextV304(info.password);copy.textContent="✓ PASSWORD COPIED"}catch(e){alert("Temporary password: "+info.password)}});
 }
 function bindTeamControlV304(el,handler){
@@ -3305,6 +3353,10 @@ function bindTeamControlV304(el,handler){
 async function renderTeamV30(){
   const box=$("accountsScreen");if(!box)return;
   const me=currentUser();if(!me){await renderAccountGateV30("Sign in to open Team.");return}
+  if(isGuestUserV305(me)){
+    box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><h2>Guest Technician</h2><div class="unit"><b>Tech-style Guest Mode</b><p class="small">You can open and use the app, but Guest cannot save, queue, delete, upload photos, or change anything in the Res-Com cloud. Local device changes stay on this phone only.</p><div class="badge pending">${esc(guestStatusTextV305())}</div></div><button class="gray" id="teamLogout" data-safe-bound="yes" type="button">EXIT GUEST / SIGN IN</button></div>`;
+    bindHome();bindTeamControlV304($("teamLogout"),async()=>{clearCurrentUser();await renderAccountGateV30("Guest mode ended. Sign in with an employee account, or continue as Guest again.")});show("accountsScreen");window.rescomRefreshModernUI?.();return;
+  }
   let accounts=[],loadError="";try{accounts=await allAppAccounts()}catch(e){loadError=e?.message||String(e)}
   const admin=me.role==="Admin";
   box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><div class="sectionTitleRow"><div><h2>Team</h2><p class="small">One simple account list for Res-Com Admins and Techs.</p></div><span class="badge ${admin?"synced":"pending"}">${esc(me.role)}</span></div>
@@ -3324,7 +3376,8 @@ async function renderTeamV30(){
       try{
         const pw=generateTemporaryPasswordV304();
         const created=await createAppAccountV30({name,email,password:pw,role,createdBy:me.email});
-        window.__lastTempPasswordV304={action:"Employee created — temporary password",name:created.name,email:created.email,password:pw};
+        const verified=await verifyStoredPasswordV305(created.email,pw);
+        window.__lastTempPasswordV304={action:verified?"Employee created — VERIFIED temporary password":"Employee created — temporary password needs reset",name:created.name,email:created.email,password:pw,verified};
         await renderTeamV30();
       }catch(e){if(btn){btn.disabled=false;btn.textContent="CREATE EMPLOYEE + TEMP PASSWORD"}throw e}
     });
@@ -3334,7 +3387,8 @@ async function renderTeamV30(){
       const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;
       const pw=generateTemporaryPasswordV304(),salt=randomSaltV30(),hash=await passwordHashV30(pw,salt);
       await updateAccountV30(a,{[AF.salt]:salt,[AF.hash]:hash});
-      window.__lastTempPasswordV304={action:"New temporary password",name:a.name,email:a.email,password:pw};
+      const verified=await verifyStoredPasswordV305(a.email,pw);
+      window.__lastTempPasswordV304={action:verified?"VERIFIED new temporary password":"Temporary password reset needs retry",name:a.name,email:a.email,password:pw,verified};
       await renderTeamV30();
     }));
     if(window.__lastTempPasswordV304)showTemporaryPasswordV304(window.__lastTempPasswordV304);
@@ -3384,12 +3438,13 @@ async function refreshSharedEquipment(){
   try{
     const records=await fetchAllRemoteEquipmentV30();
     for(const r of records){const cloud=fromRecord(r);if(!cloud.id)continue;const prev=map.get(cloud.id);map.set(cloud.id,{...(prev||{}),...cloud,history:prev?.history||[]})}
-    const merged=[...map.values()];saveLocal(merged);renderList();setStatus("synced","✓ EQUIPMENT READY");return merged;
+    const merged=[...map.values()];saveLocal(merged);renderList();setStatus(isGuestUserV305()?"pending":"synced",isGuestUserV305()?"GUEST • CLOUD READ-ONLY":"✓ EQUIPMENT READY");return merged;
   }catch(e){renderList();setStatus("offline","CLOUD ERROR — LOCAL EQUIPMENT READY");try{logBug("Airtable / Network",e?.message||String(e),"Refresh shared equipment","","NET")}catch(_){}return local}
 }
 
 saveEquipment = async function(u){
   upsertLocal(u);setStatus("pending","SAVING...");
+  if(isGuestUserV305()){setStatus("pending","GUEST • EQUIPMENT SAVED ON THIS DEVICE ONLY");return false}
   if(!token()||!navigator.onLine){enqueue({kind:"equipment",data:u});setStatus("pending","OFFLINE — WILL SYNC");return false}
   try{
     const existing=await findRemoteEquipment(u.id);
@@ -3403,10 +3458,23 @@ saveEquipment = async function(u){
   }catch(e){enqueue({kind:"equipment",data:u});setStatus("pending","SAVED LOCALLY — CLOUD SYNC PENDING");return false}
 };
 
+
+const saveHistoryCloudV305=saveHistory;
+saveHistory = async function(u,e){
+  if(isGuestUserV305()){
+    u.history=u.history||[];
+    if(!u.history.some(x=>x.id===e.id))u.history.push(e);
+    upsertLocal(u);
+    setStatus("pending","GUEST • SERVICE SAVED ON THIS DEVICE ONLY");
+    return false;
+  }
+  return saveHistoryCloudV305(u,e);
+};
+
 setupForm = function(u){
   $("detail").innerHTML=`<div class="card"><button class="gray" data-home type="button">← HOME</button><span class="badge pending">${u.assigned?"EDIT EQUIPMENT":"NEW QR"}</span><h2>${u.assigned?"Edit Equipment":"Set Up This Equipment"}</h2>
   <div class="grid"><div><label>Customer / Site Name</label><input id="f_site" value="${esc(u.site||"")}" placeholder="Customer, building, property..."></div><div><label>Customer Email</label><input id="f_account_email" type="email" value="${esc(u.accountEmail||"")}" placeholder="customer@example.com"></div><div><label>Customer Phone</label><input id="f_account_phone" type="tel" value="${esc(u.accountPhone||"")}" placeholder="Phone"></div><div><label>Equipment Type</label><input id="f_type" list="equipmentTypeOptions" value="${esc(u.type||"")}" placeholder="Tap to choose or type your own"><datalist id="equipmentTypeOptions"><option value="Gas Furnace"></option><option value="Boiler"></option><option value="Air Handler"></option><option value="Condenser"></option><option value="Heat Pump"></option><option value="AC Coil"></option><option value="Air Filter"></option><option value="Bypass Humidifier"></option><option value="Power Humidifier"></option><option value="Steam Humidifier"></option><option value="External Hot Water Coil"></option><option value="Ductless Split"></option><option value="Hot Water Heater"></option><option value="Indirect Hot Water Maker"></option><option value="Tankless Water Heater"></option><option value="Combi"></option><option value="Other"></option></datalist></div><div><label>Location</label><input id="f_loc" value="${esc(u.location||"")}" placeholder="Basement, attic, roof..."></div><div><label>Manufacturer</label><input id="f_mfr" value="${esc(u.mfr||"")}"></div><div><label>Model Number</label><input id="f_model" value="${esc(u.model||"")}"></div><div><label>Serial Number</label><input id="f_serial" value="${esc(u.serial||"")}"></div><div><label>Thermostat Location(s)</label><input id="f_thermo" value="${esc(u.thermo||"")}"></div><div><label>Install Date</label><input id="f_install" type="date" value="${esc(u.install||"")}"></div><div><label>Warranty Expiration</label><input id="f_warranty" type="date" value="${esc(u.warranty||"")}"></div><div><label>Next Maintenance Due</label><input id="f_due" type="date" value="${esc(u.due||"")}"></div></div>
-  <label>Equipment Notes</label><textarea id="f_notes">${esc(u.notes||"")}</textarea><div class="photo-picker"><b>Equipment Photos</b><input id="f_photos" type="file" accept="image/*" capture="environment" multiple><div class="photo-note">Take photos or choose them from the photo library.</div></div>${photoGrid(u.photos)}<button class="orange" id="saveSetup">SAVE EQUIPMENT</button><div class="small mono">${esc(u.id)}</div></div>`;
+  <label>Equipment Notes</label><textarea id="f_notes">${esc(u.notes||"")}</textarea><div class="photo-picker"><b>Equipment Photos</b><input id="f_photos" type="file" accept="image/*" capture="environment" multiple><div class="photo-note">Take photos or choose them from the photo library.</div></div>${photoGrid(u.photos)}<button class="orange" id="saveSetup">${isGuestUserV305()?"SAVE LOCALLY — GUEST":"SAVE EQUIPMENT"}</button>${isGuestUserV305()?`<div class="small guestLocalNote">Guest mode: this equipment stays on this device and will not be queued or saved to Airtable.</div>`:""}<div class="small mono">${esc(u.id)}</div></div>`;
   bindHome();
   $("saveSetup").onclick=async()=>{const b=$("saveSetup");b.disabled=true;b.textContent="SAVING...";Object.assign(u,{assigned:true,type:$("f_type").value.trim()||"Other",site:$("f_site").value.trim(),accountEmail:$("f_account_email").value.trim(),accountPhone:$("f_account_phone").value.trim(),location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),model:$("f_model").value.trim(),serial:$("f_serial").value.trim(),thermo:$("f_thermo").value.trim(),install:$("f_install").value,warranty:$("f_warranty").value,due:$("f_due").value,notes:$("f_notes").value.trim(),accountRecordId:"",accountName:""});const files=$("f_photos").files;const ok=await saveEquipment(u);if(ok&&files?.length){try{setStatus("pending","UPLOADING EQUIPMENT PHOTOS...");await uploadMany(currentRecordId,F.photos,files);setStatus("synced","✓ EQUIPMENT + PHOTOS SAVED")}catch(err){alert("Equipment saved, but photos did not finish uploading. "+err.message)}}renderList();await renderDetail(await loadUnit(u.id))};
 };
@@ -3417,6 +3485,9 @@ renderDetail = async function(u){
   const card=$("detail")?.querySelector(".card");
   if(card){
     card.querySelectorAll("p").forEach(p=>{const t=p.textContent||"";if(t.startsWith("Account:"))p.remove();if(t.startsWith("Account Email:"))p.innerHTML=`<b>Customer Email:</b> ${esc(u.accountEmail||"Not entered")}`;if(t.startsWith("Account Phone:"))p.innerHTML=`<b>Customer Phone:</b> ${esc(u.accountPhone||"Not entered")}`});
+    if(isGuestUserV305()){
+      const upload=$("uploadDetailPhotos");if(upload){upload.disabled=true;upload.textContent="PHOTO UPLOAD DISABLED — GUEST"}
+    }
   }
 };
 
@@ -3429,7 +3500,7 @@ async function bootResComV30(){
   migrateV30Identity();
   const failOpen=setTimeout(()=>{try{hideLoadingScreen()}catch(e){}},2200);
   try{renderList();renderBugLog()}catch(e){}
-  if(token())setStatus("pending","STARTING CLOUD SYNC...");else setStatus("pending","DEVICE SETUP NEEDED");
+  if(isGuestUserV305())setStatus("pending",guestStatusTextV305());else if(token())setStatus("pending","STARTING CLOUD SYNC...");else setStatus("pending","DEVICE SETUP NEEDED");
   applyCurrentUserUI();
   hideLoadingScreen();clearTimeout(failOpen);
   const qp=new URLSearchParams(location.search),requested=(qp.get("unit")||qp.get("equipment")||"").trim().toUpperCase();
@@ -3461,7 +3532,7 @@ function recoverHomeScreenShell(reason="resume"){
       return;
     }
     renderAccountGateV30("Res-Com recovered after a Home Screen launch problem.").catch(()=>{
-      const gate=$("pinGate");if(gate){gate.classList.remove("hidden");gate.innerHTML=accountGateHTMLV30(!token()?"token":"login",false,"Res-Com recovered. Sign in or reconnect this device.")}
+      const gate=$("pinGate");if(gate){gate.classList.remove("hidden");gate.innerHTML=accountGateHTMLV30(!token()?"token":"login",false,"Res-Com recovered. Sign in, reconnect this device, or continue as Guest.")}
     });
   }catch(err){
     try{show("home")}catch(_){}
@@ -3493,5 +3564,5 @@ bootResComV30();
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
-<script src="./modern-ui.js?v=30.4"></script>
+<script src="./modern-ui.js?v=30.5"></script>
 </body></html>

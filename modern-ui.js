@@ -1,9 +1,9 @@
-/* Res-Com HVAC QR v30.4 — Account & Sign-In Recovery + modern field UX */
+/* Res-Com HVAC QR v30.5 — Guest Tech + Cross-Phone Password Recovery + modern field UX */
 (() => {
   "use strict";
 
-  const MODERN_VERSION = "30.4";
-  const MODERN_BUILD = "Aug 19, 2026 4:12 PM";
+  const MODERN_VERSION = "30.5";
+  const MODERN_BUILD = "Aug 19, 2026 4:28 PM";
   const THEME_KEY = "rescom_theme_v30";
   let bugUploadBusy = false;
   let deferredInstallPrompt = null;
@@ -270,6 +270,9 @@
     const navBtn=document.querySelector('.manualJump[data-target="m-accounts"]');if(navBtn)navBtn.textContent="Team";
     const acctSec=byId("m-accounts");if(acctSec&&acctSec.dataset.rcManualTeam!==MODERN_VERSION){acctSec.innerHTML=`<h3>Team Accounts</h3><p>Res-Com now uses one simple Team account system. The first person who creates an account becomes Admin automatically.</p><p>Every Admin and Tech signs in with their own email and password. New employee self-signups require the current 4-digit company PIN, which only Admins manage.</p><p>Admins can create accounts, promote Techs to Admin, disable accounts, reset passwords, and rotate the company PIN from the Team tab.</p>`;acctSec.dataset.rcManualTeam=MODERN_VERSION;}
     const manualCard=document.querySelector("#manualScreen .card");
+    if(manualCard&&!byId("m-guest-crossphone-v305")){
+      const sec=document.createElement("div");sec.className="manual-section";sec.id="m-guest-crossphone-v305";sec.innerHTML=`<h3>Version 30.5 — Guest Tech & Cross-Phone Password Recovery</h3><p><b>Guest Tech:</b> CONTINUE AS GUEST opens Res-Com with Tech-style access. Guest does not save or queue cloud changes.</p><p><b>Cloud access:</b> a Guest on a phone that already has the Res-Com cloud connection may read shared equipment, but cloud writes, photos, account changes, and queue syncing are blocked. Without cloud setup, Guest uses local/device data only.</p><p><b>Temporary passwords:</b> Res-Com now trims accidental whitespace and normalizes RC temporary codes so lowercase letters, pasted spaces, or a hyphen do not cause a false password failure.</p><p><b>Verified password generation:</b> Admin-created and reset temporary passwords are checked against the Airtable salt/hash after saving before being marked VERIFIED.</p><p><b>Brand-new phones:</b> employee sign-in still needs a one-time secure Res-Com cloud connection on that phone. Guest works without it.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
+    }
     if(manualCard&&!byId("m-account-recovery-v304")){
       const sec=document.createElement("div");sec.className="manual-section";sec.id="m-account-recovery-v304";sec.innerHTML=`<h3>Version 30.4 — Account & Sign-In Recovery</h3><p><b>Sign-in recovery:</b> Res-Com waits for the Team account list before showing tappable login buttons, preventing the unbound-button problem seen on iPhone.</p><p><b>Wrong PIN:</b> entering the 4-digit company PIN on the employee password screen now explains the difference instead of failing unclearly.</p><p><b>Admin-created employees:</b> Admins no longer type a temporary password. Res-Com generates one, stores only its salted hash, and shows the plain temporary password with a Copy button.</p><p><b>Password reset:</b> Admins can generate a fresh temporary password for an employee in one tap.</p><p><b>Menu account access:</b> Account / Sign In is available from More, and the top account bar shows SIGN IN or SIGN OUT correctly.</p><p><b>Bug Center:</b> dynamic account buttons are marked as bound, and failed bug uploads cannot recursively create more bug uploads.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
@@ -286,6 +289,9 @@
       const sec=document.createElement("div");sec.className="manual-section";sec.id="m-v30";sec.innerHTML=`<h3>Version 30 — Simplified Accounts, Equipment Search & Themes</h3><p><b>Accounts:</b> customer account records and separate technician lists are no longer part of the app workflow. Customer name, email and phone are stored directly on each equipment record.</p><p><b>Team:</b> the first Res-Com employee to create an App Account is automatically Admin. Everyone else is a Tech unless an Admin changes the role.</p><p><b>Company PIN:</b> only Admins can generate and manage the 4-digit company PIN. It authorizes new employee account creation; Techs sign in with their own email and password.</p><p><b>Equipment:</b> Equipment search combines QR units scanned/created on this device with every equipment record downloaded from the shared Airtable database.</p><p><b>Status:</b> Loading Shared Equipment always finishes as Equipment Ready, Local Equipment Ready, or Cloud Error — Local Equipment Ready.</p><p><b>Appearance:</b> Settings now has White and Black app themes with explicit text/background contrast.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
     const patch=document.querySelector("#patchNotes .card");
+    if(patch&&!byId("rcPatch305")){
+      const b=document.createElement("div");b.className="unit";b.id="rcPatch305";b.innerHTML=`<h3>Version 30.5 — Guest Tech & Cross-Phone Password Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:28 PM</p><p>• Added Guest Tech mode with local/read-only cloud behavior.</p><p>• Guest changes are never written or queued to Airtable.</p><p>• Temporary passwords now tolerate pasted whitespace, lowercase RC, and optional spaces/hyphens.</p><p>• Admin-created/reset temp passwords are verified against Airtable before being marked ready.</p><p>• New-phone setup clearly explains the one-time cloud connection needed for real employee sign-in.</p><p>• Added Guest-safe photo, queue, account, and cloud-write protections.</p><p>• Strengthened dynamic button bug filtering.</p><p>• Existing QR links and Team/equipment/service records remain compatible.</p>`;const first=patch.querySelector(".unit");patch.insertBefore(b,first||null)
+    }
     if(patch&&!byId("rcPatch304")){
       const b=document.createElement("div");b.className="unit";b.id="rcPatch304";b.innerHTML=`<h3>Version 30.4 — Account & Sign-In Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:12 PM</p><p>• Fixed sign-in controls appearing before their event handlers were ready.</p><p>• Added a clear message when the 4-digit company PIN is entered as an employee password.</p><p>• Admin Add Employee now generates a temporary password automatically and provides a Copy button.</p><p>• NEW TEMP PASSWORD now generates a matching working password instead of using a manual prompt.</p><p>• Added reliable Account / Sign In access from the More menu and top account bar.</p><p>• Stopped false missing-action bug reports for Team/sign-in controls.</p><p>• Stopped recursive Airtable bug-upload failures from creating bug storms.</p><p>• Existing equipment QR links, service history, local data, and Team records remain unchanged.</p>`;const first=patch.querySelector(".unit");patch.insertBefore(b,first||null)
     }
@@ -338,7 +344,7 @@
       maybeShowIOSInstallNudge();
     }catch(err){
       try{console.error("Res-Com modern UI recovery",err)}catch{}
-      try{logBug?.("JavaScript",err?.message||String(err),"Modern UI startup","v30.4 continued with core app UI.","BOOT")}catch{}
+      try{logBug?.("JavaScript",err?.message||String(err),"Modern UI startup","v30.5 continued with core app UI.","BOOT")}catch{}
     }
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initialize,{once:true});else initialize();

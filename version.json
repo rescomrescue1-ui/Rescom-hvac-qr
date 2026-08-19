@@ -1,5 +1,5 @@
 {
-  "version": "30.4",
-  "build": "Aug 19, 2026 4:12 PM",
-  "notes": "Account and sign-in recovery: login controls wait for account loading; company PIN and employee password are clearly separated; Admin employee creation/reset now generates and copies working temporary passwords; Sign In menu access is restored; false and recursive bug logging is prevented."
+  "version": "30.5",
+  "build": "Aug 19, 2026 4:28 PM",
+  "notes": "Guest Tech and cross-phone password recovery: Guest mode provides Tech-style local/read-only access with all cloud writes and queue syncing blocked; temporary passwords normalize pasted whitespace/case/hyphens and Admin-generated/reset passwords are verified against Airtable; new-phone setup clearly explains the one-time cloud connection required for employee sign-in."
 }

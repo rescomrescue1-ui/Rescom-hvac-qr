@@ -375,3 +375,10 @@ html[data-theme="dark"] .iphoneInstallCard{background:#0d1828!important;border-c
 .tempPasswordCode{font-size:24px;font-weight:900;letter-spacing:2px;padding:10px 0;color:#0b2b50!important;word-break:break-all}
 html[data-theme="dark"] .tempPasswordResult{background:#15283c;border-color:#4f9bff;color:#dbeeff!important}
 html[data-theme="dark"] .tempPasswordCode{color:#fff!important}
+
+/* v30.5 Guest Tech / temp-password recovery */
+.guestGateNote,.guestLocalNote{margin-top:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.22);border-radius:10px}
+.tempVerified{margin-top:8px;font-weight:800}
+.tempVerifyWarn{margin-top:8px;font-weight:800}
+body[data-theme="light"] .guestGateNote,
+body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
