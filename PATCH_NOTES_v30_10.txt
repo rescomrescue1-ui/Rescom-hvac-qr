@@ -1,0 +1,16 @@
+RES-COM HVAC QR — v30.10
+Released: Aug 19, 2026 5:40 PM
+
+RELIABLE TEMPORARY PASSWORDS
+- Staff Sign-In QR now uses separate Airtable fields: Staff QR Hash and Staff QR Expires.
+- Generating a Staff QR no longer replaces or invalidates an Admin-generated temporary password.
+- Admin-generated RC temp codes use Reset Token Hash / Reset Expires as a dedicated one-time login path.
+- Generating a temp code no longer overwrites the employee's permanent PBKDF2 password.
+- The Admin screen reads the temp token back from Airtable and verifies the exact displayed RC code before showing VERIFIED AGAINST AIRTABLE.
+- On successful temp-code sign-in, Res-Com promotes that exact code to the normal employee password and consumes the temp token.
+- Staff QR and temporary password can now be active at the same time.
+- Staff QR CLOSE is marked as a bound button to eliminate the false CLOSE bug report.
+
+COMPATIBILITY
+- Existing equipment QR links remain unchanged.
+- Existing employee accounts, service history, self-service password reset, Guest Mode, and Company PIN remain compatible.

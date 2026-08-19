@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-9-password-recovery-1731";
+const CACHE = "rescom-qr-v30-10-temp-auth-1740";
 const CORE = [
   "./index.html",
   "./version.json",

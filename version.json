@@ -1,5 +1,5 @@
 {
-  "version": "30.9",
-  "build": "Aug 19, 2026 5:31 PM",
-  "notes": "Self-service employee password recovery by account email + Company PIN, verified fresh password hashing, automatic sign-in after reset, and stronger keyboard-safe scrolling/button binding for account creation and recovery."
+  "version": "30.10",
+  "build": "Aug 19, 2026 5:40 PM",
+  "notes": "Reliable temporary passwords: separates Staff QR authentication from temp-password authentication, keeps permanent passwords unchanged until a temp code is successfully used, verifies RC codes against Airtable, and preserves existing account/password-reset behavior."
 }

@@ -1,5 +1,5 @@
-Upload the CONTENTS of this folder to the SAME GitHub Pages repository/root used by Res-Com today.
+Upload the CONTENTS of this folder to the SAME Res-Com GitHub Pages repository root.
 Replace files with the same names.
-Do NOT change the repository name, Pages path, or equipment QR URL format.
-Expected version after upload: v30.9 — Aug 19, 2026 5:31 PM.
-Existing printed equipment QR codes remain valid.
+Do not change the repository name, Pages path, or printed QR URL.
+Expected version after upload: v30.10 — Aug 19, 2026 5:40 PM.
+Main fix: Staff QR and temporary-password authentication now use separate Airtable fields.

@@ -1,14 +1,17 @@
-RES-COM HVAC QR — VERSION 30.9
+RES-COM HVAC QR — VERSION 30.10
 
-WHAT THIS ADDS
-- FORGOT / RESET PASSWORD on employee Sign In.
-- Employee enters their existing account email, verifies with the current 4-digit Company PIN, then chooses a new password.
-- The new password is salted/hashed, saved to Airtable, re-read, verified, and the employee is signed in automatically.
-- Password recovery and Create Employee Account use full-screen keyboard-safe touch scrolling.
-- Auth buttons are explicitly bound so Sign In / Forgot / Continue / Reset / Back / Guest / Create work reliably.
+This release fixes repeated Admin-generated temporary-password failures by separating Staff QR authentication from temporary-password authentication.
 
 IMPORTANT
-Upload these files to the SAME GitHub Pages repo/path. Do not rename or move the existing site. Existing printed equipment QR labels remain compatible.
+- Upload these files to the SAME GitHub Pages repo/path already used by Res-Com.
+- Do not rename or move the GitHub Pages site. Existing printed equipment QR labels depend on that permanent address.
+- Replace same-named files in the repository root.
 
-AFTER UPLOAD
-Open the normal Res-Com site once in Safari/Chrome while online, wait a few seconds, close it, then reopen the Home Screen app. Confirm the top badge says APP v30.9.
+TEMP PASSWORD TEST
+1. Confirm both phones show APP v30.10.
+2. Admin: Team > employee > NEW TEMP PASSWORD.
+3. Do not give the code to the employee unless the Admin screen says VERIFIED AGAINST AIRTABLE.
+4. Employee signs in with the same email and displayed RC code. Hyphens/case/extra outside spaces are normalized.
+5. Staff QR can now be generated before or after the temp code without canceling it.
+
+After upload, open the normal Res-Com site once online in Safari/Chrome, wait a few seconds, close it, then reopen the Home Screen app.
