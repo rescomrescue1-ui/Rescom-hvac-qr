@@ -1,5 +1,5 @@
 {
-  "version": "26.0",
-  "build": "Aug 17, 2026 5:57 PM",
-  "notes": "Auth0/phone login removed for now; simple company PIN restored."
+  "version": "28.0",
+  "build": "Aug 19, 2026 9:30 AM",
+  "notes": "System Health screen with one-tap diagnostics, automatic HLT bug codes, health report copy, and updated Manual/Patch Notes."
 }
