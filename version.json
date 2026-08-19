@@ -1,5 +1,5 @@
 {
-  "version": "29.0",
-  "build": "Aug 19, 2026 10:49 AM",
-  "notes": "Modern mobile-first Res-Com redesign with five-tab navigation, fast onboarding, technician-only QR landing, safer multi-label printing, responsive layouts, and bug-upload hardening."
+  "version": "29.2",
+  "build": "Aug 19, 2026 11:15 AM",
+  "notes": "Full loading recovery: app opens before background update checks, 2.5-second fail-open watchdog, complete upload package, and preserved modern technician UI."
 }

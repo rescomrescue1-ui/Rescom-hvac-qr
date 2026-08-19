@@ -2,8 +2,8 @@
 (() => {
   "use strict";
 
-  const MODERN_VERSION = "29.0";
-  const MODERN_BUILD = "Aug 19, 2026 10:49 AM";
+  const MODERN_VERSION = "29.1";
+  const MODERN_BUILD = "Aug 19, 2026 11:11 AM";
   const ONBOARD_KEY = "rescom_onboarded_v29";
   let bugUploadBusy = false;
 
@@ -289,7 +289,7 @@
       const block = document.createElement("div");
       block.className = "unit";
       block.id = "rcPatch29";
-      block.innerHTML = `<h3>Version 29.0</h3><p><b>Released:</b> ${MODERN_BUILD}</p>
+      block.innerHTML = `<h3>Version 29.0 — Modern UI</h3><p><b>Major redesign release</b></p>
         <p>• Complete modern visual redesign inspired by current social/mobile apps: cleaner spacing, white surfaces, navy/blue chrome, rounded action cards, and faster visual scanning.</p>
         <p>• Rebuilt bottom navigation to five obvious tabs: Home, Equipment, Accounts, Bugs, More.</p>
         <p>• Added a compact More bottom sheet for Settings, Manual, What’s New, and System Health.</p>

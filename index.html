@@ -523,6 +523,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
+<link rel="stylesheet" href="./modern-ui.css?v=29.2">
 </head>
 <body>
 <div id="loadingScreen">
@@ -530,10 +531,21 @@ body{padding-bottom:88px!important}
     <img src="icon-512.png" alt="Res-Com App Logo" class="loadingLogo">
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
-    <div id="loadingStatus">Checking for app updates…</div>
-    <div id="loadingVersion" class="small">Installed v27.0</div>
+    <div id="loadingStatus">Opening Res-Com…</div>
+    <div id="loadingVersion" class="small">Installed v29.2</div>
   </div>
 </div>
+<script>
+window.__rescomLoadingWatchdog=setTimeout(function(){
+  var loading=document.getElementById("loadingScreen");
+  if(loading && !loading.classList.contains("hidden")){
+    loading.classList.add("hidden");
+    var pin=document.getElementById("pinGate");
+    if(pin) pin.classList.remove("hidden");
+    console.warn("Res-Com loading watchdog opened technician access after startup timeout.");
+  }
+},2500);
+</script>
 
 
 <div id="pinGate" class="hidden">
@@ -551,7 +563,7 @@ body{padding-bottom:88px!important}
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v28.0 • UPDATED Aug 19, 2026 9:30 AM</span>
+    <span id="appVersionBadge">APP v29.2 • UPDATED Aug 19, 2026 11:15 AM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -779,6 +791,13 @@ body{padding-bottom:88px!important}
       <p>Bug reports save locally first. When Airtable is available, the app also attempts to save them to the shared <b>App Bug Reports</b> table.</p>
     </div>
 
+<div class="manual-section" id="m-loading-recovery">
+      <h3>Loading Screen Recovery — v29.2</h3>
+      <p>The loading screen can no longer trap the app in an automatic update/reload loop. Version checks are informational and the app opens even if the update server is slow, unavailable, or temporarily out of sync.</p>
+      <p>A 2.5-second safety watchdog also removes any stuck loading overlay and returns the device to protected Technician Access instead of leaving a spinner.</p>
+      <p>For future updates, upload all patch files together. The app will show an update notice without repeatedly forcing a reload.</p>
+    </div>
+
 <div class="manual-section" id="m-health">
       <h3>System Health</h3>
       <p>Open <b>BUGS → SYSTEM HEALTH</b> or Settings → System Health. The screen automatically runs the health check the first time it opens.</p>
@@ -880,6 +899,21 @@ body{padding-bottom:88px!important}
   <div class="card">
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Patch Notes</h2>
+    <div class="unit">
+      <h3>Version 29.2</h3>
+      <p><b>Released:</b> Aug 19, 2026 11:15 AM</p>
+      <p>• Emergency loading-screen recovery release.</p>
+      <p>• Fixed the deployed version mismatch that could leave every device repeatedly checking/reloading at startup.</p>
+      <p>• The raw index now carries the same app version as version.json instead of relying on service-worker rewriting.</p>
+      <p>• Startup update checks no longer force an automatic reload or delete caches while the loading screen is active.</p>
+      <p>• Added a five-second protected fallback that opens Technician Access if startup ever stalls.</p>
+      <p>• Simplified the service worker so index.html is cached directly and modern UI files are loaded normally.</p>
+      <p>• Updated the in-app Manual for loading recovery.</p>
+    
+      <p>• Critical startup fix: the protected app now opens before the update check runs.</p>
+      <p>• Version and network checks run in the background and cannot hold the loading overlay open.</p>
+      <p>• Reduced the emergency loading watchdog to 2.5 seconds.</p>
+      <p>• Full upload package now includes index.html, service worker, modern UI files, QR library, manifest, and both app icons.</p></div>
     <div class="unit">
       <h3>Version 28.0</h3>
       <p><b>Released:</b> Aug 19, 2026 9:30 AM</p>
@@ -1245,8 +1279,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="28.0";
-const APP_BUILD="Aug 19, 2026 9:30 AM";
+const APP_VERSION="29.2";
+const APP_BUILD="Aug 19, 2026 11:15 AM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -1636,51 +1670,33 @@ async function startupUpdateCheck(){
   if(ver)ver.textContent="Installed v"+APP_VERSION;
   try{
     if(!navigator.onLine){
-      if(status)status.textContent="Offline — starting saved app";
-      await sleep(700);
+      if(status)status.textContent="Offline — opening saved app";
+      await sleep(350);
       return true;
     }
-    if(status)status.textContent="Checking for app updates…";
+    if(status)status.textContent="Checking app version…";
     const ctrl=new AbortController();
-    const timer=setTimeout(()=>ctrl.abort(),4000);
+    const timer=setTimeout(()=>ctrl.abort(),2200);
     const res=await fetch("./version.json?startup="+Date.now(),{cache:"no-store",signal:ctrl.signal});
     clearTimeout(timer);
     if(!res.ok)throw new Error("Update check HTTP "+res.status);
     const remote=await res.json();
     const rv=String(remote.version||"").trim();
     if(rv && rv!==APP_VERSION){
-      if(status)status.textContent="Update "+rv+" found — refreshing app…";
-      logBug("Update","Startup found newer version "+rv,"Loading screen update check","","UPD");
-      const guard="rescom_startup_update_guard";
-      if(sessionStorage.getItem(guard)!==rv){
-        sessionStorage.setItem(guard,rv);
-        try{
-          if("serviceWorker" in navigator){
-            const reg=await navigator.serviceWorker.getRegistration();
-            if(reg)await reg.update().catch(()=>{});
-          }
-          if("caches" in window){
-            const keys=await caches.keys();
-            await Promise.all(keys.filter(k=>k.startsWith("rescom-qr")).map(k=>caches.delete(k)));
-          }
-        }catch(e){}
-        await sleep(900);
-        const u=new URL(location.href);
-        u.searchParams.set("apprefresh",Date.now());
-        location.replace(u.toString());
-        return false;
-      }
-      if(status)status.textContent="Update detected. Starting app — use Bug Center if it looks stale.";
+      if(status)status.textContent="Update "+rv+" available — opening app";
+      try{logBug("Update","Startup version differs: installed "+APP_VERSION+", server "+rv,"Loading screen version check","No forced reload; app opened safely.","UPD")}catch(_){}
+      setTimeout(()=>{
+        try{showUpdateBanner("UPDATE AVAILABLE — v"+rv+" • OPEN SETTINGS TO UPDATE","available",true)}catch(_){}
+      },1200);
     }else{
-      sessionStorage.removeItem("rescom_startup_update_guard");
-      if(status)status.textContent="App is up to date";
+      if(status)status.textContent="App is ready";
     }
   }catch(err){
-    if(status)status.textContent="Could not check update — starting app";
-    logBug("Update",err?.message||String(err),"Loading screen update check","","UPD");
+    if(status)status.textContent="Opening app";
+    try{logBug("Update",err?.message||String(err),"Loading screen version check","Startup continued safely.","UPD")}catch(_){}
   }
   const elapsed=Date.now()-started;
-  if(elapsed<900)await sleep(900-elapsed);
+  if(elapsed<500)await sleep(500-elapsed);
   return true;
 }
 function hideLoadingScreen(){
@@ -2960,38 +2976,49 @@ window.addEventListener("offline",()=>{
 });
 
 async function bootResCom(){
-  const proceed=await startupUpdateCheck();
-  if(!proceed)return;
-
-  renderList();
-  renderBugLog();
-  if(token()){
-    flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")}).catch(err=>{
-      logBug("Airtable / Network",err?.message||String(err),"Startup cloud sync","","NET");
-    });
-  }else{
-    setStatus("pending","SET UP SHARED SAVING");
-  }
-
-  const qp=new URLSearchParams(location.search);
-  const requested=qp.get("unit")||qp.get("equipment");
-  applyCurrentUserUI();
-  ensureSimpleCompanyUser();
-
+  // v29.2: never block technician access on an update/network check.
+  // Open the app first, then check version in the background.
   hideLoadingScreen();
+  try{clearTimeout(window.__rescomLoadingWatchdog)}catch(_){}
+  setTimeout(()=>{
+    startupUpdateCheck().catch(err=>{
+      try{console.warn("Background update check failed",err)}catch(_){}
+    });
+  },250);
 
-  if(requested){
-    const rid=requested.trim().toUpperCase();
-    if(isStandaloneApp()){
-      if(isCompanyUnlocked())openUnit(rid);
-      else{pendingProtectedUnit=rid;showPinGate("Enter company PIN to open this equipment.");}
+  try{
+    renderList();
+    renderBugLog();
+    if(token()){
+      flushQueue().then(refreshSharedEquipment).then(()=>{if(!queue().length)setStatus("synced","✓ SHARED SAVE READY")}).catch(err=>{
+        try{logBug("Airtable / Network",err?.message||String(err),"Startup cloud sync","","NET")}catch(_){}
+      });
     }else{
-      showQRHandoff(rid);
+      setStatus("pending","SET UP SHARED SAVING");
     }
-  }else if(!isCompanyUnlocked()){
-    showPinGate();
-  }else{
-    show("home");
+
+    const qp=new URLSearchParams(location.search);
+    const requested=qp.get("unit")||qp.get("equipment");
+    applyCurrentUserUI();
+    ensureSimpleCompanyUser();
+
+    if(requested){
+      const rid=requested.trim().toUpperCase();
+      if(isStandaloneApp()){
+        if(isCompanyUnlocked())openUnit(rid);
+        else{pendingProtectedUnit=rid;showPinGate("Enter company PIN to open this equipment.");}
+      }else{
+        showQRHandoff(rid);
+      }
+    }else if(!isCompanyUnlocked()){
+      showPinGate();
+    }else{
+      show("home");
+    }
+  }catch(err){
+    try{logBug("JavaScript",err?.message||String(err),"App startup","Loading recovery fallback used.","BOOT")}catch(_){}
+    if(!isCompanyUnlocked()) showPinGate("Startup recovered. Enter company PIN to continue.");
+    else show("home");
   }
 }
 bootResCom();
@@ -3015,4 +3042,5 @@ bootResCom();
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
+<script src="./modern-ui.js?v=29.2"></script>
 </body></html>

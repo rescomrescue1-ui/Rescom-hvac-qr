@@ -1,0 +1,3 @@
+UPLOAD ALL FILES IN THIS ZIP TO THE ROOT OF Rescom-hvac-qr.
+Replace existing files when GitHub asks.
+The most important replacements are index.html, service-worker.js, version.json, modern-ui.css, and modern-ui.js.
