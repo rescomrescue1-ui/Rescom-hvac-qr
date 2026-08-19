@@ -527,7 +527,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=30.7">
+<link rel="stylesheet" href="./modern-ui.css?v=30.9">
 </head>
 <body>
 <div id="loadingScreen">
@@ -536,7 +536,7 @@ body{padding-bottom:88px!important}
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
     <div id="loadingStatus">Opening Res-Com…</div>
-    <div id="loadingVersion" class="small">Installed v30.7</div>
+    <div id="loadingVersion" class="small">Installed v30.9</div>
   </div>
 </div>
 <script>
@@ -567,7 +567,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v30.7 • UPDATED Aug 19, 2026 5:09 PM</span>
+    <span id="appVersionBadge">APP v30.9 • UPDATED Aug 19, 2026 5:31 PM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -709,11 +709,16 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
       <p>Admins manage the Team list, roles, account status, temporary password resets, and the company PIN.</p>
     </div>
 
+    <div class="manual-section" id="m-password-recovery-v309">
+      <h3>Version 30.9 — Self-Service Password Recovery</h3>
+      <p><b>Forgot password:</b> signed-out employees can tap FORGOT / RESET PASSWORD, enter the same email used for their Res-Com account, and continue to password recovery.</p>
+      <p><b>Identity check:</b> after the email is found, Res-Com requires the current 4-digit Company PIN before allowing the password to be changed. This prevents someone from resetting an employee password just by knowing their email address.</p>
+      <p><b>New password:</b> the employee enters and confirms a new password. Res-Com writes a new salted password hash to Airtable, verifies it, clears old temporary reset codes, and signs the employee back in.</p>
+      <p><b>Scrolling:</b> account creation and password recovery use full-screen touch-scrolling forms with keyboard-safe bottom space on iPhone and Android.</p>
+      <p><b>Buttons:</b> Sign In, Create Account, Forgot Password, Continue, Reset Password, Back, Guest, and Team account controls are explicitly bound before use.</p>
+    </div>
+
     <div class="manual-section" id="m-account-recovery-v304">
-      <h3>Version 30.7 — Separate Signup Screen & One-Time Staff QR</h3>
-      <p><b>Create Employee Account:</b> signup is now a separate full-screen form instead of expanding underneath Sign In. The form uses its own vertical scroll area and extra keyboard space so Name, Email, Password, Company PIN, and CREATE remain reachable on iPhone.</p>
-      <p><b>One-Time Staff QR:</b> Admins can open Team and tap <b>SIGN-IN QR</b> beside an employee. The QR expires after 15 minutes and can be used once. It signs that employee in without typing the temporary password.</p>
-      <p><b>Cloud requirement:</b> a staff sign-in QR never contains the Airtable token. A brand-new phone still needs its one-time Res-Com Cloud connection before employee cloud access can be granted.</p>
       <h3>Version 30.6 — Employee Login, Delete & iPhone Form Fix</h3>
       <p><b>Temporary passwords:</b> Admin-generated codes now have a dedicated 24-hour one-time reset token in addition to the normal password hash. If the normal hash check fails on another phone, the one-time reset token provides a second verified sign-in path.</p>
       <p><b>New format:</b> temporary passwords use an easier-to-read RC-XXXX-XXXX format. Hyphens and letter case do not matter when signing in.</p>
@@ -940,7 +945,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
 <section id="patchNotes" class="hidden">
   <div class="card">
-<div class="unit" id="rcPatch307"><h3>Version 30.7 — Signup Scroll & Staff Sign-In QR</h3><p><b>Released:</b> Aug 19, 2026 5:09 PM</p><p>• Replaced the expandable Create Employee form with a separate full-screen signup screen.</p><p>• Rebuilt iPhone signup scrolling using a true vertical page scroll, dynamic viewport height, and keyboard-safe bottom space.</p><p>• Added Admin SIGN-IN QR for individual employees.</p><p>• Staff QR expires in 15 minutes, works once, and signs the selected employee in without typing a password.</p><p>• Staff QR never contains the Airtable cloud token; new devices still require the one-time cloud connection.</p><p>• Existing equipment QR codes and service-history links remain unchanged.</p></div>
+<div class="unit" id="rcPatch309"><h3>Version 30.9 — Self-Service Password Recovery</h3><p><b>Released:</b> Aug 19, 2026 5:31 PM</p><p>• Added FORGOT / RESET PASSWORD on the employee sign-in screen.</p><p>• Recovery starts with the employee email used for the existing Res-Com account.</p><p>• Requires the current 4-digit Company PIN before changing the password.</p><p>• New password and confirmation are validated, re-hashed with a fresh random salt, written to Airtable, and verified before sign-in.</p><p>• Old temporary-password reset tokens are cleared after a successful self-service reset.</p><p>• Password recovery and employee signup use full-screen keyboard-safe touch scrolling on iPhone and Android.</p><p>• Added explicit button binding/status handling for Sign In, Create Account, Forgot Password, Continue, Reset Password, Back, and Guest controls.</p><p>• Existing equipment QR links, Staff QR sign-in, service history, and account records remain compatible.</p></div>
 <div class="unit" id="rcPatch306"><h3>Version 30.6 — Employee Login, Delete & iPhone Form Fix</h3><p><b>Released:</b> Aug 19, 2026 4:50 PM</p><p>• Added a dedicated 24-hour one-time reset-token fallback for Admin temporary passwords.</p><p>• New temp passwords use RC-XXXX-XXXX and accept pasted codes with or without hyphens/case differences.</p><p>• Temp-password sign-in promotes the verified reset code into the normal password hash and consumes the one-time reset token.</p><p>• Team now uses permanent DELETE instead of Disable for employee accounts; service-history records remain intact.</p><p>• Phones automatically sign out stale employee identities that were deleted from Airtable.</p><p>• Fixed iPhone Create Employee Account scrolling so the 4-digit company PIN and submit button can always be reached.</p><p>• Upgraded the top Res-Com logo to the 512px icon and forced full opacity/contrast.</p><p>• Existing QR links, equipment IDs, and service-history records remain compatible.</p></div>
 <div class="unit" id="rcPatch305"><h3>Version 30.5 — Guest Tech & Cross-Phone Password Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:28 PM</p><p>• Added CONTINUE AS GUEST with Tech-style app access.</p><p>• Guest mode is local/read-only for cloud data: it never writes or queues equipment, service history, photos, account changes, or bug uploads to Airtable.</p><p>• Guest can still view cloud equipment on a device that already has the Res-Com Airtable connection; otherwise it works from local/device data only.</p><p>• Temporary-password sign-in now trims accidental whitespace and accepts RC temp passwords even if iPhone changes letter case or the code is pasted with a space/hyphen.</p><p>• Admin-created/reset temporary passwords are verified after Airtable saves the new hash before the app marks them ready.</p><p>• New phones now clearly explain that employee sign-in needs a one-time Res-Com cloud connection; Guest remains available without one.</p><p>• Strengthened dynamic-button bug filtering and Guest-mode cloud safeguards.</p><p>• Existing QR links, equipment IDs, service history, Team accounts, and prior patch notes remain unchanged.</p></div>
 <div class="unit" id="rcPatch304"><h3>Version 30.4 — Account & Sign-In Recovery</h3><p><b>Released:</b> Aug 19, 2026 4:12 PM</p><p>• Fixed visible sign-in buttons appearing before their click handlers were attached.</p><p>• Wrong 4-digit company PIN on Sign In now gives a clear employee-password message instead of behaving like a broken login.</p><p>• Admin Add Employee now auto-generates a temporary password and provides a copy button.</p><p>• Password reset now auto-generates a new temporary password that matches the stored hash.</p><p>• Added a reliable SIGN IN / SIGN OUT account control at the top of the app.</p><p>• Marked dynamic Team/account controls correctly so the Bug Center stops reporting false missing-button-action errors.</p><p>• Prevented recursive Airtable bug-upload failures from creating bug storms.</p></div>
@@ -1342,8 +1347,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="30.7";
-const APP_BUILD="Aug 19, 2026 4:28 PM";
+const APP_VERSION="30.9";
+const APP_BUILD="Aug 19, 2026 5:31 PM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -3228,7 +3233,7 @@ async function loginAppAccountV30(email,password){
     }
     if(/^\d{4}$/.test(pw))throw new Error("That looks like the 4-digit company PIN. The company PIN does not sign you in — use your employee password.");
     if(tempExpired && /^RC/i.test(pw))throw new Error("That temporary password expired. Ask an Admin for NEW TEMP PASSWORD.");
-    throw new Error("Incorrect employee password. If this is a temporary password, ask an Admin to generate a fresh one from Team.");
+    throw new Error("Incorrect employee password. Tap FORGOT / RESET PASSWORD to choose a new password, or ask an Admin for a fresh temporary password.");
   }
 
   const fields={[AF.lastLogin]:new Date().toISOString()};
@@ -3307,13 +3312,11 @@ function migrateV30Identity(){
 }
 
 function accountGateHTMLV30(mode,firstAdmin=false,msg=""){
-  if(mode==="checking")return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Checking Res-Com Accounts</h2><p>Please wait while this device connects to the company account list.</p><div class="loadingSpinner" aria-hidden="true"></div><div id="v30GateMsg" class="small">${esc(msg||"Connecting…")}</div><div class="v307GateBottomSpacer" aria-hidden="true"></div></div>`;
-  if(mode==="token")return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Connect This Phone</h2><p><b>Employee sign-in on a brand-new phone needs a one-time Res-Com cloud connection.</b> An Admin can connect this device with the restricted Airtable token.</p><label>Res-Com Cloud Token</label><input id="v30GateToken" type="password" autocomplete="off" placeholder="pat..."><button class="orange" id="v30SaveToken" data-safe-bound="yes" type="button">CONNECT THIS PHONE</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div class="small guestGateNote">Guest gets Tech-style access but cannot save or queue anything to the cloud. Without a cloud connection, Guest sees local/device data only.</div><div id="v30GateMsg" class="small">${esc(msg)}</div><div class="v307GateBottomSpacer" aria-hidden="true"></div></div>`;
-  if(firstAdmin)return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Create the First Res-Com Account</h2><p>The first person to create an account automatically becomes <b>Admin</b>.</p><label>Your Name</label><input id="v30CreateName" autocomplete="name"><label>Email</label><input id="v30CreateEmail" type="email" autocomplete="email"><label>Password</label><input id="v30CreatePassword" type="password" autocomplete="new-password"><button class="orange" id="v30CreateFirstAdmin" data-safe-bound="yes" type="button">CREATE ADMIN ACCOUNT</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div id="v30GateMsg" class="small">${esc(msg)}</div><div class="v307GateBottomSpacer" aria-hidden="true"></div></div>`;
-  if(mode==="signup")return `<div class="pin-card v30Gate v307SignupGate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Create Employee Account</h2><p>Enter the employee information below. The 4-digit Company PIN is the last field.</p><label>Name</label><input id="v30SignupName" autocomplete="name"><label>Email</label><input id="v30SignupEmail" type="email" autocomplete="email" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30SignupPassword" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><label>4-Digit Company PIN</label><input id="v30SignupCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="one-time-code"><button class="orange" id="v30SignupBtn" data-safe-bound="yes" type="button">CREATE TECH ACCOUNT</button><button class="outline" id="v30BackToLogin" data-safe-bound="yes" type="button">← BACK TO SIGN IN</button><div id="v30GateMsg" class="small">${esc(msg)}</div><div class="v307GateBottomSpacer" aria-hidden="true"></div></div>`;
-  return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins sign in with their own employee password.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"><div class="small">Temporary passwords begin with <b>RC</b>. Paste is supported. The 4-digit company PIN is only for creating a new employee account and is <b>not</b> your sign-in password.</div><button class="orange" id="v30LoginBtn" data-safe-bound="yes" type="button">SIGN IN</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><button class="outline" id="v30ShowCreate" data-safe-bound="yes" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30GateMsg" class="small">${esc(msg)}</div><div class="v307GateBottomSpacer" aria-hidden="true"></div></div>`;
+  if(mode==="checking")return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Checking Res-Com Accounts</h2><p>Please wait while this device connects to the company account list.</p><div class="loadingSpinner" aria-hidden="true"></div><div id="v30GateMsg" class="small">${esc(msg||"Connecting…")}</div></div>`;
+  if(mode==="token")return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Connect This Phone</h2><p><b>Employee sign-in on a brand-new phone needs a one-time Res-Com cloud connection.</b> An Admin can connect this device with the restricted Airtable token.</p><label>Res-Com Cloud Token</label><input id="v30GateToken" type="password" autocomplete="off" placeholder="pat..."><button class="orange" id="v30SaveToken" data-safe-bound="yes" type="button">CONNECT THIS PHONE</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div class="small guestGateNote">Guest gets Tech-style access but cannot save or queue anything to the cloud. Without a cloud connection, Guest sees local/device data only.</div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  if(firstAdmin)return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Create the First Res-Com Account</h2><p>The first person to create an account automatically becomes <b>Admin</b>.</p><label>Your Name</label><input id="v30CreateName" autocomplete="name"><label>Email</label><input id="v30CreateEmail" type="email" autocomplete="email"><label>Password</label><input id="v30CreatePassword" type="password" autocomplete="new-password"><button class="orange" id="v30CreateFirstAdmin" data-safe-bound="yes" type="button">CREATE ADMIN ACCOUNT</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+  return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins sign in with their own employee password.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"><div class="small">Temporary passwords begin with <b>RC</b>. Paste is supported. v30.6 also accepts the code with or without the printed hyphens. The 4-digit company PIN is only for creating a new employee account and is <b>not</b> your sign-in password.</div><button class="orange" id="v30LoginBtn" data-safe-bound="yes" type="button">SIGN IN</button><button class="outline" id="v309ForgotPassword" data-safe-bound="yes" type="button">FORGOT / RESET PASSWORD</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><button class="outline" id="v30ShowCreate" data-safe-bound="yes" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30CreateBox" class="hidden"><hr><h3>Create Employee Account</h3><p class="small">Ask an Admin for the current 4-digit company PIN. Choose your own employee password below.</p><label>Name</label><input id="v30SignupName"><label>Email</label><input id="v30SignupEmail" type="email" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30SignupPassword" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><label>4-Digit Company PIN</label><input id="v30SignupCompanyPin" inputmode="numeric" maxlength="4" pattern="[0-9]*"><button class="orange" id="v30SignupBtn" data-safe-bound="yes" type="button">CREATE TECH ACCOUNT</button></div><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
 }
-
 function bindAccountControlV304(id,handler){
   const el=$(id);if(!el)return null;
   el.dataset.safeBound="yes";
@@ -3325,78 +3328,6 @@ function bindAccountControlV304(id,handler){
   });
   return el;
 }
-function staffQRParamsV307(){
-  const q=new URLSearchParams(location.search);
-  return {accountId:(q.get("staff")||"").trim(),code:(q.get("staffpass")||"").trim()};
-}
-function clearStaffQRParamsV307(){
-  try{
-    const u=new URL(location.href);u.searchParams.delete("staff");u.searchParams.delete("staffpass");
-    history.replaceState({},"",u.pathname+(u.search?u.search:"")+(u.hash||""));
-  }catch(_){}
-}
-function generateStaffQRTokenV307(){
-  const alphabet="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const bytes=crypto.getRandomValues(new Uint8Array(16));
-  let out="";for(const b of bytes)out+=alphabet[b%alphabet.length];
-  return "STAFF-"+out;
-}
-function staffQRUrlV307(acct,code){
-  const u=new URL(location.origin+location.pathname);
-  u.searchParams.set("staff",acct.accountId);u.searchParams.set("staffpass",code);
-  return u.toString();
-}
-async function createStaffQRPassV307(acct){
-  if(!acct?.recordId)throw new Error("This employee account is no longer in Airtable.");
-  const code=generateStaffQRTokenV307();
-  const hash=await resetTokenHashV306(acct,code);
-  const expires=new Date(Date.now()+15*60*1000).toISOString();
-  await updateAccountV30(acct,{[AF.resetHash]:hash,[AF.resetExpires]:expires});
-  const fresh=(await allAppAccounts()).find(a=>a.accountId===acct.accountId)||null;
-  if(!fresh||fresh.resetHash!==hash)throw new Error("Could not verify the one-time QR pass in Airtable.");
-  return {name:fresh.name,email:fresh.email,accountId:fresh.accountId,url:staffQRUrlV307(fresh,code),expires};
-}
-async function consumeStaffQRPassV307(accountId,code){
-  if(!token())throw new Error("This phone must be connected to Res-Com Cloud once before a staff QR can sign in.");
-  const acct=(await allAppAccounts()).find(a=>a.accountId===accountId)||null;
-  if(!acct)throw new Error("That employee account no longer exists.");
-  if(acct.status!=="Active")throw new Error("That employee account is not active.");
-  const expiry=Date.parse(acct.resetExpires||"");
-  if(!acct.resetHash||!expiry||expiry<=Date.now())throw new Error("That sign-in QR expired. Ask an Admin to make a new one.");
-  const hash=await resetTokenHashV306(acct,code);
-  if(hash!==acct.resetHash)throw new Error("That sign-in QR is invalid or has already been used.");
-  await updateAccountV30(acct,{[AF.lastLogin]:new Date().toISOString(),[AF.resetHash]:"",[AF.resetExpires]:null});
-  saveCurrentUser({...acct,lastLogin:new Date().toISOString()});
-  clearStaffQRParamsV307();
-  const gate=$("pinGate");if(gate)gate.classList.add("hidden");
-  applyCurrentUserUI();show("home");
-  try{await refreshSharedEquipment()}catch(_){}
-  window.rescomRefreshModernUI?.();
-  return true;
-}
-async function tryStaffQRSignInV307(){
-  const p=staffQRParamsV307();
-  if(!p.accountId||!p.code)return false;
-  if(!token())return false;
-  return consumeStaffQRPassV307(p.accountId,p.code);
-}
-async function renderSignupGateV307(msg=""){
-  const gate=$("pinGate");if(!gate)return;
-  gate.classList.remove("hidden");gate.scrollTop=0;
-  gate.innerHTML=accountGateHTMLV30("signup",false,msg);
-  bindAccountControlV304("v30BackToLogin",async()=>renderAccountGateV30(""));
-  bindAccountControlV304("v30SignupBtn",async()=>{
-    const b=$("v30SignupBtn");if(b){b.disabled=true;b.textContent="CREATING…"}
-    const m=$("v30GateMsg");if(m)m.textContent="";
-    try{
-      const ok=await verifyCompanyPinV30($("v30SignupCompanyPin").value);if(!ok)throw new Error("Incorrect company PIN. Ask an Admin for the current 4-digit company PIN.");
-      const a=await createAppAccountV30({name:$("v30SignupName").value,email:$("v30SignupEmail").value,password:$("v30SignupPassword").value,role:"Tech",createdBy:"Company PIN signup"});
-      saveCurrentUser(a);gate.classList.add("hidden");show("home");applyCurrentUserUI();try{await refreshSharedEquipment()}catch(e){};window.rescomRefreshModernUI?.();
-    }catch(e){if(m)m.textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="CREATE TECH ACCOUNT"};gate.scrollTop=gate.scrollHeight}
-  });
-  $("v30SignupCompanyPin")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("v30SignupBtn")?.click()});
-  setTimeout(()=>{try{gate.scrollTop=0;$("v30SignupName")?.focus({preventScroll:true})}catch(_){}},80);
-}
 async function renderAccountGateV30(msg=""){
   const gate=$("pinGate");if(!gate)return;
   gate.classList.remove("hidden");
@@ -3406,7 +3337,7 @@ async function renderAccountGateV30(msg=""){
       const t=($("v30GateToken")?.value||"").trim();if(!t){$("v30GateMsg").textContent="Enter the Airtable token.";return}
       const btn=$("v30SaveToken");if(btn){btn.disabled=true;btn.textContent="CONNECTING…"}
       localStorage.setItem(TOKEN,t);
-      try{await allAppAccounts();if(await tryStaffQRSignInV307())return;await renderAccountGateV30("Phone connected. Sign in with the employee email and password.")}catch(e){localStorage.removeItem(TOKEN);await renderAccountGateV30("That token could not connect to the Res-Com database.")}
+      try{await allAppAccounts();await renderAccountGateV30("Phone connected. Sign in with the employee email and password.")}catch(e){localStorage.removeItem(TOKEN);await renderAccountGateV30("That token could not connect to the Res-Com database.")}
     });
     bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
     return;
@@ -3448,8 +3379,22 @@ async function renderAccountGateV30(msg=""){
     }catch(e){if(m)m.textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="SIGN IN"}}
   });
   bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
-  bindAccountControlV304("v30ShowCreate",async()=>renderSignupGateV307());
+  bindAccountControlV304("v30ShowCreate",async()=>{
+    const box=$("v30CreateBox");if(!box)return;
+    box.classList.toggle("hidden");
+    if(!box.classList.contains("hidden"))setTimeout(()=>{try{box.scrollIntoView({behavior:"smooth",block:"start"});$("v30SignupName")?.focus({preventScroll:true})}catch(_){}},80);
+  });
+  bindAccountControlV304("v30SignupBtn",async()=>{
+    const b=$("v30SignupBtn");if(b){b.disabled=true;b.textContent="CREATING…"}
+    const m=$("v30GateMsg");if(m)m.textContent="";
+    try{
+      const ok=await verifyCompanyPinV30($("v30SignupCompanyPin").value);if(!ok)throw new Error("Incorrect company PIN. Ask an Admin for the current 4-digit company PIN.");
+      const a=await createAppAccountV30({name:$("v30SignupName").value,email:$("v30SignupEmail").value,password:$("v30SignupPassword").value,role:"Tech",createdBy:"Company PIN signup"});
+      saveCurrentUser(a);gate.classList.add("hidden");show("home");applyCurrentUserUI();try{await refreshSharedEquipment()}catch(e){};window.rescomRefreshModernUI?.();
+    }catch(e){if(m)m.textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="CREATE TECH ACCOUNT"}}
+  });
   $("v30LoginPassword")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("v30LoginBtn")?.click()});
+  $("v30SignupCompanyPin")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("v30SignupBtn")?.click()});
 }
 
 clearCurrentUser = function(){localStorage.removeItem(CURRENT_USER_KEY);applyCurrentUserUI();setStatus(token()?"pending":"offline",token()?"SIGNED OUT":"SIGNED OUT • LOCAL ONLY")};
@@ -3523,15 +3468,6 @@ function showTemporaryPasswordV304(info){
   box.innerHTML=`<b>${esc(info.action||"Temporary password ready")}</b><div class="small">${esc(info.name||"")} • ${esc(info.email||"")}</div><div class="tempPasswordCode mono">${esc(info.password||"")}</div>${info.verified===true?'<div class="small tempVerified">✓ VERIFIED AGAINST AIRTABLE</div>':info.verified===false?'<div class="small tempVerifyWarn">⚠ Verification failed — use NEW TEMP PASSWORD again before giving this code to the employee.</div>':""}${info.expires?'<div class="small">One-time recovery code expires in 24 hours. Hyphens are optional when signing in.</div>':""}<button class="outline" id="copyTeamTempPassword" data-safe-bound="yes" type="button">COPY TEMPORARY PASSWORD</button><div class="small">The plain password is shown only here. Airtable stores hashes, not this readable code.</div>`;
   const copy=$("copyTeamTempPassword");if(copy)copy.addEventListener("click",async()=>{try{await copyTextV304(info.password);copy.textContent="✓ PASSWORD COPIED"}catch(e){alert("Temporary password: "+info.password)}});
 }
-function showStaffQRV307(info){
-  const box=$("teamQrResult");if(!box||!info)return;
-  box.classList.remove("hidden");
-  box.innerHTML=`<b>ONE-TIME SIGN-IN QR</b><div class="small">${esc(info.name||"")} • ${esc(info.email||"")}</div><div id="staffQrCodeV307" class="staffQrCode"></div><div class="small"><b>Expires in 15 minutes and works once.</b> Scanning signs this employee in without typing a password. This replaces any previous temporary password/reset code for this employee.</div><button class="outline" id="copyStaffQRLinkV307" data-safe-bound="yes" type="button">COPY SIGN-IN LINK</button>`;
-  const host=$("staffQrCodeV307");
-  if(host&&typeof QRCode!=="undefined")new QRCode(host,{text:info.url,width:220,height:220,correctLevel:QRCode.CorrectLevel.H});
-  const copy=$("copyStaffQRLinkV307");if(copy)copy.addEventListener("click",async()=>{try{await copyTextV304(info.url);copy.textContent="✓ SIGN-IN LINK COPIED"}catch(_){prompt("Copy sign-in link:",info.url)}});
-  try{box.scrollIntoView({behavior:"smooth",block:"start"})}catch(_){}
-}
 function bindTeamControlV304(el,handler){
   if(!el)return;
   el.dataset.safeBound="yes";
@@ -3550,8 +3486,8 @@ async function renderTeamV30(){
   box.innerHTML=`<div class="card teamCard"><button class="gray" data-home type="button">← HOME</button><div class="sectionTitleRow"><div><h2>Team</h2><p class="small">One simple account list for Res-Com Admins and Techs.</p></div><span class="badge ${admin?"synced":"pending"}">${esc(me.role)}</span></div>
     <div class="teamMe"><b>${esc(me.name)}</b><span>${esc(me.email)}</span></div>
     ${loadError?`<div class="unit"><b>Team cloud connection problem</b><div class="small">${esc(loadError)}</div></div>`:""}
-    ${admin?`<div class="unit adminPanel"><h3>Admin Controls</h3><p class="small">Only Admins can manage the company PIN or employee accounts. Deleted employees are removed from Airtable instead of being left disabled.</p><button class="orange" id="rotateCompanyPin" data-safe-bound="yes" type="button">GENERATE NEW 4-DIGIT COMPANY PIN</button><div id="companyPinResult" class="hidden companyPinResult"></div><button class="outline" id="emailCompanyPin" data-safe-bound="yes" type="button">EMAIL NEW PIN TO ALL ADMINS</button><hr><h3>Add Employee</h3><p class="small">Enter the employee name/email. Res-Com will generate a one-time temporary password and verify it against Airtable before you give it to the employee.</p><label>Name</label><input id="teamNewName"><label>Email</label><input id="teamNewEmail" type="email"><label>Role</label><select id="teamNewRole"><option value="Tech">Tech</option><option value="Admin">Admin</option></select><button class="orange" id="teamCreateAccount" data-safe-bound="yes" type="button">CREATE EMPLOYEE + TEMP PASSWORD</button><div id="teamTempResult" class="hidden tempPasswordResult"></div><div id="teamQrResult" class="hidden staffQrResult"></div></div>`:""}
-    <div class="unit"><h3>Company Accounts</h3><div id="teamList">${accounts.length?accounts.map(a=>`<div class="teamRow"><div><b>${esc(a.name)}</b><span>${esc(a.email)} • ${esc(a.role)}</span></div>${admin&&a.accountId!==me.accountId?`<div class="teamActions"><button class="outline teamRoleBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">${a.role==="Admin"?"MAKE TECH":"MAKE ADMIN"}</button><button class="gray teamResetBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">NEW TEMP PASSWORD</button><button class="outline teamQrBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">SIGN-IN QR</button><button class="red teamDeleteBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">DELETE</button></div>`:""}</div>`).join(""):"<p class='small'>No accounts found.</p>"}</div></div>
+    ${admin?`<div class="unit adminPanel"><h3>Admin Controls</h3><p class="small">Only Admins can manage the company PIN or employee accounts. Deleted employees are removed from Airtable instead of being left disabled.</p><button class="orange" id="rotateCompanyPin" data-safe-bound="yes" type="button">GENERATE NEW 4-DIGIT COMPANY PIN</button><div id="companyPinResult" class="hidden companyPinResult"></div><button class="outline" id="emailCompanyPin" data-safe-bound="yes" type="button">EMAIL NEW PIN TO ALL ADMINS</button><hr><h3>Add Employee</h3><p class="small">Enter the employee name/email. Res-Com will generate a one-time temporary password and verify it against Airtable before you give it to the employee.</p><label>Name</label><input id="teamNewName"><label>Email</label><input id="teamNewEmail" type="email"><label>Role</label><select id="teamNewRole"><option value="Tech">Tech</option><option value="Admin">Admin</option></select><button class="orange" id="teamCreateAccount" data-safe-bound="yes" type="button">CREATE EMPLOYEE + TEMP PASSWORD</button><div id="teamTempResult" class="hidden tempPasswordResult"></div></div>`:""}
+    <div class="unit"><h3>Company Accounts</h3><div id="teamList">${accounts.length?accounts.map(a=>`<div class="teamRow"><div><b>${esc(a.name)}</b><span>${esc(a.email)} • ${esc(a.role)}</span></div>${admin&&a.accountId!==me.accountId?`<div class="teamActions"><button class="outline teamRoleBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">${a.role==="Admin"?"MAKE TECH":"MAKE ADMIN"}</button><button class="gray teamResetBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">NEW TEMP PASSWORD</button><button class="red teamDeleteBtn" data-safe-bound="yes" data-id="${esc(a.accountId)}" type="button">DELETE</button></div>`:""}</div>`).join(""):"<p class='small'>No accounts found.</p>"}</div></div>
     <button class="gray" id="teamLogout" data-safe-bound="yes" type="button">SIGN OUT</button></div>`;
   bindHome();
   bindTeamControlV304($("teamLogout"),async()=>{clearCurrentUser();await renderAccountGateV30("Signed out.")});
@@ -3577,20 +3513,12 @@ async function renderTeamV30(){
       window.__lastTempPasswordV304={action:temp.verified?"VERIFIED new one-time temporary password":"Temporary password verification failed",name:a.name,email:a.email,password:pw,verified:temp.verified,expires:temp.expires};
       await renderTeamV30();
     }));
-    box.querySelectorAll(".teamQrBtn").forEach(btn=>bindTeamControlV304(btn,async()=>{
-      const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a)return;
-      btn.disabled=true;btn.textContent="MAKING QR…";
-      const pass=await createStaffQRPassV307(a);
-      window.__lastStaffQRV307=pass;
-      await renderTeamV30();
-    }));
     box.querySelectorAll(".teamDeleteBtn").forEach(btn=>bindTeamControlV304(btn,async()=>{
       const a=accounts.find(x=>x.accountId===btn.dataset.id);if(!a){await renderTeamV30();return}
       const deleted=await deleteAppAccountV306(a,accounts);
-      if(deleted){window.__lastTempPasswordV304=null;window.__lastStaffQRV307=null;await renderTeamV30()}
+      if(deleted){window.__lastTempPasswordV304=null;await renderTeamV30()}
     }));
     if(window.__lastTempPasswordV304)showTemporaryPasswordV304(window.__lastTempPasswordV304);
-    if(window.__lastStaffQRV307)showStaffQRV307(window.__lastStaffQRV307);
   }
   show("accountsScreen");window.rescomRefreshModernUI?.();
 }
@@ -3707,14 +3635,7 @@ async function bootResComV30(){
   }
   hideLoadingScreen();clearTimeout(failOpen);
   const qp=new URLSearchParams(location.search),requested=(qp.get("unit")||qp.get("equipment")||"").trim().toUpperCase();
-  const staff=staffQRParamsV307();
-  if(staff.accountId&&staff.code){
-    if(!token()){await renderAccountGateV30("Staff QR detected. Connect this phone to Res-Com Cloud once, then the QR will finish sign-in automatically.")}
-    else{
-      try{await consumeStaffQRPassV307(staff.accountId,staff.code)}catch(e){clearStaffQRParamsV307();await renderAccountGateV30("Sign-in QR failed: "+(e?.message||String(e)))}
-    }
-  }
-  else if(requested&&!isStandaloneApp()){showQRHandoff(requested)}
+  if(requested&&!isStandaloneApp()){showQRHandoff(requested)}
   else if(!currentUser()){await renderAccountGateV30()}
   else if(requested){openUnit(requested)}
   else show("home");
@@ -3753,6 +3674,232 @@ window.addEventListener("pageshow",()=>setTimeout(()=>recoverHomeScreenShell("pa
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(()=>recoverHomeScreenShell("resume"),120)});
 setTimeout(()=>recoverHomeScreenShell("startup watchdog"),3500);
 
+// v30.9 — Self-service password recovery + keyboard-safe auth scrolling.
+// v30.8 — Session persistence + real keyboard-safe signup + one-time staff QR sign-in.
+const SESSION_GRACE_KEY_V308="rescom_session_grace_until_v308";
+const SESSION_MISS_KEY_V308="rescom_session_missing_count_v308";
+const saveCurrentUserCoreV308=saveCurrentUser;
+function markSessionGraceV308(ms=10*60*1000){
+  try{localStorage.setItem(SESSION_GRACE_KEY_V308,String(Date.now()+ms));localStorage.setItem(SESSION_MISS_KEY_V308,"0")}catch(_){}
+}
+saveCurrentUser=function(u){saveCurrentUserCoreV308(u);markSessionGraceV308()};
+
+syncCurrentUserFromCloudV306=async function(){
+  const me=currentUser();
+  if(!me||isGuestUserV305(me)||!token()||!navigator.onLine)return me;
+  try{
+    const accounts=await allAppAccounts();
+    const live=accounts.find(a=>(me.accountId&&a.accountId===me.accountId)||(me.email&&a.email===String(me.email).toLowerCase()));
+    if(live){
+      if(live.status!=="Active"){
+        localStorage.removeItem(CURRENT_USER_KEY);localStorage.removeItem(SESSION_MISS_KEY_V308);applyCurrentUserUI();return null;
+      }
+      localStorage.setItem(SESSION_MISS_KEY_V308,"0");
+      saveCurrentUserCoreV308(live);
+      return live;
+    }
+    const misses=(Number(localStorage.getItem(SESSION_MISS_KEY_V308)||"0")||0)+1;
+    localStorage.setItem(SESSION_MISS_KEY_V308,String(misses));
+    const grace=Number(localStorage.getItem(SESSION_GRACE_KEY_V308)||"0")||0;
+    // Newly created/logged-in accounts are never kicked out because of one stale Airtable list response.
+    // Outside the grace period, require three confirmed misses before clearing the saved employee.
+    if(Date.now()<grace || misses<3){
+      try{setStatus("pending","ACCOUNT VERIFIED LOCALLY • RECHECKING CLOUD")}catch(_){}
+      return me;
+    }
+    localStorage.removeItem(CURRENT_USER_KEY);localStorage.removeItem(SESSION_MISS_KEY_V308);applyCurrentUserUI();
+    return null;
+  }catch(_){return me}
+};
+
+function staffQrSecretV308(){
+  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const b=crypto.getRandomValues(new Uint8Array(18));
+  let out="";for(const x of b)out+=chars[x%chars.length];
+  return out;
+}
+async function staffQrHashV308(acct,secret){return sha256Text("rescom-staff-qr|"+String(acct.accountId||"")+"|"+String(secret||"").trim().toUpperCase())}
+function staffQrURLV308(acct,secret){
+  const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("staff",acct.accountId);u.searchParams.set("staffkey",secret);return u.toString();
+}
+function clearStaffQrParamsV308(){
+  try{const u=new URL(location.href);u.searchParams.delete("staff");u.searchParams.delete("staffkey");history.replaceState({},"",u.pathname+(u.search?u.search:"")+u.hash)}catch(_){}
+}
+async function consumeStaffQrV308(){
+  const q=new URLSearchParams(location.search),id=(q.get("staff")||"").trim(),secret=(q.get("staffkey")||"").trim().toUpperCase();
+  if(!id||!secret)return null;
+  if(!token())throw new Error("This staff QR is ready. Connect this phone to Res-Com Cloud once, then it will sign in automatically.");
+  const accounts=await allAppAccounts();
+  const acct=accounts.find(a=>a.accountId===id);
+  if(!acct)throw new Error("This employee account no longer exists.");
+  if(acct.status!=="Active")throw new Error("This employee account is not active.");
+  const exp=Date.parse(acct.resetExpires||"");
+  if(!acct.resetHash||!exp||exp<=Date.now())throw new Error("This staff sign-in QR expired. Ask an Admin to generate a new one.");
+  const expected=await staffQrHashV308(acct,secret);
+  if(expected!==acct.resetHash)throw new Error("This staff sign-in QR is no longer valid. Ask an Admin to generate a new one.");
+  await updateAccountV30(acct,{[AF.lastLogin]:new Date().toISOString(),[AF.resetHash]:"",[AF.resetExpires]:null});
+  acct.resetHash="";acct.resetExpires="";saveCurrentUser(acct);markSessionGraceV308(15*60*1000);clearStaffQrParamsV308();
+  return acct;
+}
+async function generateStaffQrV308(acct){
+  const me=currentUser();if(!me||me.role!=="Admin")throw new Error("Admin access is required.");
+  const secret=staffQrSecretV308(),expires=new Date(Date.now()+15*60*1000).toISOString();
+  const hash=await staffQrHashV308(acct,secret);
+  await updateAccountV30(acct,{[AF.resetHash]:hash,[AF.resetExpires]:expires});
+  return {url:staffQrURLV308(acct,secret),expires};
+}
+function closeStaffQrOverlayV308(){document.getElementById("staffQrOverlayV308")?.remove()}
+function showStaffQrOverlayV308(acct,info){
+  closeStaffQrOverlayV308();
+  const ov=document.createElement("div");ov.id="staffQrOverlayV308";ov.className="v308Overlay";
+  ov.innerHTML=`<div class="v308OverlayCard"><button class="gray v308Close" type="button">CLOSE</button><h2>Sign In ${esc(acct.name)}</h2><p class="small">Have ${esc(acct.name)} scan this QR with the phone camera. It signs in this employee account without typing a password.</p><div id="staffQrCanvasV308" class="v308QrBox"></div><div class="badge pending">ONE USE • EXPIRES IN 15 MINUTES</div><p class="small">Generating a new Staff QR or temporary password cancels the previous one.</p></div>`;
+  document.body.appendChild(ov);ov.querySelector(".v308Close")?.addEventListener("click",closeStaffQrOverlayV308);
+  new QRCode(document.getElementById("staffQrCanvasV308"),{text:info.url,width:260,height:260,correctLevel:QRCode.CorrectLevel.M});
+}
+
+function closeSignupOverlayV308(){
+  const ov=document.getElementById("v308SignupOverlay");if(!ov)return;
+  try{if(window.visualViewport&&ov.__vvHandler)window.visualViewport.removeEventListener("resize",ov.__vvHandler)}catch(_){}
+  ov.remove();
+}
+function openSignupOverlayV308(msg=""){
+  closeSignupOverlayV308();
+  const ov=document.createElement("div");ov.id="v308SignupOverlay";ov.className="v308SignupOverlay";
+  ov.innerHTML=`<div class="v308SignupCard"><button class="gray" id="v308SignupBack" type="button">← BACK TO SIGN IN</button><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Create Employee Account</h2><p>Use your own employee password. The 4-digit Company PIN only authorizes account creation.</p><label>Name</label><input id="v308SignupName" autocomplete="name"><label>Email</label><input id="v308SignupEmail" type="email" autocomplete="email" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v308SignupPassword" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><label>4-Digit Company PIN</label><input id="v308SignupPin" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="one-time-code"><button class="orange" id="v308SignupSubmit" type="button">CREATE TECH ACCOUNT</button><div id="v308SignupMsg" class="small">${esc(msg)}</div><div class="v308KeyboardSpacer"></div></div>`;
+  document.body.appendChild(ov);
+  const fit=()=>{try{ov.style.height=((window.visualViewport&&window.visualViewport.height)||window.innerHeight)+"px"}catch(_){}};fit();ov.__vvHandler=fit;try{window.visualViewport?.addEventListener("resize",fit)}catch(_){}
+  $("v308SignupBack")?.addEventListener("click",closeSignupOverlayV308);
+  $("v308SignupSubmit")?.addEventListener("click",async()=>{
+    const b=$("v308SignupSubmit"),m=$("v308SignupMsg");if(b){b.disabled=true;b.textContent="CREATING ACCOUNT…"}if(m)m.textContent="";
+    try{
+      const ok=await verifyCompanyPinV30($("v308SignupPin")?.value||"");if(!ok)throw new Error("Incorrect company PIN. Ask an Admin for the current 4-digit Company PIN.");
+      const a=await createAppAccountV30({name:$("v308SignupName")?.value,email:$("v308SignupEmail")?.value,password:$("v308SignupPassword")?.value,role:"Tech",createdBy:"Company PIN signup"});
+      // Confirm the just-created Airtable record before leaving signup, but do not sign the user out if Airtable list indexing is briefly stale.
+      let live=null;for(let i=0;i<4&&!live;i++){try{live=await findAppAccountByEmail(a.email)}catch(_){}if(!live)await new Promise(r=>setTimeout(r,450))}
+      saveCurrentUser(live||a);markSessionGraceV308(15*60*1000);closeSignupOverlayV308();$("pinGate")?.classList.add("hidden");show("home");applyCurrentUserUI();
+      try{await refreshSharedEquipment()}catch(_){};window.rescomRefreshModernUI?.();
+    }catch(e){if(m)m.textContent=e?.message||String(e);if(b){b.disabled=false;b.textContent="CREATE TECH ACCOUNT"}}
+  });
+  $("v308SignupPin")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("v308SignupSubmit")?.click()});
+  setTimeout(()=>{try{ov.scrollTop=0;$("v308SignupName")?.focus({preventScroll:true})}catch(_){}},80);
+}
+
+function closePasswordResetOverlayV309(){
+  const ov=document.getElementById("v309ResetOverlay");if(!ov)return;
+  try{if(window.visualViewport&&ov.__vvHandler)window.visualViewport.removeEventListener("resize",ov.__vvHandler)}catch(_){}
+  ov.remove();
+}
+async function resetExistingAccountPasswordV309(acct,newPassword){
+  if(!acct?.recordId)throw new Error("That Res-Com account could not be loaded. Try again.");
+  const pw=normalizeEmployeePasswordV305(newPassword);
+  if(pw.length<6)throw new Error("New password must be at least 6 characters.");
+  const salt=randomSaltV30();
+  const hash=await passwordHashV30(pw,salt);
+  await updateAccountV30(acct,{[AF.salt]:salt,[AF.hash]:hash,[AF.resetHash]:"",[AF.resetExpires]:null});
+  const fresh=await findAppAccountByEmail(acct.email);
+  if(!fresh)throw new Error("Password was saved, but Res-Com could not reload the account. Try signing in with the new password.");
+  const check=(await passwordHashV30(pw,fresh.salt))===fresh.hash;
+  if(!check)throw new Error("Password verification failed. Your old password was not replaced. Try again or ask an Admin for a Staff Sign-In QR.");
+  return fresh;
+}
+function openPasswordResetOverlayV309(prefillEmail=""){
+  closePasswordResetOverlayV309();
+  const ov=document.createElement("div");ov.id="v309ResetOverlay";ov.className="v309AuthOverlay";
+  ov.innerHTML=`<div class="v309AuthCard"><button class="gray" id="v309ResetBack" data-safe-bound="yes" type="button">← BACK TO SIGN IN</button><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Reset Employee Password</h2><p>Start with the email used when this Res-Com account was created.</p><div id="v309ResetStep1"><label>Account Email</label><input id="v309ResetEmail" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(prefillEmail||"")}"><button class="orange" id="v309ResetContinue" data-safe-bound="yes" type="button">CONTINUE</button></div><div id="v309ResetStep2" class="hidden"><div class="v309AccountFound" id="v309ResetFound"></div><p class="small">For security, enter the current 4-digit Company PIN, then choose a new employee password.</p><label>4-Digit Company PIN</label><input id="v309ResetPin" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="one-time-code"><label>New Employee Password</label><input id="v309ResetPassword" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><label>Confirm New Password</label><input id="v309ResetConfirm" type="password" autocomplete="new-password" autocapitalize="none" spellcheck="false"><button class="orange" id="v309ResetSubmit" data-safe-bound="yes" type="button">RESET PASSWORD & SIGN IN</button><button class="outline" id="v309ResetDifferentEmail" data-safe-bound="yes" type="button">USE A DIFFERENT EMAIL</button></div><div id="v309ResetMsg" class="small v309ResetMsg"></div><div class="v309KeyboardSpacer"></div></div>`;
+  document.body.appendChild(ov);
+  // Keep a real scrollable viewport on mobile. visualViewport is used only as a minimum-height hint,
+  // not as a hard clipping height, so the PIN/password buttons remain reachable above the keyboard.
+  const fit=()=>{try{ov.style.setProperty("--v309-vh",((window.visualViewport&&window.visualViewport.height)||window.innerHeight)+"px")}catch(_){}};fit();ov.__vvHandler=fit;try{window.visualViewport?.addEventListener("resize",fit)}catch(_){}
+  const back=$("v309ResetBack");if(back){back.dataset.safeBound="yes";back.addEventListener("click",closePasswordResetOverlayV309)}
+  let selectedAccount=null;
+  const msg=()=>$("v309ResetMsg");
+  const setMsg=(text,ok=false)=>{const m=msg();if(m){m.textContent=text||"";m.classList.toggle("ok",!!ok)}};
+  const continueBtn=$("v309ResetContinue");if(continueBtn){continueBtn.dataset.safeBound="yes";continueBtn.addEventListener("click",async()=>{
+    continueBtn.disabled=true;continueBtn.textContent="CHECKING EMAIL…";setMsg("");
+    try{
+      if(!token())throw new Error("This phone is not connected to Res-Com Cloud. Ask an Admin to connect it once or use a Staff Sign-In QR.");
+      const email=String($("v309ResetEmail")?.value||"").trim().toLowerCase();
+      if(!/^\S+@\S+\.\S+$/.test(email))throw new Error("Enter the email address used for your Res-Com account.");
+      selectedAccount=await findAppAccountByEmail(email);
+      if(!selectedAccount)throw new Error("No Res-Com employee account was found for that email.");
+      if(selectedAccount.status!=="Active")throw new Error("That account is not active. Contact a Res-Com Admin.");
+      $("v309ResetFound").innerHTML=`<b>Account found:</b> ${esc(selectedAccount.name)}<br><span class="small">${esc(selectedAccount.email)} • ${esc(selectedAccount.role)}</span>`;
+      $("v309ResetStep1").classList.add("hidden");$("v309ResetStep2").classList.remove("hidden");
+      setMsg("Email confirmed. Enter the Company PIN and your new password.",true);
+      setTimeout(()=>{try{$("v309ResetPin")?.focus({preventScroll:true});$("v309ResetStep2")?.scrollIntoView({block:"start",behavior:"smooth"})}catch(_){}},80);
+    }catch(e){setMsg(e?.message||String(e))}finally{continueBtn.disabled=false;continueBtn.textContent="CONTINUE"}
+  })}
+  const different=$("v309ResetDifferentEmail");if(different){different.dataset.safeBound="yes";different.addEventListener("click",()=>{selectedAccount=null;$("v309ResetStep2")?.classList.add("hidden");$("v309ResetStep1")?.classList.remove("hidden");setMsg("");setTimeout(()=>$("v309ResetEmail")?.focus(),40)})}
+  const submit=$("v309ResetSubmit");if(submit){submit.dataset.safeBound="yes";submit.addEventListener("click",async()=>{
+    submit.disabled=true;submit.textContent="RESETTING PASSWORD…";setMsg("");
+    try{
+      if(!selectedAccount)throw new Error("Enter your account email first.");
+      const ok=await verifyCompanyPinV30($("v309ResetPin")?.value||"");
+      if(!ok)throw new Error("Incorrect 4-digit Company PIN. Ask a Res-Com Admin for the current PIN.");
+      const pw=normalizeEmployeePasswordV305($("v309ResetPassword")?.value||"");
+      const confirmPw=normalizeEmployeePasswordV305($("v309ResetConfirm")?.value||"");
+      if(pw.length<6)throw new Error("New password must be at least 6 characters.");
+      if(pw!==confirmPw)throw new Error("The two new-password entries do not match.");
+      const fresh=await resetExistingAccountPasswordV309(selectedAccount,pw);
+      saveCurrentUser(fresh);markSessionGraceV308(15*60*1000);closePasswordResetOverlayV309();$("pinGate")?.classList.add("hidden");show("home");applyCurrentUserUI();
+      try{await refreshSharedEquipment()}catch(_){};window.rescomRefreshModernUI?.();
+    }catch(e){setMsg(e?.message||String(e));submit.disabled=false;submit.textContent="RESET PASSWORD & SIGN IN"}
+  })}
+  $("v309ResetEmail")?.addEventListener("keydown",e=>{if(e.key==="Enter")continueBtn?.click()});
+  $("v309ResetConfirm")?.addEventListener("keydown",e=>{if(e.key==="Enter")submit?.click()});
+  setTimeout(()=>{try{ov.scrollTop=0;$("v309ResetEmail")?.focus({preventScroll:true})}catch(_){}},80);
+}
+
+function loginGateHTMLV308(msg=""){
+  return `<div class="pin-card v30Gate"><img src="icon-512.png" class="v30GateLogo" alt="Res-Com"><h2>Res-Com Sign In</h2><p>Technicians and Admins sign in with their own employee password.</p><label>Email</label><input id="v30LoginEmail" type="email" autocomplete="username" autocapitalize="none" spellcheck="false"><label>Employee Password</label><input id="v30LoginPassword" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"><button class="orange" id="v30LoginBtn" data-safe-bound="yes" type="button">SIGN IN</button><button class="outline" id="v309ForgotPassword" data-safe-bound="yes" type="button">FORGOT / RESET PASSWORD</button><button class="outline" id="v305GuestBtn" data-safe-bound="yes" type="button">CONTINUE AS GUEST</button><button class="outline" id="v30ShowCreate" data-safe-bound="yes" type="button">CREATE EMPLOYEE ACCOUNT</button><div id="v30GateMsg" class="small">${esc(msg)}</div></div>`;
+}
+
+renderAccountGateV30=async function(msg=""){
+  const gate=$("pinGate");if(!gate)return;gate.classList.remove("hidden");
+  const hasStaffQr=!!(new URLSearchParams(location.search).get("staff"));
+  if(!token()){
+    const tokenMsg=hasStaffQr?"Staff QR detected. Connect this phone to Res-Com Cloud once; the QR sign-in will continue automatically.":msg;
+    gate.innerHTML=accountGateHTMLV30("token",false,tokenMsg);
+    bindAccountControlV304("v30SaveToken",async()=>{const t=($("v30GateToken")?.value||"").trim();if(!t)throw new Error("Enter the Airtable token.");localStorage.setItem(TOKEN,t);try{await allAppAccounts();await renderAccountGateV30("Phone connected.")}catch(e){localStorage.removeItem(TOKEN);await renderAccountGateV30("That token could not connect to the Res-Com database.")}});
+    bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());return;
+  }
+  if(hasStaffQr){
+    gate.innerHTML=accountGateHTMLV30("checking",false,"Verifying one-time Staff QR…");
+    try{const acct=await consumeStaffQrV308();if(acct){gate.classList.add("hidden");show("home");applyCurrentUserUI();try{await refreshSharedEquipment()}catch(_){};window.rescomRefreshModernUI?.();return}}
+    catch(e){msg=e?.message||String(e);clearStaffQrParamsV308()}
+  }
+  gate.innerHTML=accountGateHTMLV30("checking",false,msg);let accounts=[];
+  try{accounts=await allAppAccounts()}catch(e){gate.innerHTML=accountGateHTMLV30("token",false,"Cloud connection failed. Re-enter the Airtable token for this device, or continue as Guest.");bindAccountControlV304("v30SaveToken",async()=>{const t=($("v30GateToken")?.value||"").trim();if(!t)throw new Error("Enter the Airtable token.");localStorage.setItem(TOKEN,t);await renderAccountGateV30()});bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());return}
+  if(!accounts.length){
+    gate.innerHTML=accountGateHTMLV30("login",true,msg);
+    bindAccountControlV304("v30CreateFirstAdmin",async()=>{const btn=$("v30CreateFirstAdmin");if(btn){btn.disabled=true;btn.textContent="CREATING ADMIN…"}try{const a=await createAppAccountV30({name:$("v30CreateName").value,email:$("v30CreateEmail").value,password:$("v30CreatePassword").value,role:"Admin",createdBy:"First account bootstrap"});saveCurrentUser(a);markSessionGraceV308(15*60*1000);gate.classList.add("hidden");show("home");applyCurrentUserUI();try{await rotateCompanyPinV30({autoEmail:true})}catch(_){};try{await refreshSharedEquipment()}catch(_){};window.rescomRefreshModernUI?.()}catch(e){const m=$("v30GateMsg");if(m)m.textContent=e.message||String(e);if(btn){btn.disabled=false;btn.textContent="CREATE ADMIN ACCOUNT"}}});
+    bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());return;
+  }
+  gate.innerHTML=loginGateHTMLV308(msg);
+  bindAccountControlV304("v30LoginBtn",async()=>{const b=$("v30LoginBtn"),m=$("v30GateMsg");if(b){b.disabled=true;b.textContent="SIGNING IN…"}if(m)m.textContent="";try{await loginAppAccountV30($("v30LoginEmail").value,$("v30LoginPassword").value);markSessionGraceV308(15*60*1000);gate.classList.add("hidden");show("home");applyCurrentUserUI();try{await refreshSharedEquipment()}catch(_){};window.rescomRefreshModernUI?.()}catch(e){if(m)m.textContent=e.message||String(e);if(b){b.disabled=false;b.textContent="SIGN IN"}}});
+  bindAccountControlV304("v309ForgotPassword",async()=>openPasswordResetOverlayV309($("v30LoginEmail")?.value||""));
+  bindAccountControlV304("v305GuestBtn",async()=>startGuestModeV305());
+  bindAccountControlV304("v30ShowCreate",async()=>openSignupOverlayV308());
+  $("v30LoginPassword")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("v30LoginBtn")?.click()});
+};
+
+const renderTeamCoreV308=renderTeamV30;
+renderTeamV30=async function(){
+  await renderTeamCoreV308();
+  const me=currentUser();if(!me||me.role!=="Admin"||isGuestUserV305(me))return;
+  let accounts=[];try{accounts=await allAppAccounts()}catch(_){return}
+  const rows=[...document.querySelectorAll("#teamList .teamRow")];
+  rows.forEach((row,i)=>{
+    const acct=accounts[i],actions=row.querySelector(".teamActions");
+    if(!acct||!actions||acct.accountId===me.accountId||actions.querySelector(".teamQrBtnV308"))return;
+    const btn=document.createElement("button");btn.type="button";btn.className="outline teamQrBtnV308";btn.textContent="SIGN-IN QR";btn.dataset.safeBound="yes";
+    btn.addEventListener("click",async()=>{btn.disabled=true;btn.textContent="GENERATING QR…";try{const info=await generateStaffQrV308(acct);showStaffQrOverlayV308(acct,info)}catch(e){alert(e?.message||String(e))}finally{btn.disabled=false;btn.textContent="SIGN-IN QR"}});
+    actions.insertBefore(btn,actions.querySelector(".teamDeleteBtn")||null);
+  });
+};
+renderAccounts=renderTeamV30;
+
+
 bootResComV30();
 
 
@@ -3774,5 +3921,5 @@ bootResComV30();
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
-<script src="./modern-ui.js?v=30.7"></script>
+<script src="./modern-ui.js?v=30.9"></script>
 </body></html>

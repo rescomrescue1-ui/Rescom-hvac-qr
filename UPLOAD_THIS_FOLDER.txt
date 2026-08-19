@@ -1,9 +1,5 @@
-UPLOAD THESE FILES TO THE SAME GITHUB PAGES REPOSITORY/PATH.
-Replace matching files. Do not change the Pages address.
-
-Expected app version after refresh: APP v30.7
-Build: Aug 19, 2026 5:09 PM
-
-Main changed files: index.html, modern-ui.js, modern-ui.css, service-worker.js, version.json.
-Also includes PATCH_NOTES_v30_7.txt.
-Existing equipment QR links remain compatible.
+Upload the CONTENTS of this folder to the SAME GitHub Pages repository/root used by Res-Com today.
+Replace files with the same names.
+Do NOT change the repository name, Pages path, or equipment QR URL format.
+Expected version after upload: v30.9 — Aug 19, 2026 5:31 PM.
+Existing printed equipment QR codes remain valid.

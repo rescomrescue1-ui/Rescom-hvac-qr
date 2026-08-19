@@ -435,3 +435,33 @@ body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
 .staffQrCode{width:244px;max-width:100%;margin:14px auto;padding:12px;background:#fff;border-radius:14px;display:flex;justify-content:center;align-items:center}
 .staffQrCode img,.staffQrCode canvas{display:block;max-width:100%;height:auto!important}
 .teamQrBtn{font-weight:900!important}
+
+/* v30.8 session-safe signup + staff QR */
+.v308SignupOverlay,.v308Overlay{position:fixed;inset:0;z-index:20000;background:var(--bg,#f6f8fb);overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain;padding:16px;box-sizing:border-box}
+.v308SignupCard,.v308OverlayCard{width:min(100%,560px);margin:0 auto;background:var(--card,#fff);color:var(--text,#111820);border:1px solid var(--border,#d8dee8);border-radius:18px;padding:18px;box-sizing:border-box;min-height:max-content}
+.v308SignupCard label{display:block;margin-top:14px;font-weight:800}
+.v308SignupCard input{width:100%;box-sizing:border-box;min-height:48px;margin-top:6px}
+.v308SignupCard button{margin-top:14px}
+.v308KeyboardSpacer{height:240px;min-height:240px;pointer-events:none}
+.v308OverlayCard{text-align:center;padding-bottom:30px}
+.v308OverlayCard .v308Close{display:block;margin:0 0 12px 0}
+.v308QrBox{display:flex;justify-content:center;align-items:center;background:#fff;border-radius:14px;padding:16px;margin:16px auto;max-width:300px}
+.v308QrBox img,.v308QrBox canvas{max-width:100%!important;height:auto!important;opacity:1!important;filter:none!important}
+.teamQrBtnV308{white-space:nowrap}
+@media (max-width:520px){.v308SignupOverlay,.v308Overlay{padding:8px}.v308SignupCard,.v308OverlayCard{border-radius:14px;padding:14px}.v308KeyboardSpacer{height:300px;min-height:300px}}
+
+
+/* v30.9 — keyboard-safe account/password recovery scrolling */
+.v309AuthOverlay{position:fixed!important;inset:0!important;z-index:22000!important;background:var(--bg,#f6f8fb)!important;overflow-y:scroll!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;overscroll-behavior-y:contain!important;height:100dvh!important;min-height:var(--v309-vh,100dvh)!important;padding:12px 12px max(36px,env(safe-area-inset-bottom))!important;box-sizing:border-box!important}
+.v309AuthCard{width:min(100%,560px)!important;margin:0 auto!important;background:var(--card,#fff)!important;color:var(--text,#111820)!important;border:1px solid var(--border,#d8dee8)!important;border-radius:18px!important;padding:18px!important;padding-bottom:24px!important;box-sizing:border-box!important;min-height:max-content!important}
+.v309AuthCard label{display:block!important;margin-top:14px!important;font-weight:800!important}
+.v309AuthCard input{display:block!important;width:100%!important;box-sizing:border-box!important;min-height:50px!important;margin-top:6px!important;font-size:16px!important}
+.v309AuthCard button{display:block!important;width:100%!important;min-height:48px!important;margin-top:14px!important}
+.v309KeyboardSpacer{height:260px!important;min-height:260px!important;pointer-events:none!important}
+.v309AccountFound{margin:14px 0;padding:12px;border:1px solid var(--border,#d8dee8);border-radius:12px;background:rgba(79,155,255,.08)}
+.v309ResetMsg{min-height:22px;margin-top:12px;color:#b42318!important;text-align:center;font-weight:700}
+.v309ResetMsg.ok{color:#067647!important}
+/* Strengthen v30.8 signup scrolling too: never depend on body scrolling while keyboard is open. */
+.v308SignupOverlay{overflow-y:scroll!important;touch-action:pan-y!important;height:100dvh!important;max-height:none!important;padding-bottom:max(40px,env(safe-area-inset-bottom))!important}
+.v308SignupCard{min-height:max-content!important;padding-bottom:24px!important}
+@media (max-width:520px){.v309AuthOverlay{padding:8px 8px max(28px,env(safe-area-inset-bottom))!important}.v309AuthCard{border-radius:14px!important;padding:14px!important}.v309KeyboardSpacer{height:320px!important;min-height:320px!important}.v308KeyboardSpacer{height:340px!important;min-height:340px!important}}

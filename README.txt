@@ -1,19 +1,14 @@
-RES-COM HVAC QR — VERSION 30.7
-Build: Aug 19, 2026 5:09 PM
+RES-COM HVAC QR — VERSION 30.9
 
-SIGNUP SCROLL RECOVERY
-- Create Employee Account is now its own full-screen form instead of expanding under Sign In.
-- The signup page uses a true vertical scroll area, dynamic viewport height, and extra keyboard-safe bottom space.
-- Name, Email, Employee Password, 4-Digit Company PIN, and Create are all on the dedicated signup screen.
+WHAT THIS ADDS
+- FORGOT / RESET PASSWORD on employee Sign In.
+- Employee enters their existing account email, verifies with the current 4-digit Company PIN, then chooses a new password.
+- The new password is salted/hashed, saved to Airtable, re-read, verified, and the employee is signed in automatically.
+- Password recovery and Create Employee Account use full-screen keyboard-safe touch scrolling.
+- Auth buttons are explicitly bound so Sign In / Forgot / Continue / Reset / Back / Guest / Create work reliably.
 
-ONE-TIME STAFF SIGN-IN QR
-- Admin Team controls now include SIGN-IN QR for an individual employee.
-- The QR expires after 15 minutes and works once.
-- Scanning it signs that employee in without typing the temporary password.
-- The staff QR does not contain the Airtable cloud token. Brand-new phones still need the normal one-time Res-Com Cloud connection before employee cloud access works.
+IMPORTANT
+Upload these files to the SAME GitHub Pages repo/path. Do not rename or move the existing site. Existing printed equipment QR labels remain compatible.
 
-COMPATIBILITY
-- Existing equipment QR labels, Unit IDs, service history, and GitHub Pages path are unchanged.
-
-Upload the CONTENTS of this folder to the SAME GitHub Pages repository/path and replace matching files.
-Do not change the Pages URL; existing printed QR labels remain compatible.
+AFTER UPLOAD
+Open the normal Res-Com site once in Safari/Chrome while online, wait a few seconds, close it, then reopen the Home Screen app. Confirm the top badge says APP v30.9.

@@ -1,0 +1,13 @@
+Res-Com HVAC QR v30.8 — Session Persistence & Staff Sign-In Recovery
+Build: Aug 19, 2026 5:23 PM
+
+- Fixed newly created or newly signed-in employee accounts being kicked out after signup/reload because of a single stale account-list response.
+- Added a protected 15-minute new-session grace period.
+- After the grace period, Res-Com now requires three confirmed missing-account checks before clearing a saved employee session.
+- Disabled employee accounts still sign out immediately.
+- Rebuilt Create Employee Account as a dedicated full-screen, keyboard-safe iPhone scroll overlay with extra bottom space beneath the 4-digit Company PIN and Create button.
+- Wired Admin SIGN-IN QR to a real one-use Staff QR login token.
+- Staff QR expires after 15 minutes, signs in only the selected employee, and contains no Airtable token.
+- Generating a new Staff QR or temporary password cancels the previous one-time reset/sign-in token.
+- Synchronized core APP_VERSION, modern UI version, CSS/JS cache-busting, version.json, and service-worker cache to v30.8.
+- Existing printed equipment QR links, unit IDs, equipment history, and service history remain unchanged.

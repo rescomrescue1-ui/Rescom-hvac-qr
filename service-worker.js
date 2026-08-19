@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-7-staff-qr-scroll-1709";
+const CACHE = "rescom-qr-v30-9-password-recovery-1731";
 const CORE = [
   "./index.html",
   "./version.json",

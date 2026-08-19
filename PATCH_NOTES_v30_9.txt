@@ -1,0 +1,23 @@
+RES-COM HVAC QR — VERSION 30.9
+Released: Aug 19, 2026 5:31 PM
+
+SELF-SERVICE PASSWORD RECOVERY
+- Added FORGOT / RESET PASSWORD on employee Sign In.
+- Employee enters the email used for the existing Res-Com account.
+- Res-Com confirms the account, then requires the current 4-digit Company PIN.
+- Employee enters and confirms a new password.
+- A new random salt + PBKDF2 SHA-256 password hash is written to Airtable.
+- The app re-reads and verifies the new password before considering the reset complete.
+- Old temporary reset-code fields are cleared after the reset.
+- Successful reset signs the employee in and starts the protected session window.
+
+MOBILE / BUTTON RECOVERY
+- Password reset uses a dedicated full-screen, touch-scrollable overlay.
+- Added extra keyboard-safe bottom space for iPhone and Android.
+- Strengthened Create Employee Account scrolling the same way.
+- Sign In, Forgot Password, Continue, Reset, Back, Guest, and Create Account controls are explicitly bound before use.
+
+SECURITY / COMPATIBILITY
+- Knowing an employee email by itself is not enough to reset the password; the current Company PIN is required.
+- No readable password is stored in Airtable.
+- Existing equipment QR URLs, Staff QR sign-in, equipment IDs, service history, Team accounts, and prior Patch Notes remain compatible.
