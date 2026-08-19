@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-2-iphone-easy-install";
+const CACHE = "rescom-qr-v30-3-home-screen-recovery";
 const CORE = [
   "./index.html",
   "./version.json",

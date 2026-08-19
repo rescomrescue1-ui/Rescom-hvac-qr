@@ -1,6 +1,7 @@
-UPLOAD EVERY FILE IN THIS FOLDER TO THE EXISTING Rescom-hvac-qr REPOSITORY ROOT.
+UPLOAD THESE FILES TO THE SAME GITHUB PAGES LOCATION.
+Replace files with the same names; do not change the repository path.
 
-Replace matching files. Add the new apple-touch-icon.png file.
-Keep the SAME GitHub Pages address so printed QR labels keep working.
+Expected app version after refresh: APP v30.3
+Build: Aug 19, 2026 12:37 PM
 
-After upload, Res-Com should report APP v30.2 / Aug 19, 2026 12:11 PM.
+This release fixes the iPhone Home Screen startup freeze and preserves all permanent QR links.

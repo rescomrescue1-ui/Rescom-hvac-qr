@@ -527,7 +527,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=30.0">
+<link rel="stylesheet" href="./modern-ui.css?v=30.3">
 </head>
 <body>
 <div id="loadingScreen">
@@ -536,7 +536,7 @@ body{padding-bottom:88px!important}
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
     <div id="loadingStatus">Opening Res-Com…</div>
-    <div id="loadingVersion" class="small">Installed v30.0</div>
+    <div id="loadingVersion" class="small">Installed v30.3</div>
   </div>
 </div>
 <script>
@@ -567,7 +567,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v30.0 • UPDATED Aug 19, 2026 11:43 AM</span>
+    <span id="appVersionBadge">APP v30.3 • UPDATED Aug 19, 2026 12:37 PM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -1310,8 +1310,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="30.2";
-const APP_BUILD="Aug 19, 2026 12:11 PM";
+const APP_VERSION="30.3";
+const APP_BUILD="Aug 19, 2026 12:37 PM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -3356,6 +3356,35 @@ async function bootResComV30(){
 
 const oldLogoutBtn=$("logoutUser");if(oldLogoutBtn){oldLogoutBtn.onclick=()=>{clearCurrentUser();renderAccountGateV30("Signed out.")}}
 
+// v30.3 Home Screen recovery: never leave the installed app on a blank shell.
+function rescomHasVisiblePrimaryUI(){
+  const ids=["home","equipmentScreen","settings","scanner","idSearchScreen","labelScreen","detailScreen","patchNotes","bugScreen","healthScreen","qrHandoff","accountsScreen","accountDetailScreen","manualScreen"];
+  return ids.some(id=>{const el=$(id);return !!el && !el.classList.contains("hidden")}) || (!!$("pinGate") && !$("pinGate").classList.contains("hidden"));
+}
+function recoverHomeScreenShell(reason="resume"){
+  try{hideLoadingScreen()}catch(_){}
+  if(rescomHasVisiblePrimaryUI())return;
+  try{
+    const qp=new URLSearchParams(location.search);
+    const requested=(qp.get("unit")||qp.get("equipment")||"").trim().toUpperCase();
+    if(requested&&!isStandaloneApp()){showQRHandoff(requested);return}
+    if(currentUser()){
+      if(requested)openUnit(requested);
+      else show("home");
+      return;
+    }
+    renderAccountGateV30("Res-Com recovered after a Home Screen launch problem.").catch(()=>{
+      const gate=$("pinGate");if(gate){gate.classList.remove("hidden");gate.innerHTML=accountGateHTMLV30(!token()?"token":"login",false,"Res-Com recovered. Sign in or reconnect this device.")}
+    });
+  }catch(err){
+    try{show("home")}catch(_){}
+    try{logBug("JavaScript",err?.message||String(err),"Home Screen recovery",reason,"BOOT")}catch(_){}
+  }
+}
+window.addEventListener("pageshow",()=>setTimeout(()=>recoverHomeScreenShell("pageshow"),120));
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(()=>recoverHomeScreenShell("resume"),120)});
+setTimeout(()=>recoverHomeScreenShell("startup watchdog"),3500);
+
 bootResComV30();
 
 
@@ -3377,5 +3406,5 @@ bootResComV30();
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
-<script src="./modern-ui.js?v=30.0"></script>
+<script src="./modern-ui.js?v=30.3"></script>
 </body></html>

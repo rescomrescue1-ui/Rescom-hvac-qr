@@ -365,3 +365,6 @@ html[data-theme="dark"] .installAppCopy span{color:#c3ccd8!important}
 #rcCopyInstallLink{margin:0 0 12px!important}
 @media(max-width:520px){#rcInstallSheet{padding:18px!important;border-radius:24px 24px 18px 18px!important}.installSheetActions{grid-template-columns:1fr}.iosInstallStep{grid-template-columns:38px 1fr}.iosStepNum{width:34px;height:34px}}
 html[data-theme="dark"] .iphoneInstallCard{background:#0d1828!important;border-color:#3b82f6!important}
+
+
+/* v30.3 — Home Screen Recovery: launch fix is primarily JavaScript; cache-bust forces repaired UI layer. */

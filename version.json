@@ -1,5 +1,5 @@
 {
-  "version": "30.2",
-  "build": "Aug 19, 2026 12:11 PM",
-  "notes": "iPhone Easy Install: dedicated Add to iPhone card, 3-step Safari guide, clean-link copy for Safari, one-time first-use help, Apple touch icon, synchronized app version, preserved QR links, and automatic Bug & Recovery logging."
+  "version": "30.3",
+  "build": "Aug 19, 2026 12:37 PM",
+  "notes": "Home Screen Recovery: fixes an iPhone launch freeze caused by a repeating UI mutation loop, adds blank-screen startup/resume recovery, forces fresh CSS/JS/service-worker cache, preserves permanent QR links, and includes updated Manual and Patch Notes."
 }

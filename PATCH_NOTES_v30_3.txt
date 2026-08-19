@@ -1,0 +1,27 @@
+RES-COM HVAC QR PATCH NOTES
+
+Version 30.3 — Home Screen Recovery — Aug 19, 2026 12:37 PM
+- Fixed iPhone Home Screen launch freeze caused by a repeating interface MutationObserver loop.
+- Removed the unsafe global page watcher.
+- Added startup/resume blank-screen recovery.
+- Reduced unnecessary install-card DOM rewrites.
+- Bumped CSS/JS cache-busting and service-worker cache to v30.3.
+- Preserved permanent QR links, equipment IDs, saved data, Team accounts, Manual, and Bug Center.
+
+Version 30.2 — iPhone Easy Install — Aug 19, 2026 12:11 PM
+- Added dedicated Add to iPhone card and 3-step Safari guide.
+- Added Copy Res-Com Link for Safari.
+- Added first-use iPhone install help and Apple touch icon.
+- Synchronized core app/PWA version and kept QR links unchanged.
+
+Version 30.1 — Installable Res-Com App — Aug 19, 2026 12:04 PM
+- Added Install Res-Com App workflow.
+- Added browser install prompts and iPhone/Android fallback instructions.
+- Added standalone app detection and install metadata.
+
+Version 30.0 — Accounts & Search Cleanup — Aug 19, 2026 11:43 AM
+- Added Team employee account system with Admin/Tech roles.
+- Added Admin-managed 4-digit company PIN for account creation.
+- Merged local and shared equipment search.
+- Moved customer contact details directly onto equipment records.
+- Added White/Black themes and shared-equipment status cleanup.

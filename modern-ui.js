@@ -1,9 +1,9 @@
-/* Res-Com HVAC QR v30.2 — modern field UX + iPhone Easy Install PWA layer */
+/* Res-Com HVAC QR v30.3 — Home Screen Recovery + modern field UX */
 (() => {
   "use strict";
 
-  const MODERN_VERSION = "30.2";
-  const MODERN_BUILD = "Aug 19, 2026 12:11 PM";
+  const MODERN_VERSION = "30.3";
+  const MODERN_BUILD = "Aug 19, 2026 12:37 PM";
   const THEME_KEY = "rescom_theme_v30";
   let bugUploadBusy = false;
   let deferredInstallPrompt = null;
@@ -14,6 +14,7 @@
     d.textContent = s ?? "";
     return d.innerHTML;
   };
+  const setText = (el,text) => { if(el && el.textContent!==text) el.textContent=text; };
 
   function installedAsApp(){
     return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone===true;
@@ -88,20 +89,18 @@
     const kind=devicePlatform();
     if(kind==="ios"){
       card.classList.add("iphoneInstallCard");
-      if(title)title.textContent="Put Res-Com on this iPhone";
-      btn.textContent="ADD TO IPHONE";
-      if(status)status.textContent=isIOSSafari()?"3 easy taps: Share → Add to Home Screen → Add.":"Tap here, then copy the Res-Com link into Safari for the easiest install.";
+      setText(title,"Put Res-Com on this iPhone");
+      setText(btn,"ADD TO IPHONE");
+      setText(status,isIOSSafari()?"3 easy taps: Share → Add to Home Screen → Add.":"Tap here, then copy the Res-Com link into Safari for the easiest install.");
     }else{
       card.classList.remove("iphoneInstallCard");
-      if(title)title.textContent="Install Res-Com on this device";
-      btn.textContent="INSTALL RES-COM";
-      if(status){
-        status.textContent=deferredInstallPrompt
-          ? "Ready to install directly on this device — no app store required."
-          : kind==="android"
-          ? "Install directly from Chrome, or use Chrome → Install app / Add to Home screen."
-          : "Install from your browser so Res-Com opens like a normal app.";
-      }
+      setText(title,"Install Res-Com on this device");
+      setText(btn,"INSTALL RES-COM");
+      setText(status,deferredInstallPrompt
+        ? "Ready to install directly on this device — no app store required."
+        : kind==="android"
+        ? "Install directly from Chrome, or use Chrome → Install app / Add to Home screen."
+        : "Install from your browser so Res-Com opens like a normal app.");
     }
   }
   function maybeShowIOSInstallNudge(){
@@ -178,7 +177,8 @@
     if(!strip){
       strip=document.createElement("div");strip.id="rcWelcomeStrip";home.prepend(strip);
     }
-    strip.innerHTML = `<div class="copy"><h2>Ready, ${escapeHTML(techName())}</h2><p>Scan. Service. Save. Everything stays tied to the equipment QR.</p></div><div class="avatar"><img src="icon-192.png" alt="Res-Com"></div>`;
+    const html=`<div class="copy"><h2>Ready, ${escapeHTML(techName())}</h2><p>Scan. Service. Save. Everything stays tied to the equipment QR.</p></div><div class="avatar"><img src="icon-192.png" alt="Res-Com"></div>`;
+    if(strip.innerHTML!==html)strip.innerHTML=html;
   }
 
   function makeMoreMenu(){
@@ -267,8 +267,11 @@
 
   function updateManualAndPatchNotes(){
     const navBtn=document.querySelector('.manualJump[data-target="m-accounts"]');if(navBtn)navBtn.textContent="Team";
-    const acctSec=byId("m-accounts");if(acctSec)acctSec.innerHTML=`<h3>Team Accounts</h3><p>Res-Com now uses one simple Team account system. The first person who creates an account becomes Admin automatically.</p><p>Every Admin and Tech signs in with their own email and password. New employee self-signups require the current 4-digit company PIN, which only Admins manage.</p><p>Admins can create accounts, promote Techs to Admin, disable accounts, reset passwords, and rotate the company PIN from the Team tab.</p>`;
+    const acctSec=byId("m-accounts");if(acctSec&&acctSec.dataset.rcManualTeam!==MODERN_VERSION){acctSec.innerHTML=`<h3>Team Accounts</h3><p>Res-Com now uses one simple Team account system. The first person who creates an account becomes Admin automatically.</p><p>Every Admin and Tech signs in with their own email and password. New employee self-signups require the current 4-digit company PIN, which only Admins manage.</p><p>Admins can create accounts, promote Techs to Admin, disable accounts, reset passwords, and rotate the company PIN from the Team tab.</p>`;acctSec.dataset.rcManualTeam=MODERN_VERSION;}
     const manualCard=document.querySelector("#manualScreen .card");
+    if(manualCard&&!byId("m-home-recovery")){
+      const sec=document.createElement("div");sec.className="manual-section";sec.id="m-home-recovery";sec.innerHTML=`<h3>Version 30.3 — Home Screen Recovery</h3><p><b>Fixed:</b> removed a repeating page-change watcher that could keep rewriting parts of the interface and freeze the iPhone Home Screen app during launch.</p><p><b>Recovery watchdog:</b> if iOS resumes Res-Com with no visible screen, the app now restores Home, the equipment QR screen, or the sign-in screen automatically instead of leaving a blank page.</p><p><b>Resume handling:</b> Home Screen launches and returns from the background now re-check that a usable screen is visible.</p><p><b>Cache refresh:</b> CSS, JavaScript and the service-worker cache were bumped to 30.3 so the repaired launch code replaces the stuck 30.2 files.</p><p><b>QR safety:</b> all existing printed RC QR links and the GitHub Pages address remain unchanged.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
+    }
     if(manualCard&&!byId("m-ios-install")){
       const sec=document.createElement("div");sec.className="manual-section";sec.id="m-ios-install";sec.innerHTML=`<h3>Version 30.2 — Easier iPhone / iPad Installation</h3><p><b>Home:</b> iPhone and iPad users now see a dedicated ADD TO IPHONE card with a three-step guide: Share → Add to Home Screen → Add.</p><p><b>Safari helper:</b> if Res-Com is opened in another iPhone browser, the guide provides a COPY RES-COM LINK FOR SAFARI button so the technician can paste the clean app address into Safari.</p><p><b>First-use help:</b> on a normal iPhone launch, the install guide appears once automatically and then stays available from Home and More → Install Help.</p><p><b>Home Screen icon:</b> added a dedicated Apple touch icon and iOS standalone/status-bar metadata for a more app-like launch.</p><p><b>QR safety:</b> the clean install link never changes existing printed QR URLs, and QR scans are not interrupted by the automatic install guide.</p><p><b>Recovery:</b> automatic Bug & Recovery logging remains enabled.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
@@ -279,6 +282,9 @@
       const sec=document.createElement("div");sec.className="manual-section";sec.id="m-v30";sec.innerHTML=`<h3>Version 30 — Simplified Accounts, Equipment Search & Themes</h3><p><b>Accounts:</b> customer account records and separate technician lists are no longer part of the app workflow. Customer name, email and phone are stored directly on each equipment record.</p><p><b>Team:</b> the first Res-Com employee to create an App Account is automatically Admin. Everyone else is a Tech unless an Admin changes the role.</p><p><b>Company PIN:</b> only Admins can generate and manage the 4-digit company PIN. It authorizes new employee account creation; Techs sign in with their own email and password.</p><p><b>Equipment:</b> Equipment search combines QR units scanned/created on this device with every equipment record downloaded from the shared Airtable database.</p><p><b>Status:</b> Loading Shared Equipment always finishes as Equipment Ready, Local Equipment Ready, or Cloud Error — Local Equipment Ready.</p><p><b>Appearance:</b> Settings now has White and Black app themes with explicit text/background contrast.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
     const patch=document.querySelector("#patchNotes .card");
+    if(patch&&!byId("rcPatch303")){
+      const b=document.createElement("div");b.className="unit";b.id="rcPatch303";b.innerHTML=`<h3>Version 30.3 — Home Screen Recovery</h3><p><b>Released:</b> Aug 19, 2026 12:37 PM</p><p>• Fixed the iPhone Home Screen launch freeze caused by a repeating interface MutationObserver loop.</p><p>• Removed the unsafe global page watcher and kept only targeted, one-time UI setup.</p><p>• Added a Home Screen startup/resume recovery watchdog so a blank app shell restores the correct screen automatically.</p><p>• Made install-card text updates idempotent to prevent unnecessary DOM churn.</p><p>• Bumped CSS/JavaScript cache-busting and the service-worker cache to v30.3.</p><p>• Kept permanent QR links, equipment IDs, local data, Airtable settings, Team accounts, Manual, and prior Patch Notes intact.</p>`;const first=patch.querySelector(".unit");patch.insertBefore(b,first||null)
+    }
     if(patch&&!byId("rcPatch302")){
       const b=document.createElement("div");b.className="unit";b.id="rcPatch302";b.innerHTML=`<h3>Version 30.2 — iPhone Easy Install</h3><p><b>Released:</b> Aug 19, 2026 12:11 PM</p><p>• Added a dedicated ADD TO IPHONE Home card.</p><p>• Added a large three-step iPhone guide showing Share → Add to Home Screen → Add.</p><p>• Added COPY RES-COM LINK FOR SAFARI when the app is opened in another iPhone browser.</p><p>• Added a one-time iPhone first-use install guide that does not interrupt equipment QR scans.</p><p>• Added More → Install Help so technicians can reopen the instructions anytime.</p><p>• Added a dedicated Apple Home Screen icon and iOS standalone metadata.</p><p>• Synchronized the core app version with the PWA version to prevent false update warnings.</p><p>• Kept automatic Bug & Recovery logging and all permanent QR links unchanged.</p>`;const first=patch.querySelector(".unit");patch.insertBefore(b,first||null)
     }
@@ -317,9 +323,16 @@
   window.rescomRefreshModernUI=refreshAll;
 
   function initialize(){
-    hardenBugUploader();lighterPhotos();installNavObserver();refreshAll();maybeShowIOSInstallNudge();
-    const observer=new MutationObserver(()=>{prepareCustomerHandoff();modernizePrintCenter();cleanupLegacySettings();updateManualAndPatchNotes();ensureInstallExperience();updateActiveNav()});
-    observer.observe(document.body,{childList:true,subtree:true});
+    try{
+      hardenBugUploader();
+      lighterPhotos();
+      installNavObserver();
+      refreshAll();
+      maybeShowIOSInstallNudge();
+    }catch(err){
+      try{console.error("Res-Com modern UI recovery",err)}catch{}
+      try{logBug?.("JavaScript",err?.message||String(err),"Modern UI startup","v30.3 continued with core app UI.","BOOT")}catch{}
+    }
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initialize,{once:true});else initialize();
 })();
