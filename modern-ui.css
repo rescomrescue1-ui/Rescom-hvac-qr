@@ -467,3 +467,6 @@ body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
 @media (max-width:520px){.v309AuthOverlay{padding:8px 8px max(28px,env(safe-area-inset-bottom))!important}.v309AuthCard{border-radius:14px!important;padding:14px!important}.v309KeyboardSpacer{height:320px!important;min-height:320px!important}.v308KeyboardSpacer{height:340px!important;min-height:340px!important}}
 
 /* v30.10 — temporary password and Staff QR authentication are separated in the data layer. */
+
+/* v30.11 personal PIN: auth forms reuse the keyboard-safe full-screen v308SignupOverlay. */
+#v311SignupOverlay input[inputmode="numeric"],#v311PinResetOverlay input[inputmode="numeric"],#pinGate input[inputmode="numeric"]{font-variant-numeric:tabular-nums;letter-spacing:.12em}

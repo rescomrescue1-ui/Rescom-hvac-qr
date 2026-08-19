@@ -1,5 +1,7 @@
-Upload the CONTENTS of this folder to the SAME Res-Com GitHub Pages repository root.
-Replace files with the same names.
-Do not change the repository name, Pages path, or printed QR URL.
-Expected version after upload: v30.10 — Aug 19, 2026 5:40 PM.
-Main fix: Staff QR and temporary-password authentication now use separate Airtable fields.
+RES-COM HVAC QR v30.11
+
+Upload these files to the SAME GitHub repository root and SAME Pages path as your current Res-Com app. Replace files with the same names and commit the changes.
+
+Do NOT change the repository name, Pages path, or QR URL format. Existing printed equipment QR codes must keep working.
+
+After upload, open the normal Res-Com website once while online, then close/reopen the Home Screen app. Confirm it shows APP v30.11.

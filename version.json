@@ -1,5 +1,5 @@
 {
-  "version": "30.10",
-  "build": "Aug 19, 2026 5:40 PM",
-  "notes": "Reliable temporary passwords: separates Staff QR authentication from temp-password authentication, keeps permanent passwords unchanged until a temp code is successfully used, verifies RC codes against Airtable, and preserves existing account/password-reset behavior."
+  "version": "30.11",
+  "build": "Aug 19, 2026 5:49 PM",
+  "notes": "Personal PIN sign-in: replaces active employee passwords with email + a 6-digit personal PIN, lets existing employees choose/reset a PIN with their email and the 4-digit Company PIN, removes temporary-password generation from Admin Add Employee, keeps Staff Sign-In QR, and preserves permanent equipment QR links."
 }
