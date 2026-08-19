@@ -1,0 +1,230 @@
+/* Res-Com HVAC QR v29 — Modern Field UI */
+:root{
+  --rc-bg:#f4f7fb;
+  --rc-surface:#ffffff;
+  --rc-ink:#111827;
+  --rc-muted:#667085;
+  --rc-line:#e4e7ec;
+  --rc-blue:#0b63d8;
+  --rc-blue2:#2f80ed;
+  --rc-navy:#061426;
+  --rc-red:#e23b3b;
+  --rc-green:#169b5d;
+  --rc-radius:18px;
+  --rc-shadow:0 8px 26px rgba(16,24,40,.08);
+}
+*{box-sizing:border-box}
+html,body{background:var(--rc-bg)!important;color:var(--rc-ink)!important}
+body{background:var(--rc-bg)!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif!important;padding-bottom:84px!important}
+body *{letter-spacing:normal}
+
+/* App shell */
+.appHeader{
+  position:sticky!important;top:0!important;z-index:9000!important;
+  background:rgba(255,255,255,.94)!important;
+  color:var(--rc-ink)!important;
+  border:0!important;border-bottom:1px solid var(--rc-line)!important;
+  backdrop-filter:saturate(180%) blur(18px)!important;
+  -webkit-backdrop-filter:saturate(180%) blur(18px)!important;
+  padding:calc(9px + env(safe-area-inset-top)) 16px 9px!important;
+  min-height:72px!important;
+}
+.headerLogo{width:46px!important;height:46px!important;border-radius:13px!important;background:#fff!important;padding:3px!important;box-shadow:0 3px 12px rgba(16,24,40,.09)!important}
+.headerCopy{min-width:0!important}
+.headerCopy h1{font-size:18px!important;font-weight:800!important;color:var(--rc-ink)!important;line-height:1.1!important}
+.headerCopy p{font-size:11px!important;color:var(--rc-muted)!important;margin:2px 0 3px!important;font-weight:600!important}
+#appVersionBadge{background:#eef5ff!important;color:#1459a7!important;border:0!important;font-size:9px!important;padding:3px 7px!important}
+main{max-width:980px!important;padding:14px 14px calc(100px + env(safe-area-inset-bottom))!important}
+.statusbar{margin:0 0 12px!important;align-items:center!important}
+#syncBadge{border-radius:999px!important;padding:6px 10px!important;font-size:10px!important;box-shadow:none!important}
+.iconSquare{width:42px!important;height:42px!important;min-height:42px!important;background:#fff!important;color:#1d2939!important;border:1px solid var(--rc-line)!important;border-radius:14px!important;box-shadow:0 2px 8px rgba(16,24,40,.06)!important}
+
+/* Cards, forms and actions */
+.card,.unit,.entry,.account-card,.manual-section{
+  background:var(--rc-surface)!important;color:var(--rc-ink)!important;
+  border:1px solid var(--rc-line)!important;border-radius:var(--rc-radius)!important;
+  box-shadow:var(--rc-shadow)!important;
+}
+.card{padding:18px!important;margin-bottom:14px!important}
+.unit,.entry,.account-card,.manual-section{box-shadow:none!important}
+.card h1,.card h2,.card h3,.unit h3,.entry b,.account-card b,.manual-section h3{color:var(--rc-ink)!important}
+.small,.photo-note,.equipment-meta,.manual-section p,.manual-section li{color:var(--rc-muted)!important}
+button,.btn{
+  min-height:50px!important;border-radius:14px!important;font-size:15px!important;font-weight:800!important;
+  transition:transform .12s ease,box-shadow .12s ease,background .12s ease!important;
+  box-shadow:none!important;
+}
+button:active{transform:scale(.985)!important}
+button.orange,.orange{background:var(--rc-blue)!important;color:#fff!important;border:0!important}
+button.dark,.dark{background:#101828!important;color:#fff!important;border:0!important}
+button.outline,.outline{background:#fff!important;color:#174ea6!important;border:1px solid #cbdcf6!important}
+button.gray,.gray{background:#f2f4f7!important;color:#344054!important;border:1px solid #e4e7ec!important}
+button.problemBtn,.problemBtn,button.danger,.danger,.red{background:#fff2f2!important;color:#b42318!important;border:1px solid #ffd3d3!important}
+input,select,textarea{
+  background:#fff!important;color:#111827!important;border:1px solid #d0d5dd!important;border-radius:13px!important;
+  box-shadow:0 1px 2px rgba(16,24,40,.04)!important;padding:13px!important;
+}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(47,128,237,.15)!important;border-color:#2f80ed!important}
+label{color:#344054!important;font-size:13px!important;font-weight:700!important}
+
+/* Modern home - Instagram/TikTok style quick action feed */
+.homeHero{padding:6px!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.homeHero .sectionTitleRow{padding:4px 6px 8px!important}
+.homeHero h2{font-size:25px!important;letter-spacing:-.5px!important}
+.homeHero .sectionTitleRow p{font-size:13px!important}
+.homeHero button{
+  position:relative!important;text-align:left!important;padding:15px 16px 15px 58px!important;margin:8px 0!important;
+  background:#fff!important;color:#111827!important;border:1px solid var(--rc-line)!important;border-radius:18px!important;
+  box-shadow:0 4px 18px rgba(16,24,40,.06)!important;min-height:72px!important;
+}
+.homeHero button::before{
+  position:absolute!important;left:14px!important;top:50%!important;transform:translateY(-50%)!important;
+  width:34px!important;height:34px!important;border-radius:11px!important;display:grid!important;place-items:center!important;
+  background:#eaf3ff!important;color:#0b63d8!important;font-size:18px!important;font-weight:900!important;
+}
+#createBlank::before{content:"＋"}
+#openById::before{content:"⌕"}
+#scanQrBtn::before{content:"▣"}
+#homeReportProblem::before{content:"!";background:#fff0f0!important;color:#c92a2a!important}
+.homeHero button::after{content:"›";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#98a2b3;font-size:24px;font-weight:500}
+.homeMiniCard{background:#eef5ff!important;color:#344054!important;border:0!important;border-radius:16px!important;padding:12px 14px!important;font-size:12px!important}
+.homeMiniCard b{color:#174ea6!important}
+#rcWelcomeStrip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,#061426,#0b63d8);color:#fff;border-radius:20px;padding:16px;margin:0 0 14px;box-shadow:0 10px 26px rgba(11,99,216,.2)}
+#rcWelcomeStrip .copy{min-width:0}
+#rcWelcomeStrip h2{font-size:18px;margin:0;color:#fff!important}
+#rcWelcomeStrip p{font-size:12px;margin:3px 0 0;color:#dbeafe!important}
+#rcWelcomeStrip .avatar{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);display:grid;place-items:center;font-weight:900;flex:0 0 auto}
+
+/* Equipment list */
+.equipmentManager{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
+.equipmentManager>.sectionTitleRow{padding:4px 4px 10px!important}
+.maintenanceSummary{background:#fff!important;color:#344054!important;border:1px solid var(--rc-line)!important;border-radius:15px!important;padding:11px 13px!important;box-shadow:0 2px 10px rgba(16,24,40,.04)!important}
+.archiveToggle{background:#fff!important;color:#344054!important;border:1px solid var(--rc-line)!important}
+.equipment-card{background:#fff!important;color:#111827!important;border:1px solid var(--rc-line)!important;border-radius:17px!important;padding:14px!important;margin:10px 0!important;box-shadow:0 4px 14px rgba(16,24,40,.05)!important}
+.equipment-card .equipment-title{color:#111827!important;font-size:16px!important}
+.equipment-card .equipment-site{color:#475467!important;font-size:13px!important}
+.equipment-card .equipment-id{background:#f2f4f7!important;color:#475467!important;border:0!important;font-size:10px!important}
+.equipment-card .equipment-meta{color:#667085!important}
+.equipment-card .openUnitBtn{background:#f8fbff!important;color:#1459a7!important;border:1px solid #d8e8fb!important}
+
+/* Bottom navigation: five obvious tabs, no sideways hunting */
+#globalNav{
+  position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:12000!important;
+  display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:2px!important;overflow:visible!important;
+  background:rgba(255,255,255,.96)!important;border:0!important;border-top:1px solid var(--rc-line)!important;
+  box-shadow:0 -8px 28px rgba(16,24,40,.08)!important;
+  padding:5px 6px calc(5px + env(safe-area-inset-bottom))!important;
+  backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;
+}
+#globalNav button{
+  min-width:0!important;width:100%!important;min-height:54px!important;margin:0!important;padding:29px 2px 4px!important;
+  position:relative!important;background:transparent!important;color:#667085!important;border:0!important;border-radius:12px!important;
+  font-size:10px!important;font-weight:700!important;white-space:nowrap!important;
+}
+#globalNav button::before{position:absolute;top:5px;left:50%;transform:translateX(-50%);font-size:19px;line-height:1}
+#navHome::before{content:"⌂"}
+#navEquipment::before{content:"▣"}
+#navAccounts::before{content:"◎"}
+#navBugs::before{content:"!"}
+#rcMoreNav::before{content:"≡"}
+#globalNav button.homeNav,#globalNav button.rc-active{background:#eef5ff!important;color:#0b63d8!important}
+#navSettings,#navManual,#navPatchNotes{display:none!important}
+
+/* More sheet */
+#rcMoreBackdrop{position:fixed;inset:0;background:rgba(6,20,38,.38);z-index:18000;display:none;align-items:flex-end;justify-content:center;padding:12px}
+#rcMoreBackdrop.open{display:flex}
+#rcMoreSheet{width:min(560px,100%);background:#fff;border-radius:24px;padding:10px 14px calc(14px + env(safe-area-inset-bottom));box-shadow:0 24px 70px rgba(16,24,40,.28);animation:rcSheet .18s ease-out}
+@keyframes rcSheet{from{transform:translateY(18px);opacity:.6}to{transform:translateY(0);opacity:1}}
+#rcMoreSheet .handle{width:42px;height:5px;border-radius:999px;background:#d0d5dd;margin:4px auto 12px}
+#rcMoreSheet h3{margin:0 4px 8px;color:#111827!important}
+.rcMoreGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.rcMoreGrid button{background:#f8fafc!important;color:#344054!important;border:1px solid var(--rc-line)!important;text-align:left!important;padding:12px!important;margin:0!important;min-height:58px!important}
+
+/* QR handoff - clear customer message first */
+#qrHandoff .card{max-width:560px;margin:18px auto!important}
+#rcCustomerNotice{background:#061426;color:#fff;border-radius:20px;padding:18px;margin:-4px -4px 14px;text-align:center}
+#rcCustomerNotice .shield{width:48px;height:48px;border-radius:15px;background:#0b63d8;display:grid;place-items:center;margin:0 auto 10px;font-size:24px}
+#rcCustomerNotice h2{color:#fff!important;margin:0 0 6px;font-size:22px}
+#rcCustomerNotice p{color:#dbeafe!important;margin:0;font-size:13px;line-height:1.45}
+#rcCustomerNotice .customerLine{margin-top:10px;color:#fff!important;font-weight:800;font-size:13px}
+#rcTechHandoffTools.hiddenByNotice{display:none!important}
+
+/* Onboarding */
+#rcOnboarding{position:fixed;inset:0;z-index:65000;background:linear-gradient(155deg,#061426 0%,#0b2f5b 55%,#0b63d8 100%);display:none;align-items:center;justify-content:center;padding:18px}
+#rcOnboarding.open{display:flex}
+.rcOnboardCard{width:min(460px,100%);background:#fff;border-radius:28px;padding:24px;box-shadow:0 25px 80px rgba(0,0,0,.34)}
+.rcOnboardLogo{width:74px;height:74px;object-fit:contain;display:block;margin:0 auto 14px;border-radius:18px;background:#fff}
+.rcOnboardCard h1{margin:0;text-align:center;font-size:27px;color:#111827!important;letter-spacing:-.7px}
+.rcOnboardCard>p{text-align:center;color:#667085!important;line-height:1.45}
+.rcOnboardSteps{display:flex;gap:5px;justify-content:center;margin:14px 0 18px}
+.rcOnboardSteps span{width:26px;height:5px;border-radius:999px;background:#e4e7ec}
+.rcOnboardSteps span.active{background:#0b63d8}
+.rcOnboardPanel{display:none}.rcOnboardPanel.active{display:block}
+.rcOnboardFeature{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f2f5}
+.rcOnboardFeature:last-child{border-bottom:0}
+.rcOnboardFeature .i{width:34px;height:34px;border-radius:11px;background:#eef5ff;color:#0b63d8;display:grid;place-items:center;flex:0 0 auto;font-weight:900}
+.rcOnboardFeature b{display:block;color:#111827!important}.rcOnboardFeature span{font-size:12px;color:#667085!important}
+.rcOnboardActions{display:flex;gap:8px;margin-top:16px}.rcOnboardActions button{margin:0!important}
+
+/* Pin gate modernized */
+#pinGate{background:linear-gradient(155deg,#061426,#0b2f5b)!important;padding:18px!important}
+#pinGate .pin-card{background:#fff!important;color:#111827!important;border:0!important;border-radius:26px!important;padding:24px!important;box-shadow:0 25px 70px rgba(0,0,0,.32)!important}
+#pinGate .pin-card h2{color:#111827!important;text-align:center!important}
+#pinGate .pin-card p{color:#667085!important;text-align:center!important}
+#pinGate input{background:#f8fafc!important;color:#111827!important;border:1px solid #d0d5dd!important;letter-spacing:8px!important}
+
+/* Print center + technician-only labels */
+#labelScreen .card>h2{margin-bottom:4px!important}
+.printOptions{background:#f8fafc!important;border:1px solid var(--rc-line)!important;border-radius:16px!important}
+.quickQty button{background:#fff!important;color:#344054!important;border:1px solid #d0d5dd!important}
+#rcPrintSummary{font-size:12px;color:#667085;margin:8px 0 0}
+.labelsPrintArea{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important;gap:14px!important}
+.print-label{max-width:320px!important;border:2px solid #111827!important;border-radius:12px!important;padding:11px!important;box-shadow:0 6px 18px rgba(16,24,40,.08)!important}
+.print-label h2{font-size:18px!important;letter-spacing:.3px}
+.print-label .label-sub{font-size:11px!important;color:#111827!important}
+.print-label .qr-code-text{font-size:12px!important}
+.print-label .label-footer{font-size:9.5px!important;line-height:1.3!important}
+.print-label .tech-only{font-size:9px!important;color:#b42318!important;font-weight:900!important;text-transform:uppercase!important;margin-top:5px!important}
+
+/* Bug/health modernize */
+.bug-entry,.healthRow{background:#fff!important;color:#111827!important;border:1px solid var(--rc-line)!important}
+.bug-entry .bug-message,.healthRow h3{color:#111827!important}
+.bug-entry .small,.healthDetail{color:#667085!important}
+.healthOverall{background:#fff!important;color:#111827!important;border:1px solid var(--rc-line)!important}
+
+/* Desktop/tablet */
+@media (min-width:760px){
+  main{padding-top:20px!important}
+  #home{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:16px;align-items:start}
+  #home .homeHero{grid-column:1}
+  #home .homeMiniCard{grid-column:1}
+  #rcWelcomeStrip{grid-column:1/-1}
+  #equipmentScreen .equipmentManager{max-width:900px;margin:auto}
+  #unitList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #unitList .equipment-card{margin:0!important}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media (min-width:1100px){
+  main{max-width:1180px!important}
+  #unitList{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* Samsung/Android and narrow phones */
+@media (max-width:390px){
+  .appHeader{padding-left:11px!important;padding-right:11px!important}
+  .headerLogo{width:42px!important;height:42px!important}.headerCopy h1{font-size:16px!important}
+  main{padding-left:10px!important;padding-right:10px!important}
+  .homeHero button{padding-left:54px!important}
+  #globalNav button{font-size:9px!important}
+  .rcMoreGrid{grid-template-columns:1fr!important}
+  .printOptionRow{grid-template-columns:1fr!important}
+}
+
+@media print{
+  @page{margin:.25in}
+  body{background:#fff!important;padding:0!important}
+  #globalNav,#rcMoreBackdrop,#rcOnboarding,.appHeader,.statusbar{display:none!important}
+  #printArea{grid-template-columns:repeat(2,3.0in)!important;gap:.14in!important;justify-content:center!important}
+  .print-label{width:3.0in!important;max-width:3.0in!important;border-radius:0!important;box-shadow:none!important;padding:.09in!important}
+  .print-label .qr-cell{min-height:0!important}
+}

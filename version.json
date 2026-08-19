@@ -1,5 +1,5 @@
 {
-  "version": "28.0",
-  "build": "Aug 19, 2026 9:30 AM",
-  "notes": "System Health screen with one-tap diagnostics, automatic HLT bug codes, health report copy, and updated Manual/Patch Notes."
+  "version": "29.0",
+  "build": "Aug 19, 2026 10:49 AM",
+  "notes": "Modern mobile-first Res-Com redesign with five-tab navigation, fast onboarding, technician-only QR landing, safer multi-label printing, responsive layouts, and bug-upload hardening."
 }
