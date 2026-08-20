@@ -1,0 +1,15 @@
+Res-Com HVAC QR v30.12 — PIN Save Verification Fix
+Released: Aug 19, 2026 6:00 PM
+
+FIXED
+- Fixed false “PIN did not verify after saving” after Airtable had already accepted the new personal PIN.
+- v30.11 wrote the PIN successfully, then immediately re-listed all employee accounts; a briefly stale follow-up response could make verification look like it failed.
+- v30.12 verifies the exact PIN salt/hash from Airtable's PATCH save response first.
+- Added multiple short read-back retries if the save response cannot be used.
+- A confirmed successful PIN write is retained locally instead of throwing a false lockout error.
+
+UNCHANGED
+- Employee login: email + 6-digit personal PIN.
+- Company authorization: 4-digit Company PIN for account creation / PIN reset only.
+- Staff Sign-In QR remains a separate one-use Admin option.
+- Permanent equipment QR URLs, equipment IDs, service history, and GitHub Pages path remain unchanged.

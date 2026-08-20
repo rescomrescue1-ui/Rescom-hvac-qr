@@ -1,0 +1,11 @@
+Res-Com HVAC QR v30.13 — Admin Give Employee PIN
+Released Aug 19, 2026 6:05 PM
+
+• Added SET PIN beside every other employee in Team for Admins.
+• Admin can assign or replace another employee's 6-digit personal sign-in PIN.
+• Admin stays signed in as Admin after changing another employee's PIN.
+• Add Employee now includes an optional employee PIN + confirmation.
+• Leaving the PIN blank still allows the employee to choose one later.
+• PIN writes use the v30.12 verified Airtable save/read-back logic.
+• Readable PINs are not stored in Airtable; only salt/hash are stored.
+• Existing Staff Sign-In QR, equipment QR links, Unit IDs, service history, and local data remain compatible.

@@ -1,0 +1,9 @@
+RES-COM SAFE RELEASE WORKFLOW — FUTURE UPDATES
+
+1. Production always remains at the permanent repository root.
+2. A new candidate is tested separately and must never change equipment QR destinations.
+3. Candidate builds must not register a production service-worker scope or become the installed PWA start URL.
+4. Kai or Paul tests the candidate as Developer.
+5. Only after approval is the approved production ZIP uploaded to the repository root.
+6. Active field sessions are not automatically reloaded; the new build takes effect after the app is safely closed/reopened.
+7. Keep a copy of the previous production ZIP for rollback.

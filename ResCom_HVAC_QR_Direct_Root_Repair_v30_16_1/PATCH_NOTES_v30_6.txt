@@ -1,0 +1,34 @@
+RES-COM HVAC QR — VERSION 30.6
+Released: Aug 19, 2026 4:50 PM
+
+EMPLOYEE LOGIN / TEMP PASSWORD
+- Admin-generated temporary passwords now have two verification paths:
+  1. normal salted PBKDF2 password hash
+  2. dedicated 24-hour one-time reset-token hash
+- New temporary-password format: RC-XXXX-XXXX.
+- Hyphens, spaces, and letter case are normalized at sign-in.
+- When the one-time reset token succeeds, Res-Com promotes that exact code into the normal password hash and consumes the reset token.
+- Reset tokens expire after 24 hours.
+
+TEAM / ACCOUNT DELETE
+- Replaced Disable/Enable with permanent DELETE.
+- Deleting an employee removes the App Account from Airtable.
+- Existing equipment and service-history records are not deleted.
+- Current signed-in Admin cannot delete their own account.
+- The final Admin cannot be deleted.
+
+STALE ACCOUNT CLEANUP
+- If an App Account is manually deleted from Airtable, phones holding that deleted employee in local storage automatically sign it out.
+- This removes stale names such as a deleted technician still appearing in the app.
+
+IPHONE CREATE ACCOUNT
+- Fixed full-screen account panel scrolling.
+- The 4-digit Company PIN and CREATE TECH ACCOUNT button remain reachable with the iPhone keyboard open.
+- Opening CREATE EMPLOYEE ACCOUNT scrolls the form into view.
+
+BRANDING
+- Top Res-Com header now uses the higher-resolution 512px app icon.
+- Forced full opacity and increased contrast/saturation for a clearer logo.
+
+COMPATIBILITY
+- Existing QR links, Unit IDs, equipment records, service history, Guest mode, and prior patch notes remain compatible.

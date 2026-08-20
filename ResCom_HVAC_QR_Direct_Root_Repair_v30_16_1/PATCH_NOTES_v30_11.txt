@@ -1,0 +1,14 @@
+Res-Com HVAC QR v30.11 — Personal PIN Sign-In
+Released: Aug 19, 2026 5:49 PM
+
+• Replaced the active employee password sign-in screen with email + a 6-digit personal PIN.
+• Existing employees can tap SET / RESET PIN, enter the email already on their account, verify the current 4-digit Company PIN, and choose their own PIN.
+• New self-created employee accounts choose a 6-digit personal PIN during signup.
+• Admin Add Employee now creates only the employee record — it no longer generates a temporary password.
+• Admin-created employees choose their own PIN from the Sign In screen.
+• Signed-in employees have CHOOSE / CHANGE MY PIN in Team.
+• Staff Sign-In QR remains available as a separate one-use Admin sign-in method.
+• Create Account and Set / Reset PIN use full-screen keyboard-safe touch scrolling with extra bottom space on iPhone and Android.
+• Added dedicated Airtable Personal PIN Salt, Personal PIN Hash, and Personal PIN Updated fields. The readable PIN is never stored.
+• Old password fields remain only for backward data compatibility and are not used by the v30.11 sign-in UI.
+• Existing equipment QR links, service history, customer data, and the permanent GitHub Pages path are unchanged.

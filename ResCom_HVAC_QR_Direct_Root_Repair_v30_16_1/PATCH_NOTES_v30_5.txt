@@ -1,0 +1,19 @@
+RES-COM HVAC QR — VERSION 30.5
+Released: Aug 19, 2026 4:28 PM
+Guest Tech & Cross-Phone Password Recovery
+
+FIXES / CHANGES
+- Added CONTINUE AS GUEST from the new-phone connection screen and employee sign-in screen.
+- Guest uses Tech-style app access but never writes, queues, deletes, uploads, or changes Airtable cloud data.
+- Guest can read shared equipment only when the phone already has the Res-Com cloud token; otherwise Guest uses local/device data only.
+- Guest equipment/service edits stay on that device only and are never placed in the future cloud-sync queue.
+- Guest photo uploads and cloud account changes are blocked with a clear message.
+- Temporary-password sign-in now trims accidental pasted whitespace and normalizes RC temporary codes if iPhone changes case or adds spaces/hyphens.
+- Admin-created and reset temporary passwords are verified against the stored Airtable salt/hash before the app marks the password VERIFIED.
+- New-phone screen now explains that real employee sign-in requires a one-time Res-Com cloud connection on that device.
+- Strengthened dynamic-button bug filtering.
+- Manual and Patch Notes updated.
+- Existing QR URLs, equipment IDs, service history, Team records, and local data remain compatible.
+
+IMPORTANT
+A real employee account cannot securely authenticate against Airtable from a completely new phone unless that phone has the restricted Res-Com cloud connection. Guest Mode is the no-cloud fallback. A future secure backend can remove the need to put the Airtable token on each employee phone.

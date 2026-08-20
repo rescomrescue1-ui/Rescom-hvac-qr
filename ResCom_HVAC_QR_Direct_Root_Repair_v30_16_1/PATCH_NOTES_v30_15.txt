@@ -1,0 +1,40 @@
+RES-COM HVAC QR — VERSION 30.15
+Released: Aug 20, 2026 12:25 PM
+
+DIAGNOSTICS / SIGN-IN
+- Diagnostics now distinguish Bug, Warning, User Mistake, Navigation, Action, Success, and System events.
+- Screen navigation, button actions, and field selections are recorded without logging PINs, passwords, cloud tokens, or typed text values.
+- Wrong PINs and similar sign-in mistakes are recorded as User Mistake instead of software bugs.
+- Sign-in failures show a diagnostic/error code and the Sign In screen includes recent sign-in issues.
+- Admin receives a repeated-user-mistake warning when the same mistake becomes common across employees.
+- Generic Safari "Script error." without usable source details is classified as a Warning instead of a confirmed app failure.
+
+FORGOT PIN / EMAIL RESET CODE
+- Added FORGOT PIN? EMAIL RESET CODE.
+- The existing personal PIN is never recoverable because Airtable stores only its salt/hash.
+- Res-Com creates a 15-minute, one-use six-digit reset code, stores the verification hash/expiry on the employee account, and creates a PIN Reset Requests record for email delivery.
+- After the employee enters the emailed reset code, they choose a new six-digit personal PIN and sign in.
+- Actual email delivery requires the one-time Airtable Automation described in AIRTABLE_PIN_RESET_EMAIL_SETUP.txt.
+
+EQUIPMENT + STAFF QR
+- Permanent equipment QR URL, QR setup status, QR scan count, latest scan time, and scanner email are tracked in Airtable.
+- Existing equipment QR records were backfilled in Airtable without changing any printed QR destination.
+- Newly generated blank QR labels are registered in Airtable immediately when online; offline registration queues for later cloud sync.
+- Staff Sign-In QR is checked before normal startup even if another employee is already signed in.
+- Staff QR generated/used timestamps and counts are saved to Airtable. The readable Staff QR secret is NOT stored.
+
+OFFLINE PHOTOS
+- Equipment and service photos that cannot upload are compressed and stored in a durable IndexedDB photo queue.
+- Queued photos retry automatically when the device returns online and the matching Airtable record exists.
+- Equipment setup, equipment detail, and service-history screens now give separate TAKE PHOTO and CAMERA ROLL / PHOTO LIBRARY choices.
+
+AUTO UPDATE
+- Cloud/API data remains no-store and is never service-worker cached.
+- The app checks for updates at startup, when returning to the app, and periodically while open.
+- Service-worker controller changes trigger one automatic reload so the new release becomes active without repeated manual refreshes.
+- Registration uses updateViaCache:none when supported.
+
+COMPATIBILITY
+- Permanent GitHub Pages origin/path is unchanged.
+- Existing ?unit=<id> and legacy ?equipment=<id> links are unchanged.
+- Existing equipment/service history/Team accounts remain compatible.

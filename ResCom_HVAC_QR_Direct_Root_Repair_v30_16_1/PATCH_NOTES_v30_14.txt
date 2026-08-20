@@ -1,0 +1,13 @@
+Res-Com HVAC QR v30.14 — Fast PIN / Fresh Cloud Reads
+Released Aug 19, 2026 6:10 PM
+
+• Fixed the underlying older PIN-delay/stale-read problem instead of adding another timing retry.
+• Service worker no longer caches Airtable API responses or any third-party cloud GET request.
+• Airtable GET requests now explicitly use browser cache: no-store.
+• Sign In reuses the fresh account list already downloaded for the login screen instead of making a second Airtable account request after PIN entry.
+• A correct personal PIN opens Res-Com immediately; Last Login is updated in the background.
+• Added a paint/yield before cryptographic PIN verification so CHECKING PIN feedback appears immediately on iPhone and Samsung.
+• Admin SET PIN no longer re-downloads the employee record immediately before saving the PIN.
+• PBKDF2 PIN hashing remains unchanged; the speed fix removes redundant/stale network work rather than weakening PIN security.
+• Old Res-Com service-worker caches are deleted when v30.14 activates.
+• Existing equipment QR URLs, Unit IDs, service history, personal PIN hashes, Staff QR, and Airtable records remain compatible.

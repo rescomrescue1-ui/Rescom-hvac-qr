@@ -1,0 +1,16 @@
+Res-Com HVAC QR v30.16.1 — Direct-Root Repair
+Build: Aug 20, 2026 1:42 PM
+
+- Restores the full Res-Com app directly at the permanent GitHub Pages root.
+- Removes the v30.16 launcher/nested-release production design.
+- Equipment QR and Staff Sign-In QR URLs are always generated from the permanent Res-Com root URL.
+- Prevents nested release folders from becoming the installed PWA start URL or service-worker scope.
+- New service-worker builds wait for active field sessions to close instead of forcing a mid-job reload.
+- Cleans up leftover nested-release service workers and launcher caches.
+- Keeps Developer Access for Kai and Paul.
+- Guest Mode remains disabled for Res-Com-only company use.
+- MORE → MANUAL has a hard-bound navigation route.
+- Existing Unit IDs, printed QR codes, Airtable records, PINs, service history, and offline photo queue are unchanged.
+
+Future release workflow:
+Test candidates separately. Do not replace the production root until a Developer deliberately approves the candidate for release.

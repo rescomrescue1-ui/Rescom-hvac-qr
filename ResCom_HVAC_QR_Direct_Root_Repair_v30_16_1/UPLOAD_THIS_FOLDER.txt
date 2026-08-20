@@ -1,0 +1,19 @@
+RES-COM HVAC QR v30.16.1 — DIRECT-ROOT REPAIR
+
+Upload the CONTENTS of this folder to the ROOT of the existing repository:
+rescomrescue1-ui/Rescom-hvac-qr
+
+Replace matching files and commit to main.
+Do NOT rename the repository or change the GitHub Pages path.
+Do NOT upload into /releases/.
+
+This repair restores the full app at the permanent root URL.
+The old /releases/ folder may remain in GitHub for now; v30.16.1 does not use it and will unregister its nested service workers when opened.
+
+After GitHub Pages finishes deploying:
+1. Open the normal Res-Com URL once while online.
+2. Confirm APP v30.16.1.
+3. Close the app completely and reopen it.
+4. Test MORE → MANUAL and scan one existing equipment QR.
+
+Do not delete the Home Screen app first.
