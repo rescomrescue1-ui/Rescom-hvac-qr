@@ -1,9 +1,9 @@
-/* Res-Com HVAC QR v30.16 — Diagnostics, PIN Recovery, Offline Photos & QR Audit */
+/* Res-Com HVAC QR v30.16.1 — Diagnostics, PIN Recovery, Offline Photos & QR Audit */
 (() => {
   "use strict";
 
-  const MODERN_VERSION = "30.16";
-  const MODERN_BUILD = "Aug 20, 2026 12:43 PM";
+  const MODERN_VERSION = "30.16.1";
+  const MODERN_BUILD = "Aug 20, 2026 1:42 PM";
   const THEME_KEY = "rescom_theme_v30";
   let bugUploadBusy = false;
   let deferredInstallPrompt = null;
@@ -33,7 +33,7 @@
     return /Safari/i.test(ua) && !/(CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo)/i.test(ua);
   }
   function installBaseURL(){
-    try{return new URL(".",location.href).href}catch{return location.href.split(/[?#]/)[0]}
+    return "https://rescomrescue1-ui.github.io/Rescom-hvac-qr/";
   }
   async function copyInstallLink(){
     const text=installBaseURL();

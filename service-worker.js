@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-16-diagnostics-email-pin-offline-photos-1225";
+const CACHE = "rescom-qr-v30-16-1-direct-root-safe-update-1342";
 const CORE = [
   "./index.html",
   "./version.json",
@@ -12,18 +12,18 @@ const CORE = [
 ];
 
 self.addEventListener("install", event => {
+  // Do NOT skipWaiting. A new build must not replace the service worker under an
+  // already-open field session. It activates after existing Res-Com windows close.
   event.waitUntil((async()=>{
     const cache=await caches.open(CACHE);
     for(const asset of CORE){try{await cache.add(new Request(asset,{cache:"reload"}))}catch(_){}}
-    await self.skipWaiting();
   })());
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil((async()=>{
     const keys=await caches.keys();
-    await Promise.all(keys.filter(k=>k.startsWith("rescom-qr") && k!==CACHE).map(k=>caches.delete(k)));
-    await self.clients.claim();
+    await Promise.all(keys.filter(k=>(k.startsWith("rescom-qr")||k.includes("release-launcher")) && k!==CACHE).map(k=>caches.delete(k)));
   })());
 });
 
@@ -42,8 +42,7 @@ self.addEventListener("fetch", event => {
   if(event.request.method!=="GET")return;
   const url=new URL(event.request.url);
 
-  // v30.15: Cloud/API data must always be live. The old cache-first rule could keep stale
-  // Airtable account/PIN responses and make a newly changed PIN fail until the cache changed.
+  // Never cache Airtable/API data. PIN/account/equipment reads must be fresh.
   if(url.origin!==self.location.origin){
     event.respondWith(fetch(event.request,{cache:"no-store"}).catch(()=>Response.error()));
     return;
@@ -53,7 +52,6 @@ self.addEventListener("fetch", event => {
   const fresh=navigation || /\/(version\.json|modern-ui\.css|modern-ui\.js|service-worker\.js)$/.test(url.pathname);
   if(fresh){event.respondWith(networkFirst(event.request,navigation?"./index.html":null));return}
 
-  // Only same-origin static app files use cache-first/offline behavior.
   event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(async response=>{
     if(response&&response.ok){const cache=await caches.open(CACHE);await cache.put(event.request,response.clone())}
     return response;

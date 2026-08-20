@@ -1,5 +1,5 @@
 {
-  "version": "30.16",
-  "build": "Aug 20, 2026 12:43 PM",
-  "notes": "Safe staged releases, Developer Access, Res-Com-only access, Manual routing fix, rollback transition."
+  "version": "30.16.1",
+  "build": "Aug 20, 2026 1:42 PM",
+  "notes": "Direct-root repair: preserves permanent QR URLs and PWA scope, removes nested release launcher, keeps Developer Access and Manual fix, and prevents forced mid-session reloads."
 }
