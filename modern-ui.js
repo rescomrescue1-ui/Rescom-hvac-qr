@@ -1,9 +1,9 @@
-/* Res-Com HVAC QR v30.16.3 — QR Label Font / Print Layout Fix */
+/* Res-Com HVAC QR v30.16.5 — Final Stabilization */
 (() => {
   "use strict";
 
-  const MODERN_VERSION = "30.16.4";
-  const MODERN_BUILD = "Aug 20, 2026 2:29 PM";
+  const MODERN_VERSION = "30.16.6";
+  const MODERN_BUILD = "Aug 20, 2026 2:35 PM";
   const THEME_KEY = "rescom_theme_v30";
   let bugUploadBusy = false;
   let deferredInstallPrompt = null;
@@ -231,16 +231,16 @@
 
   function modernizePrintCenter(){
     const options=document.querySelector("#labelScreen .printOptions");
-    if(options&&!byId("rcPrintSummary")){const s=document.createElement("div");s.id="rcPrintSummary";s.textContent="Choose a quantity, then tap Generate. Codes are created only when you generate labels.";options.appendChild(s)}
+    if(options&&!byId("rcPrintSummary")){const s=document.createElement("div");s.id="rcPrintSummary";s.textContent="This screen always creates exactly 4 QR labels per sheet.";options.appendChild(s)}
     document.querySelectorAll(".qtyBtn").forEach(old=>{
       if(old.dataset.rcFixed==="yes")return;
       const clone=old.cloneNode(true);clone.dataset.rcFixed="yes";clone.dataset.safeBound="yes";old.replaceWith(clone);
-      clone.addEventListener("click",()=>{const input=byId("qrPrintQuantity");if(input)input.value=clone.dataset.qty||"1";const s=byId("rcPrintSummary");if(s)s.textContent=`${clone.dataset.qty||1} label${clone.dataset.qty==="1"?"":"s"} selected. Tap Generate when ready.`});
+      clone.addEventListener("click",()=>{const s=byId("rcPrintSummary");if(s)s.textContent="This screen always creates exactly 4 QR labels per sheet.";});
     });
     const create=byId("createBlank");
     if(create&&create.dataset.rcFixed!=="yes"){
       const clone=create.cloneNode(true);clone.dataset.rcFixed="yes";clone.dataset.safeBound="yes";create.replaceWith(clone);
-      clone.addEventListener("click",()=>{const input=byId("qrPrintQuantity");if(input)input.value="1";const area=byId("printArea");if(area)area.innerHTML="";try{generatedLabelIds=[];currentId=null}catch{}const setup=byId("setupNow");if(setup)setup.classList.add("hidden");const s=byId("rcPrintSummary");if(s)s.textContent="Choose a quantity, then tap Generate. No QR IDs are created until then.";show("labelScreen")});
+      clone.addEventListener("click",()=>{const area=byId("printArea");if(area)area.innerHTML="";try{generatedLabelIds=[];currentId=null}catch{}const setup=byId("setupNow");if(setup)setup.classList.add("hidden");const s=byId("rcPrintSummary");if(s)s.textContent="This screen always creates exactly 4 QR labels per sheet. Tap Generate 4 QR Labels when ready.";show("labelScreen")});
     }
     try{
       renderQrLabels=function(ids){
@@ -296,7 +296,7 @@
       const sec=document.createElement("div");sec.className="manual-section";sec.id="m-install";sec.innerHTML=`<h3>Version 30.1 — Install Res-Com Without an App Store</h3><p><b>Home:</b> tap INSTALL RES-COM APP. Android/Chrome will use a direct install prompt when the browser allows it. iPhone/iPad will show the Safari Share → Add to Home Screen steps.</p><p><b>Installed mode:</b> once Res-Com is launched from its Home Screen/app icon, the install card hides automatically and the site opens in standalone app mode.</p><p><b>QR compatibility:</b> installation does not change the GitHub Pages address or printed RC equipment links.</p><p><b>Recovery:</b> automatic Bug & Recovery logging, update checks, and offline service-worker caching stay enabled.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
     if(manualCard&&!byId("m-v30")){
-      const sec=document.createElement("div");sec.className="manual-section";sec.id="m-v30";sec.innerHTML=`<h3>Version 30 — Simplified Accounts, Equipment Search & Themes</h3><p><b>Accounts:</b> customer account records and separate technician lists are no longer part of the app workflow. Customer name, email and phone are stored directly on each equipment record.</p><p><b>Team:</b> the first Res-Com employee to create an App Account is automatically Admin. Everyone else is a Tech unless an Admin changes the role.</p><p><b>Company PIN:</b> only Admins can generate and manage the 4-digit company PIN. It authorizes new employee account creation; Techs sign in with their own email and password.</p><p><b>Equipment:</b> Equipment search combines QR units scanned/created on this device with every equipment record downloaded from the shared Airtable database.</p><p><b>Status:</b> Loading Shared Equipment always finishes as Equipment Ready, Local Equipment Ready, or Cloud Error — Local Equipment Ready.</p><p><b>Appearance:</b> Settings now has White and Black app themes with explicit text/background contrast.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
+      const sec=document.createElement("div");sec.className="manual-section";sec.id="m-v30";sec.innerHTML=`<h3>Version 30 — Simplified Accounts, Equipment Search & Themes</h3><p><b>Accounts:</b> customer account records and separate technician lists are no longer part of the app workflow. Customer name, email and phone are stored directly on each equipment record.</p><p><b>Team:</b> the first Res-Com employee to create an App Account is automatically Admin. Everyone else is a Tech unless an Admin changes the role.</p><p><b>Company PIN:</b> only Admins can generate and manage the 4-digit company PIN. It authorizes new employee account creation; Techs sign in with their own email and password.</p><p><b>Equipment:</b> When online, Equipment mirrors the shared Airtable Equipment table. Only unsynced offline work is temporarily kept locally until it uploads.</p><p><b>Status:</b> Loading Shared Equipment always finishes as Equipment Ready, Local Equipment Ready, or Cloud Error — Local Equipment Ready.</p><p><b>Appearance:</b> Settings now has White and Black app themes with explicit text/background contrast.</p>`;manualCard.insertBefore(sec,manualCard.firstElementChild?.nextSibling||null)
     }
     const patch=document.querySelector("#patchNotes .card");
     if(patch&&!byId("rcPatch3015")){const b3015=document.createElement("div");b3015.className="unit";b3015.id="rcPatch3015";b3015.innerHTML=`<h3>Version 30.16 — Diagnostics, PIN Recovery, Offline Photos & QR Audit</h3><p><b>Released:</b> Aug 20, 2026 12:43 PM</p><p>• Added separate classifications for bugs, warnings, user mistakes, navigation, actions, successes, and system events.</p><p>• Added Admin repeated-mistake alerts to identify confusing screens/workflows.</p><p>• Added one-time emailed PIN reset-code workflow; the existing personal PIN remains non-recoverable by design.</p><p>• Registered permanent equipment QR URLs in Airtable and added QR scan auditing.</p><p>• Added Staff QR generation/use auditing and fixed Staff QR consumption when another employee is already signed in.</p><p>• Added durable IndexedDB photo retry queue plus separate TAKE PHOTO and CAMERA ROLL choices.</p><p>• Strengthened auto-update checks and one-time service-worker reload behavior.</p><p>• Preserved the existing GitHub Pages path and all printed equipment QR links.</p>`;const first3015=patch.querySelector(".unit");patch.insertBefore(b3015,first3015||null)}
@@ -334,7 +334,15 @@
       uploadBugToAirtable=async function(entry){
         if(bugUploadBusy||!token?.()||!navigator.onLine)return false;bugUploadBusy=true;
         try{
-          const fields={[B.code]:entry.code,[B.reported]:entry.time,[B.category]:entry.category,[B.version]:MODERN_VERSION,[B.action]:entry.action||entry.screen||"",[B.message]:entry.message||"",[B.notes]:entry.notes||"",[B.unit]:entry.unit||"",[B.technician]:entry.technician||"",[B.device]:entry.device||"",[B.status]:"Open"};
+          const open=["Bug","Warning"].includes(entry.classification||"Bug");
+          const fields={[B.code]:entry.code,[B.reported]:entry.time,[B.category]:entry.category||"Other",[B.version]:MODERN_VERSION,[B.action]:entry.action||entry.screen||"",[B.message]:entry.message||"",[B.notes]:entry.notes||"",[B.unit]:entry.unit||"",[B.technician]:entry.technician||"",[B.device]:entry.device||"",[B.status]:open?"Open":"Ignored"};
+          if(B.classification)fields[B.classification]=entry.classification||"Bug";
+          if(B.eventKey)fields[B.eventKey]=entry.eventKey||"";
+          if(B.userEmail)fields[B.userEmail]=entry.userEmail||null;
+          if(B.sessionId)fields[B.sessionId]=entry.sessionId||"";
+          if(B.control)fields[B.control]=entry.control||"";
+          if(B.repeatCount)fields[B.repeatCount]=entry.repeatCount||1;
+          if(B.uxReview)fields[B.uxReview]=!!entry.uxReview;
           const res=await fetch(`https://api.airtable.com/v0/${BASE}/${BUG_TABLE}`,{method:"POST",headers:{Authorization:"Bearer "+token(),"Content-Type":"application/json"},body:JSON.stringify({records:[{fields}],typecast:true})});
           if(!res.ok)return false;entry.cloudSaved=true;const all=loadBugLog?.()||[];const i=all.findIndex(x=>x.code===entry.code);if(i>=0){all[i]=entry;saveBugLog?.(all);renderBugLog?.()}return true;
         }catch{return false}finally{bugUploadBusy=false}

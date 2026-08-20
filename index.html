@@ -527,7 +527,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=30.16.4">
+<link rel="stylesheet" href="./modern-ui.css?v=30.16.5">
 </head>
 <body>
 <div id="loadingScreen">
@@ -689,7 +689,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
     <button class="gray" data-home type="button">← HOME</button>
     <h2>Res-Com App Manual</h2>
     <p class="small">New-user guide for the Res-Com HVAC QR Service History app.</p>
-    <div class="manual-section" id="m-v30164"><h3>Version 30.16.4 — Dark Mode Print Fix</h3><p><b>Printed QR tags:</b> printed equipment labels now always use the same clean white background, black text, black border, and normal QR image whether the app itself is set to Light Mode or Dark Mode.</p><p><b>Dark Mode stays on:</b> this affects printing only. The app remains in the technician's selected appearance after printing.</p><p><b>Safe update:</b> existing QR links, Unit IDs, service history, accounts, and Airtable records are unchanged.</p></div><div class="manual-section" id="m-v30163"><h3>Version 30.16.3 — QR Label Font / Print Layout Fix</h3><p><b>Printed label readability:</b> equipment QR labels now use a clearer print font, stronger contrast, and larger code text so the paper labels are easier to read.</p><p><b>Layout cleanup:</b> the QR ID now appears on its own bold line, with a cleaner footer and more balanced spacing on 4-up printed sheets.</p><p><b>Safe update:</b> QR links, Unit IDs, service history, PINs, and all equipment records stay the same.</p></div><div class="manual-section" id="m-v3016"><h3>Version 30.16.1 — Direct-Root Repair & Developer Access</h3><p><b>QR safety repair:</b> the full Res-Com app stays at the permanent GitHub Pages root. Equipment QR and Staff Sign-In QR links are forced to the permanent Res-Com root so a test folder can never become part of a printed QR.</p><p><b>No mid-job forced reload:</b> the service worker no longer forces a newly uploaded build into an already-open technician session. A new production build takes effect after the app is safely closed and opened again.</p><p><b>Developer Access:</b> Kai and Paul can use full Admin functions plus future candidate testing controls.</p><p><b>Privacy:</b> Guest Mode is disabled. Company data requires an active Res-Com employee account.</p><p><b>Manual:</b> MORE → MANUAL has a direct hard-bound route.</p><p><b>Future releases:</b> candidates will be tested in a separate candidate folder. The permanent root will not be replaced until a Developer deliberately promotes an approved production package.</p></div>
+    <div class="manual-section" id="m-v30166"><h3>Version 30.16.6 — Fixed 4-Label QR Print Sheet</h3><p>Blank QR label printing now always creates exactly <b>4 labels per sheet</b>. Quantity options were removed so the printed format stays the same every time.</p><p>If you need more labels, print another 4-label sheet. If you reprint an existing QR from equipment details, the app shows a full 4-up sheet so the layout still stays consistent.</p></div><div class="manual-section" id="m-v30165"><h3>Version 30.16.5 — Final Stabilization</h3><p><b>Airtable is the shared QR source of truth:</b> when the app is online and connected, the Equipment list is reconciled to the Equipment table in Airtable. If a QR/equipment record is deleted from Airtable, its old local copy is removed from the app at the next sync.</p><p><b>Offline work is protected:</b> a QR or equipment change that is still waiting in the offline sync queue is kept until it uploads successfully; the reconciliation will not throw away unsynced field work.</p><p><b>Deleted QR protection:</b> searching or scanning a QR that was removed from Airtable no longer opens an old stale local equipment record.</p><p><b>Final reliability cleanup:</b> fixed a cache-cleanup bug that could delete the current offline cache, stopped overlapping diagnostics uploads from creating duplicate rows, and changed normal offline events from software bugs to network warnings.</p><p><b>Print safety:</b> the v30.16.4 Light/Dark print fix remains in place, so printed QR tags stay white with black text in either app theme.</p></div><div class="manual-section" id="m-v30164"><h3>Version 30.16.4 — Dark Mode Print Fix</h3><p><b>Printed QR tags:</b> printed equipment labels now always use the same clean white background, black text, black border, and normal QR image whether the app itself is set to Light Mode or Dark Mode.</p><p><b>Dark Mode stays on:</b> this affects printing only. The app remains in the technician's selected appearance after printing.</p><p><b>Safe update:</b> existing QR links, Unit IDs, service history, accounts, and Airtable records are unchanged.</p></div><div class="manual-section" id="m-v30163"><h3>Version 30.16.3 — QR Label Font / Print Layout Fix</h3><p><b>Printed label readability:</b> equipment QR labels now use a clearer print font, stronger contrast, and larger code text so the paper labels are easier to read.</p><p><b>Layout cleanup:</b> the QR ID now appears on its own bold line, with a cleaner footer and more balanced spacing on 4-up printed sheets.</p><p><b>Safe update:</b> QR links, Unit IDs, service history, PINs, and all equipment records stay the same.</p></div><div class="manual-section" id="m-v3016"><h3>Version 30.16.1 — Direct-Root Repair & Developer Access</h3><p><b>QR safety repair:</b> the full Res-Com app stays at the permanent GitHub Pages root. Equipment QR and Staff Sign-In QR links are forced to the permanent Res-Com root so a test folder can never become part of a printed QR.</p><p><b>No mid-job forced reload:</b> the service worker no longer forces a newly uploaded build into an already-open technician session. A new production build takes effect after the app is safely closed and opened again.</p><p><b>Developer Access:</b> Kai and Paul can use full Admin functions plus future candidate testing controls.</p><p><b>Privacy:</b> Guest Mode is disabled. Company data requires an active Res-Com employee account.</p><p><b>Manual:</b> MORE → MANUAL has a direct hard-bound route.</p><p><b>Future releases:</b> candidates will be tested in a separate candidate folder. The permanent root will not be replaced until a Developer deliberately promotes an approved production package.</p></div>
 
     <div class="manual-nav">
       <button class="outline manualJump" type="button" data-target="m-start">Getting Started</button>
@@ -802,7 +802,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
     <div class="manual-section">
       <h3>4. Online and Offline</h3>
-      <p>When the phone is online and the token is valid, equipment and history sync with Airtable. Without internet, cloud records cannot refresh and photos cannot upload. Saved local equipment remains available as a fallback.</p>
+      <p>When the phone is online and the token is valid, Airtable is the shared equipment source of truth. Deleted Airtable QR records are removed from the app on the next sync. Without internet, the last local copy and unsynced field work remain available until the connection returns.</p>
     </div>
 
     <div class="manual-section" id="m-qr">
@@ -982,7 +982,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
 <section id="patchNotes" class="hidden">
   <div class="card">
-<div class="unit" id="rcPatch3015"><h3>Version 30.15 — Diagnostics, PIN Recovery, Offline Photos & QR Audit</h3><p><b>Released:</b> Aug 20, 2026 12:25 PM</p><p>• Separates software bugs from user mistakes, warnings, actions, navigation, successes, and system events.</p><p>• Adds repeated-mistake alerts for Admins.</p><p>• Adds one-time email PIN reset-code workflow.</p><p>• Adds permanent equipment QR registry/scan audit and Staff QR audit.</p><p>• Adds durable offline photo upload queue and camera-roll selection.</p><p>• Strengthens automatic app/service-worker updates.</p><p>• Existing printed QR URLs remain unchanged.</p></div>
+<div class="unit" id="rcPatch3166"><h3>Version 30.16.6 — Fixed 4-Label QR Print Sheet</h3><p><b>Released:</b> Aug 20, 2026 8:30 PM</p><p>• Blank QR printing now always generates exactly 4 labels per sheet.</p><p>• Removed 1 / 10 / 20 / custom quantity choices so the layout stays consistent.</p><p>• Print button now keeps the same 4-up format every time.</p></div><div class="unit" id="rcPatch3165"><h3>Version 30.16.5 — Final Stabilization</h3><p><b>Released:</b> Aug 20, 2026 2:35 PM</p><p>• Airtable now controls the shared QR/equipment list when online.</p><p>• Deleting a QR/equipment record from Airtable removes its stale local copy from the app at the next Equipment sync.</p><p>• Unsynced offline equipment is protected until it successfully uploads.</p><p>• Deleted Airtable QR IDs no longer reopen stale local equipment records when scanned/searched.</p><p>• Fixed the old cache cleanup routine so it cannot delete the current production offline cache.</p><p>• Added a diagnostics upload lock to stop duplicate cloud diagnostic rows from overlapping sync attempts.</p><p>• Normal offline events are warnings instead of open software bugs.</p><p>• Retains the v30.16.4 dark-mode print fix and all permanent QR URL compatibility.</p></div><div class="unit" id="rcPatch3015"><h3>Version 30.15 — Diagnostics, PIN Recovery, Offline Photos & QR Audit</h3><p><b>Released:</b> Aug 20, 2026 12:25 PM</p><p>• Separates software bugs from user mistakes, warnings, actions, navigation, successes, and system events.</p><p>• Adds repeated-mistake alerts for Admins.</p><p>• Adds one-time email PIN reset-code workflow.</p><p>• Adds permanent equipment QR registry/scan audit and Staff QR audit.</p><p>• Adds durable offline photo upload queue and camera-roll selection.</p><p>• Strengthens automatic app/service-worker updates.</p><p>• Existing printed QR URLs remain unchanged.</p></div>
 <div class="unit" id="rcPatch3014"><h3>Version 30.14 — Fast PIN / Fresh Cloud Reads</h3><p><b>Released:</b> Aug 19, 2026 6:10 PM</p><p>• Fixed the underlying stale-cloud-read problem that could make a newly changed PIN appear delayed on another phone.</p><p>• Service worker now bypasses caching for Airtable and all third-party requests.</p><p>• Airtable API GET requests use browser no-store mode.</p><p>• Sign In reuses the fresh account list already loaded on the screen instead of doing a second account download.</p><p>• Last Login is written in the background after successful PIN verification, so it no longer blocks entry into the app.</p><p>• Added immediate CHECKING PIN feedback before cryptographic PIN verification.</p><p>• Existing equipment QR links, Unit IDs, service history, and account PIN data are unchanged.</p></div>
 <div class="unit" id="rcPatch3013"><h3>Version 30.13 — Admin Give Employee PIN</h3><p><b>Released:</b> Aug 19, 2026 6:05 PM</p><p>• Added an Admin SET PIN button beside each other employee in Team.</p><p>• Admin can assign or replace a 6-digit personal PIN without signing in as that employee.</p><p>• Add Employee now has an optional 6-digit PIN field so an Admin can create an employee and give them a working PIN immediately.</p><p>• PIN saves use the v30.12 verified Airtable write path.</p><p>• Readable PINs are never stored in Airtable.</p><p>• Existing equipment QR links and service history are unchanged.</p></div>
 <div class="unit" id="rcPatch3012"><h3>Version 30.12 — PIN Save Verification Fix</h3><p><b>Released:</b> Aug 19, 2026 6:00 PM</p><p>• Fixed a false “PIN did not verify after saving” message caused by an immediate stale Airtable read.</p><p>• PIN saves are now verified against Airtable's PATCH response first.</p><p>• Added short read-back retries before treating cloud verification as delayed.</p><p>• A successful PIN write is no longer discarded just because the next account-list response is briefly stale.</p><p>• Existing employee accounts, equipment QR links, and service history are unchanged.</p></div>
@@ -1247,22 +1247,14 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
     <p class="small">Each printed label gets its own permanent Res-Com QR code. Use one unique label per piece of equipment.</p>
 
     <div class="printOptions">
-      <label>How many QR labels?</label>
-      <div class="printOptionRow">
-        <input id="qrPrintQuantity" type="number" min="1" max="50" value="1" inputmode="numeric">
-        <button class="outline" id="generateQrLabels" type="button">GENERATE</button>
-      </div>
-      <div class="quickQty">
-        <button type="button" class="qtyBtn" data-qty="1">1</button>
-        <button type="button" class="qtyBtn" data-qty="4">4</button>
-        <button type="button" class="qtyBtn" data-qty="10">10</button>
-        <button type="button" class="qtyBtn" data-qty="20">20</button>
-      </div>
+      <label>QR label sheet</label>
+      <p class="small">This sheet always creates and prints exactly <b>4 QR labels</b> so the format stays the same every time.</p>
+      <button class="outline" id="generateQrLabels" type="button">GENERATE 4 QR LABELS</button>
     </div>
 
     <div id="printArea" class="labelsPrintArea"></div>
 
-    <button class="orange" id="printBtn" type="button">PRINT QR LABEL(S)</button>
+    <button class="orange" id="printBtn" type="button">PRINT 4 QR LABELS</button>
     <button class="outline" id="setupNow" type="button">SET UP THIS QR NOW</button>
   </div>
 </section>
@@ -1391,8 +1383,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="30.16.4";
-const APP_BUILD="Aug 20, 2026 2:29 PM";
+const APP_VERSION="30.16.6";
+const APP_BUILD="Aug 20, 2026 2:35 PM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -2594,13 +2586,11 @@ function renderQrLabels(ids){
 function showExistingQrLabel(id){
   if(!id)return;
   generatedLabelIds=[id];currentId=id;
-  if($("qrPrintQuantity"))$("qrPrintQuantity").value="1";
-  renderQrLabels([id]);
+  renderQrLabels([id,id,id,id]);
   show("labelScreen");
 }
 async function generateBlankLabels(count){
-  let n=Math.max(1,Math.min(50,parseInt(count||1,10)||1));
-  if($("qrPrintQuantity"))$("qrPrintQuantity").value=String(n);
+  let n=4;
   const ids=[];
   for(let i=0;i<n;i++){
     const id=uid();
@@ -2612,8 +2602,10 @@ async function generateBlankLabels(count){
   show("labelScreen");
 }
 async function newBlank(){
-  if($("qrPrintQuantity"))$("qrPrintQuantity").value="1";
-  await generateBlankLabels(1);
+  const area=$("printArea");if(area)area.innerHTML="";
+  try{generatedLabelIds=[];currentId=null}catch(e){}
+  const setup=$("setupNow");if(setup)setup.classList.add("hidden");
+  show("labelScreen");
 }
 function setupForm(u){
   $("detail").innerHTML=`<div class="card"><button class="gray" data-home type="button">← HOME</button><span class="badge pending">NEW QR</span>
@@ -3098,7 +3090,10 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){
 window.addEventListener("online",()=>flushQueue());
 window.addEventListener("offline",()=>{
   setStatus("offline","OFFLINE — SAVING LOCALLY");
-  logBug("Airtable / Network","Device went offline","Network status","","NET");
+  try{
+    if(typeof logDiagnosticV315==="function")logDiagnosticV315("Warning","network_offline","Device went offline","NETWORK STATUS","Airtable / Network");
+    else logBug("Airtable / Network","Device went offline","Network status","","NET");
+  }catch(_){}
 });
 
 async function bootResCom(){
@@ -4388,8 +4383,36 @@ async function uploadBugToAirtableV315(entry){
 }
 uploadBugToAirtable=uploadBugToAirtableV315;
 let diagUploadTimerV315=null;
+let diagFlushBusyV3165=false;
 function diagnosticFieldsV315(entry){const open=["Bug","Warning"].includes(entry.classification||"Bug");return {[B.code]:entry.code,[B.reported]:entry.time,[B.category]:entry.category||"Other",[B.version]:entry.version,[B.action]:entry.action||entry.screen||"",[B.message]:entry.message||"",[B.notes]:entry.notes||"",[B.unit]:entry.unit||"",[B.technician]:entry.technician||"",[B.device]:entry.device||"",[B.status]:open?"Open":"Ignored",[B.classification]:entry.classification||"Bug",[B.eventKey]:entry.eventKey||"",[B.userEmail]:entry.userEmail||null,[B.sessionId]:entry.sessionId||"",[B.control]:entry.control||"",[B.repeatCount]:entry.repeatCount||1,[B.uxReview]:!!entry.uxReview}}
-async function flushUnsavedDiagnosticsV315(){if(!token()||!navigator.onLine)return;const all=loadBugLog(),pending=all.filter(x=>!x.cloudSaved).slice(0,100);for(let i=0;i<pending.length;i+=10){const batch=pending.slice(i,i+10);try{await api(BUG_TABLE,{method:"POST",body:JSON.stringify({records:batch.map(x=>({fields:diagnosticFieldsV315(x)})),typecast:true})},{suppressBugLog:true});const codes=new Set(batch.map(x=>x.code));for(const x of all)if(codes.has(x.code))x.cloudSaved=true;saveBugLog(all)}catch(_){break}}renderBugLog()}
+async function flushUnsavedDiagnosticsV315(){
+  if(diagFlushBusyV3165||!token()||!navigator.onLine)return;
+  diagFlushBusyV3165=true;
+  try{
+    while(true){
+      const pending=loadBugLog().filter(x=>!x.cloudSaved).slice(0,50);
+      if(!pending.length)break;
+      let progressed=false;
+      for(let i=0;i<pending.length;i+=10){
+        const batch=pending.slice(i,i+10);
+        try{
+          await api(BUG_TABLE,{method:"POST",body:JSON.stringify({records:batch.map(x=>({fields:diagnosticFieldsV315(x)})),typecast:true})},{suppressBugLog:true});
+          const codes=new Set(batch.map(x=>x.code));
+          const latest=loadBugLog();
+          for(const x of latest)if(codes.has(x.code))x.cloudSaved=true;
+          saveBugLog(latest);
+          progressed=true;
+        }catch(_){
+          return;
+        }
+      }
+      if(!progressed)break;
+    }
+  }finally{
+    diagFlushBusyV3165=false;
+    renderBugLog();
+  }
+}
 function scheduleDiagnosticUploadV315(){clearTimeout(diagUploadTimerV315);diagUploadTimerV315=setTimeout(()=>flushUnsavedDiagnosticsV315().catch(()=>{}),850)}
 function logDiagnosticV315(classification,eventKey,message,control="",category="Other",notes="",userEmail="",unit=""){
   try{const entry=makeDiagEntryV315({classification,eventKey,message,control,category,notes,userEmail,unit,prefix:classification==="Bug"?"BUG":classification==="User Mistake"?"USR":"EVT"});const all=loadBugLog();all.unshift(entry);saveBugLog(all);renderBugLog();scheduleDiagnosticUploadV315(entry);return entry}catch(_){return null}
@@ -4486,18 +4509,120 @@ saveEquipment=async function(u){
   try{const existing=await findRemoteEquipment(u.id),now=new Date().toISOString();const fields={[F.unit]:u.id,[F.type]:(['Gas Furnace','Boiler','Air Handler','Condenser','Heat Pump','Other'].includes(u.type)?u.type:'Other'),[F.customType]:u.type||'', [F.mfr]:u.mfr||'', [F.model]:u.model||'', [F.serial]:u.serial||'', [F.loc]:u.location||'', [F.thermo]:u.thermo||'', [F.site]:u.site||'', [F.install]:u.install||null,[F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.account]:[],[F.accountEmail]:u.accountEmail||null,[F.customerPhone]:u.accountPhone||null,[F.lastUpdatedBy]:currentUser()?.email||null,[F.notes]:u.notes||'', [F.qrUrl]:appURL(u.id),[F.qrUpdated]:now,[F.qrSetup]:!!u.assigned};let out;if(existing){out=await api(EQUIP_TABLE,{method:'PATCH',body:JSON.stringify({records:[{id:existing.id,fields}],typecast:true})});currentRecordId=existing.id}else{out=await api(EQUIP_TABLE,{method:'POST',body:JSON.stringify({records:[{fields}],typecast:true})});currentRecordId=out.records?.[0]?.id||null}u.recordId=currentRecordId;u.qrUrl=appURL(u.id);upsertLocal(u);setStatus('synced','✓ SAVED & SYNCED');return true}catch(e){enqueue({kind:'equipment',data:u});setStatus('pending','SAVED LOCALLY — CLOUD SYNC PENDING');logBug('Airtable / Network',e?.message||String(e),'Save equipment',u.id,'NET',u.id);return false}
 };
 async function registerBlankQrsV315(ids){if(isGuestUserV305())return;if(!token()||!navigator.onLine){for(const id of ids)enqueue({kind:"equipment",data:blankUnit(id)});return}const now=new Date().toISOString();for(let i=0;i<ids.length;i+=10){const batch=ids.slice(i,i+10),records=batch.map(id=>({fields:{[F.unit]:id,[F.qrUrl]:appURL(id),[F.qrUpdated]:now,[F.qrSetup]:false,[F.qrScanCount]:0,[F.lastUpdatedBy]:currentUser()?.email||null}}));try{const d=await api(EQUIP_TABLE,{method:"POST",body:JSON.stringify({records,typecast:true})});for(const r of (d.records||[])){const id=r.fields?.["Unit ID"]||r.fields?.[F.unit];const u=getLocal(id)||blankUnit(id);u.recordId=r.id;u.qrUrl=appURL(id);upsertLocal(u)}}catch(e){for(const id of batch)enqueue({kind:"equipment",data:blankUnit(id)});logBug("Airtable / Network",e?.message||String(e),"Register blank QR labels",batch.join(","),"QR")}}}
-generateBlankLabels=async function(count){let n=Math.max(1,Math.min(50,parseInt(count||1,10)||1));if($("qrPrintQuantity"))$("qrPrintQuantity").value=String(n);const ids=[];for(let i=0;i<n;i++){const id=uid();upsertLocal(blankUnit(id));ids.push(id)}renderQrLabels(ids);renderList();show("labelScreen");registerBlankQrsV315(ids).then(()=>logDiagnosticV315("Success","equipment_qr_registered","Registered "+ids.length+" equipment QR label(s) in Airtable","GENERATE QR LABELS","QR / Scan")).catch(()=>{})};
+generateBlankLabels=async function(count){let n=4;const ids=[];for(let i=0;i<n;i++){const id=uid();upsertLocal(blankUnit(id));ids.push(id)}renderQrLabels(ids);renderList();show("labelScreen");registerBlankQrsV315(ids).then(()=>logDiagnosticV315("Success","equipment_qr_registered","Registered "+ids.length+" equipment QR label(s) in Airtable","GENERATE 4 QR LABELS","QR / Scan")).catch(()=>{})};
 async function auditEquipmentQrScanV315(id){if(!id||!token()||!navigator.onLine)return;try{const r=await findRemoteEquipment(id);if(!r)return;const count=Number(r.fields?.["QR Scan Count"]||0)+1;await api(EQUIP_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:r.id,fields:{[F.lastQrScanAt]:new Date().toISOString(),[F.lastQrScanBy]:currentUser()?.email||null,[F.qrScanCount]:count,[F.qrUrl]:appURL(id),[F.qrUpdated]:new Date().toISOString()}}],typecast:true})});logDiagnosticV315("Success","equipment_qr_scan","Equipment QR opened successfully","EQUIPMENT QR","QR / Scan","",currentUser()?.email||"",id)}catch(e){logBug("QR / Scan",e?.message||String(e),"Equipment QR scan audit",id,"QR",id)}}
 const generateStaffQrCoreV315=generateStaffQrV308;
 generateStaffQrV308=async function(acct){const info=await generateStaffQrCoreV315(acct);Promise.resolve().then(()=>updateAccountV30(acct,{[AF.staffQrGeneratedAt]:new Date().toISOString(),[AF.staffQrGeneratedBy]:currentUser()?.email||null})).catch(()=>{});logDiagnosticV315("Success","staff_qr_generated","Generated one-use Staff Sign-In QR","SIGN-IN QR","QR / Scan","",currentUser()?.email||"");return info};
 const consumeStaffQrCoreV315=consumeStaffQrV308;
 consumeStaffQrV308=async function(){const acct=await consumeStaffQrCoreV315();if(acct){const next=(Number(acct.staffQrUseCount||0)||0)+1;Promise.resolve().then(()=>updateAccountV30(acct,{[AF.staffQrLastUsedAt]:new Date().toISOString(),[AF.staffQrUseCount]:next})).catch(()=>{});logDiagnosticV315("Success","staff_qr_sign_in","Staff Sign-In QR verified and signed in","STAFF QR","QR / Scan","",acct.email)}return acct};
 
+
+
+// ===== v30.16.5 FINAL STABILIZATION: AIRTABLE IS THE SHARED QR SOURCE OF TRUTH =====
+function pendingEquipmentIdsV3165(){
+  const ids=new Set();
+  try{
+    for(const op of queue()){
+      const id=op?.kind==="equipment"?op?.data?.id:op?.kind==="history"?op?.unitId:"";
+      if(id)ids.add(String(id).trim().toUpperCase());
+    }
+  }catch(_){}
+  return ids;
+}
+function removeLocalEquipmentV3165(id){
+  const clean=String(id||"").trim().toUpperCase();
+  if(!clean)return false;
+  const all=loadLocal(),next=all.filter(u=>String(u?.id||"").trim().toUpperCase()!==clean);
+  if(next.length===all.length)return false;
+  saveLocal(next);
+  if(String(currentId||"").trim().toUpperCase()===clean)currentRecordId=null;
+  return true;
+}
+function cloudEquipmentMapV3165(records){
+  const map=new Map();
+  for(const r of (records||[])){
+    const cloud=fromRecord(r);
+    const id=String(cloud?.id||"").trim().toUpperCase();
+    if(id)map.set(id,cloud);
+  }
+  return map;
+}
+refreshSharedEquipment=async function(){
+  const local=loadLocal();
+  if(!token()){renderList();setStatus("pending","LOCAL EQUIPMENT READY");return local}
+  if(!navigator.onLine){renderList();setStatus("offline","OFFLINE — LOCAL EQUIPMENT READY");return local}
+  setStatus("pending","SYNCING QR LIST WITH AIRTABLE...");
+  try{
+    const records=await fetchAllRemoteEquipmentV30();
+    const cloudMap=cloudEquipmentMapV3165(records);
+    const localMap=new Map(local.map(u=>[String(u?.id||"").trim().toUpperCase(),u]));
+    const pending=pendingEquipmentIdsV3165();
+    const merged=[];
+    for(const [id,cloud] of cloudMap){
+      const prev=localMap.get(id);
+      merged.push({...((prev&&prev.history)?{history:prev.history}:{}),...(prev||{}),...cloud,history:prev?.history||[]});
+    }
+    // Keep only unsynced offline work that still needs to be uploaded. Everything else mirrors Airtable.
+    for(const u of local){
+      const id=String(u?.id||"").trim().toUpperCase();
+      if(id&&!cloudMap.has(id)&&pending.has(id))merged.push(u);
+    }
+    const removed=local.filter(u=>{
+      const id=String(u?.id||"").trim().toUpperCase();
+      return id&&!cloudMap.has(id)&&!pending.has(id);
+    }).length;
+    saveLocal(merged);
+    renderList();
+    setStatus(isGuestUserV305()?"pending":"synced",isGuestUserV305()?"GUEST • CLOUD READ-ONLY":`✓ AIRTABLE SYNCED • ${cloudMap.size} QR${cloudMap.size===1?"":"S"}`);
+    if(removed>0)try{logDiagnosticV315("System","airtable_qr_reconcile","Removed "+removed+" local QR record(s) that no longer exist in Airtable","EQUIPMENT SYNC","Other")}catch(_){}
+    return merged;
+  }catch(e){
+    renderList();setStatus("offline","CLOUD ERROR — LOCAL EQUIPMENT READY");
+    try{logBug("Airtable / Network",e?.message||String(e),"Refresh shared equipment","","NET")}catch(_){}
+    return local;
+  }
+};
+
+loadUnit=async function(id){
+  const clean=String(id||"").trim().toUpperCase();
+  const local=getLocal(clean)||blankUnit(clean);
+  if(!token()||!navigator.onLine)return local;
+  try{
+    const r=await findRemoteEquipment(clean);
+    if(!r){
+      if(pendingEquipmentIdsV3165().has(clean))return local;
+      removeLocalEquipmentV3165(clean);
+      return {...blankUnit(clean),missingFromAirtable:true};
+    }
+    const u=fromRecord(r);
+    u.history=await remoteHistory(r.id);
+    rememberTechsFromHistory(u.history);
+    upsertLocal(u);currentRecordId=r.id;setStatus("synced","✓ SAVED & SYNCED");return u;
+  }catch(e){
+    setStatus("offline","CLOUD ERROR — USING LOCAL COPY");
+    return local;
+  }
+};
+
+window.openUnit=async function(id){
+  const clean=String(id||"").trim().toUpperCase();
+  if(!isCompanyUnlocked()){pendingProtectedUnit=clean;showPinGate("Enter company PIN to open this equipment.");return}
+  currentId=clean;
+  const u=await loadUnit(clean);
+  if(u?.missingFromAirtable){
+    renderList();
+    show("equipmentScreen");
+    alert("This QR is no longer in Airtable, so it was removed from the Res-Com app too. If this equipment needs a QR again, create a new blank QR label.");
+    return;
+  }
+  if(!u.assigned){setupForm(u);show("detailScreen")}else await renderDetail(u);
+};
+
 async function checkRepeatedMistakesV315(){const me=currentUser();if(!me||(me.role!=="Admin"&&!me.developerAccess)||isGuestUserV305(me)||!token()||!navigator.onLine)return;try{const p=new URLSearchParams({pageSize:"100"});const d=await api(BUG_TABLE+"?"+p.toString(),{}, {suppressBugLog:true});const since=Date.now()-7*86400000,groups=new Map();for(const r of (d.records||[])){const f=r.fields||{},cls=typeof f["Classification"]==="string"?f["Classification"]:f["Classification"]?.name;if(cls!=="User Mistake"||Date.parse(f["Reported At"]||0)<since)continue;const key=f["Event Key"]||f["Message"]||"unknown";if(!groups.has(key))groups.set(key,{count:0,users:new Set(),message:f["Message"]||key,recordId:r.id});const g=groups.get(key);g.count++;if(f["User Email"])g.users.add(String(f["User Email"]).toLowerCase())}const alerts=[...groups.entries()].filter(([,g])=>g.count>=8||(g.count>=5&&g.users.size>=2)).sort((a,b)=>b[1].count-a[1].count);document.getElementById("v315UxAlert")?.remove();if(!alerts.length)return;const [key,g]=alerts[0],home=$("home");if(!home)return;const box=document.createElement("div");box.id="v315UxAlert";box.className="unit v315UxAlert";box.innerHTML=`<b>⚠️ REPEATED USER MISTAKE</b><div>${esc(g.message)}</div><div class="small">${g.count} occurrence(s) across ${g.users.size||"multiple"} employee account(s) in the recent diagnostic history. If people keep making the same mistake, it may be time to change the wording or workflow.</div>`;(home.querySelector(".card")||home).prepend(box);try{await api(BUG_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:g.recordId,fields:{[B.uxReview]:true,[B.repeatCount]:g.count}}],typecast:true})},{suppressBugLog:true})}catch(_){}}catch(_){}}
 
 // v30.16.1 update safety: detect updates, but never reload an active field session automatically.
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.getRegistration().then(r=>r?.update()).catch(()=>{}));}
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkForAppUpdate().catch(()=>{});navigator.serviceWorker?.getRegistration?.().then(r=>r?.update()).catch(()=>{});flushQueue().catch(()=>{});checkRepeatedMistakesV315().catch(()=>{})}});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkForAppUpdate().catch(()=>{});navigator.serviceWorker?.getRegistration?.().then(r=>r?.update()).catch(()=>{});flushQueue().catch(()=>{});if(["home","equipmentScreen"].includes(currentScreenName()))refreshSharedEquipment().catch(()=>{});checkRepeatedMistakesV315().catch(()=>{})}});
 setInterval(()=>{if(navigator.onLine){checkForAppUpdate().catch(()=>{});navigator.serviceWorker?.getRegistration?.().then(r=>r?.update()).catch(()=>{})}},5*60*1000);
 
 const bootCoreV315=bootResComV30;
@@ -4512,8 +4637,10 @@ bootResComV30=async function(){
 async function clearOldResComCachesV314(){
   if(!("caches" in window))return;
   try{
+    // Final stabilization: never delete the active production cache here.
+    // The service worker activate handler owns normal version cleanup.
     const keys=await caches.keys();
-    await Promise.all(keys.filter(k=>k.startsWith("rescom-qr")&&!k.includes("v30-15")).map(k=>caches.delete(k)));
+    await Promise.all(keys.filter(k=>k.includes("release-launcher")||k.includes("releases-30-")).map(k=>caches.delete(k)));
   }catch(_){}
 }
 
@@ -4592,5 +4719,5 @@ window.addEventListener('load',()=>{setTimeout(()=>{hideGuestV316();cleanupNeste
   if(patch&&!document.getElementById('rcPatch3162')){const d=document.createElement('div');d.className='unit';d.id='rcPatch3162';d.innerHTML='<h3>Version 30.16.2 — Developer Mode & Release Status</h3><p><b>Candidate:</b> Aug 20, 2026 2:05 PM</p><p>• Replaced the hidden Developer checkbox behavior with a visible Tech / Admin / Developer Access Mode in Team.</p><p>• Kai and Paul are Developer mode in Airtable.</p><p>• Developers can assign Tech, Admin, or Developer mode to other employees.</p><p>• Added Developer Release Status showing this app version, the version released to everyone, and the current candidate.</p><p>• Added APPROVE FOR EVERYONE control for Developers.</p><p>• Approval is stored in Airtable; production files remain a deliberate manual promotion so technicians are not interrupted mid-job.</p><p>• Permanent equipment QR URLs and Staff Sign-In QR URLs remain fixed to the normal Res-Com root.</p>';patch.insertBefore(d,patch.firstElementChild?.nextSibling||null)}
 })();
 </script>
-<script src="./modern-ui.js?v=30.16.4"></script>
+<script src="./modern-ui.js?v=30.16.5"></script>
 </body></html>

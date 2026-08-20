@@ -1,5 +1,5 @@
 {
-  "version": "30.16.4",
-  "build": "Aug 20, 2026 2:29 PM",
-  "notes": "Dark Mode print fix: equipment QR tags now always print with the same clean white background, black text/border, and normal QR image as Light Mode. Existing QR links and service history are unchanged."
+  "version": "30.16.6",
+  "build": "Aug 20, 2026 8:30 PM",
+  "notes": "Blank QR printing now always creates exactly 4 labels per sheet. Quantity options were removed so the 4-up print format stays consistent."
 }

@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-16-4-darkmode-print-fix-1429";
+const CACHE = "rescom-qr-v30-16-5-final-stabilization-1435";
 const CORE = [
   "./index.html",
   "./version.json",

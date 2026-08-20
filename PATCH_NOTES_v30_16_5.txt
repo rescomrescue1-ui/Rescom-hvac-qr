@@ -1,0 +1,17 @@
+RES-COM HVAC QR v30.16.5 — FINAL STABILIZATION
+
+Airtable / QR consistency
+- Airtable is now the source of truth for the shared QR/equipment list whenever the app is online and connected.
+- If a QR/equipment record is deleted from Airtable, the stale local copy is removed from the app on the next Equipment sync.
+- Searching or scanning a QR that was deleted from Airtable no longer opens an old local record.
+- Unsynced offline field work is protected until it uploads successfully.
+
+Reliability cleanup
+- Fixed old cache cleanup code that could delete the current production offline cache.
+- Added a diagnostic upload lock so overlapping sync attempts cannot create duplicate diagnostic rows.
+- Normal offline events are recorded as network warnings, not software bugs.
+- Kept the v30.16.4 print rule that forces QR tags to print white/black in either Light or Dark Mode.
+
+Compatibility
+- Permanent GitHub Pages path is unchanged.
+- Existing Airtable QR URLs, Unit IDs, service history, accounts, personal PINs, and employee access remain compatible.

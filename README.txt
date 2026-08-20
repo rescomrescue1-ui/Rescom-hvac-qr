@@ -1,3 +1,9 @@
+Res-Com HVAC QR v30.16.6
+
+- Blank QR printing now always creates exactly 4 labels per sheet.
+- Quantity choices were removed so the print format stays the same every time.
+- Reprints keep the same 4-up layout.
+
 RES-COM HVAC QR v30.16.2
 Access Mode • Developer Release Status • Direct-Root QR Safety • Diagnostics • PIN Reset • Offline Photos
 
@@ -26,6 +32,6 @@ DEPLOYMENT
 Upload the CONTENTS of this folder to the root of the existing Rescom-hvac-qr GitHub repository on main.
 Do not rename the repository or GitHub Pages path.
 Do not upload this app inside /releases/.
-After GitHub Pages deploys, open the normal Res-Com URL online, confirm APP v30.16.4, close the app completely, and reopen it.
+After GitHub Pages deploys, open the normal Res-Com URL online, confirm APP v30.16.5, close the app completely, and reopen it.
 
 v30.16.2: Team now uses visible Tech/Admin/Developer Access Mode. Developers see a Release Status card with This App, Released to Everyone, Candidate, and an approval control.
