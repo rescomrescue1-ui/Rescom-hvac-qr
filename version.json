@@ -1,5 +1,5 @@
 {
-  "version": "30.16.1",
-  "build": "Aug 20, 2026 1:42 PM",
-  "notes": "Direct-root repair: preserves permanent QR URLs and PWA scope, removes nested release launcher, keeps Developer Access and Manual fix, and prevents forced mid-session reloads."
+  "version": "30.16.4",
+  "build": "Aug 20, 2026 2:29 PM",
+  "notes": "Dark Mode print fix: equipment QR tags now always print with the same clean white background, black text/border, and normal QR image as Light Mode. Existing QR links and service history are unchanged."
 }

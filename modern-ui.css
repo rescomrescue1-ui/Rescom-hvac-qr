@@ -181,12 +181,15 @@ label{color:#344054!important;font-size:13px!important;font-weight:700!important
 .quickQty button{background:#fff!important;color:#344054!important;border:1px solid #d0d5dd!important}
 #rcPrintSummary{font-size:12px;color:#667085;margin:8px 0 0}
 .labelsPrintArea{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important;gap:14px!important}
-.print-label{max-width:320px!important;border:2px solid #111827!important;border-radius:12px!important;padding:11px!important;box-shadow:0 6px 18px rgba(16,24,40,.08)!important}
-.print-label h2{font-size:18px!important;letter-spacing:.3px}
-.print-label .label-sub{font-size:11px!important;color:#111827!important}
-.print-label .qr-code-text{font-size:12px!important}
-.print-label .label-footer{font-size:9.5px!important;line-height:1.3!important}
-.print-label .tech-only{font-size:9px!important;color:#b42318!important;font-weight:900!important;text-transform:uppercase!important;margin-top:5px!important}
+
+.print-label{max-width:320px!important;min-height:420px!important;border:2px solid #111827!important;border-radius:12px!important;padding:14px!important;box-shadow:0 6px 18px rgba(16,24,40,.08)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;text-align:center!important;font-family:Arial,Helvetica,sans-serif!important;background:#fff!important}
+.print-label h2{font-size:21px!important;line-height:1.05!important;letter-spacing:.2px!important;margin:0 0 4px!important;font-weight:900!important;color:#111827!important}
+.print-label .label-sub{font-size:12px!important;line-height:1.2!important;color:#111827!important;margin-bottom:8px!important;font-weight:700!important}
+.print-label .qr-cell{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:220px!important;margin:4px 0 8px!important}
+.print-label .qr-code-text{font-size:12px!important;line-height:1.15!important;font-weight:900!important;color:#111827!important;text-transform:uppercase!important;margin-top:2px!important}
+.print-label .qr-code-id{font-size:13px!important;line-height:1.2!important;font-weight:900!important;color:#111827!important;word-break:break-all!important;overflow-wrap:anywhere!important;margin-top:4px!important;padding-top:7px!important;border-top:2px solid #111827!important;width:100%!important}
+.print-label .label-footer{font-size:10.5px!important;line-height:1.3!important;color:#111827!important;margin-top:7px!important;font-weight:700!important}
+.print-label .tech-only{font-size:10px!important;color:#b42318!important;font-weight:900!important;text-transform:uppercase!important;margin-top:6px!important;letter-spacing:.3px!important}
 
 /* Bug/health modernize */
 .bug-entry,.healthRow{background:#fff!important;color:#111827!important;border:1px solid var(--rc-line)!important}
@@ -226,8 +229,8 @@ label{color:#344054!important;font-size:13px!important;font-weight:700!important
   @page{margin:.25in}
   body{background:#fff!important;padding:0!important}
   #globalNav,#rcMoreBackdrop,#rcOnboarding,.appHeader,.statusbar{display:none!important}
-  #printArea{grid-template-columns:repeat(2,3.0in)!important;gap:.14in!important;justify-content:center!important}
-  .print-label{width:3.0in!important;max-width:3.0in!important;border-radius:0!important;box-shadow:none!important;padding:.09in!important}
+  #printArea{grid-template-columns:repeat(2,3.15in)!important;gap:.16in!important;justify-content:center!important}
+  .print-label{width:3.15in!important;max-width:3.15in!important;min-height:4.1in!important;border-radius:0!important;box-shadow:none!important;padding:.12in!important}
   .print-label .qr-cell{min-height:0!important}
 }
 
@@ -480,3 +483,71 @@ body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
 #v315UxAlert b{display:block;margin-bottom:5px}
 
 /* v30.16 staged release transition */
+
+
+/* ===== v30.16.4 DARK MODE PRINT FIX =====
+   Printed equipment QR tags must always match the clean light labels,
+   regardless of the app's Light/Dark appearance setting. */
+@media print {
+  html, body {
+    color-scheme: light !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #printArea {
+    background: #ffffff !important;
+  }
+
+  html[data-theme="dark"] #printArea,
+  html[data-theme="dark"] .print-label,
+  html[data-theme="dark"] .print-label * {
+    color-scheme: light !important;
+  }
+
+  .print-label,
+  html[data-theme="dark"] .print-label {
+    background: #ffffff !important;
+    color: #111111 !important;
+    border: 3px solid #111111 !important;
+    box-shadow: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  .print-label h2,
+  .print-label .label-sub,
+  .print-label .qr-code-text,
+  .print-label .qr-code-id,
+  .print-label .label-footer,
+  html[data-theme="dark"] .print-label h2,
+  html[data-theme="dark"] .print-label .label-sub,
+  html[data-theme="dark"] .print-label .qr-code-text,
+  html[data-theme="dark"] .print-label .qr-code-id,
+  html[data-theme="dark"] .print-label .label-footer {
+    color: #111111 !important;
+    background: transparent !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  .print-label .tech-only,
+  html[data-theme="dark"] .print-label .tech-only {
+    color: #b42318 !important;
+    background: transparent !important;
+  }
+
+  .print-label .qr-cell,
+  .print-label canvas,
+  .print-label img,
+  html[data-theme="dark"] .print-label .qr-cell,
+  html[data-theme="dark"] .print-label canvas,
+  html[data-theme="dark"] .print-label img {
+    background: #ffffff !important;
+    filter: none !important;
+    opacity: 1 !important;
+    mix-blend-mode: normal !important;
+  }
+}

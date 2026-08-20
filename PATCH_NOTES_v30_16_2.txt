@@ -1,0 +1,16 @@
+RES-COM HVAC QR — v30.16.2
+Candidate: Aug 20, 2026 2:05 PM
+
+- Adds visible Access Mode: Tech / Admin / Developer.
+- Developers can assign Tech, Admin, or Developer to other employees.
+- Admins can manage Tech/Admin but cannot grant Developer.
+- Kai and Paul are Developer mode in Airtable.
+- Adds Developer Release Status in Team:
+  * THIS APP
+  * RELEASED TO EVERYONE
+  * CANDIDATE
+- Adds APPROVE THIS VERSION FOR EVERYONE for Developers.
+- Release approval is stored in Airtable; GitHub production promotion remains deliberate/manual to prevent office testing from interrupting field technicians.
+- Permanent equipment and Staff QR URLs remain on the normal Res-Com root.
+- No forced mid-session service-worker reload.
+- Manual and Patch Notes updated.

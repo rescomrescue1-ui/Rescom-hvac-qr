@@ -1,0 +1,7 @@
+Res-Com HVAC QR v30.16.4 — Dark Mode Print Fix
+
+- Fixed Dark Mode changing the appearance of printed equipment QR tags.
+- Printed tags are forced to the same clean white/black style as Light Mode.
+- QR images are protected from dark-mode filters and blend effects during printing.
+- Dark Mode continues to work normally in the app before and after printing.
+- Existing equipment QR links, Unit IDs, service history, accounts, and Airtable data are unchanged.

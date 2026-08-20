@@ -1,0 +1,12 @@
+Res-Com HVAC QR v30.16.3 — QR Label Font / Print Layout Fix
+
+What changed
+- Fixed the printed equipment QR labels so the text uses a clearer, darker print font.
+- Enlarged the label title, QR code line, and footer for easier reading on paper.
+- Moved the QR ID onto its own bold line so long RC codes do not look cramped.
+- Balanced the 4-up print layout for cleaner spacing.
+
+What stayed the same
+- Existing equipment QR links stay the same.
+- Existing Unit IDs stay the same.
+- Existing service history, Airtable records, PINs, and offline photos stay the same.
