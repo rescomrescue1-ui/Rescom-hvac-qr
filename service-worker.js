@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-14-fast-pin-fresh-cloud-1810";
+const CACHE = "rescom-qr-v30-15-diagnostics-email-pin-offline-photos-1225";
 const CORE = [
   "./index.html",
   "./version.json",
@@ -42,7 +42,7 @@ self.addEventListener("fetch", event => {
   if(event.request.method!=="GET")return;
   const url=new URL(event.request.url);
 
-  // v30.14: Cloud/API data must always be live. The old cache-first rule could keep stale
+  // v30.15: Cloud/API data must always be live. The old cache-first rule could keep stale
   // Airtable account/PIN responses and make a newly changed PIN fail until the cache changed.
   if(url.origin!==self.location.origin){
     event.respondWith(fetch(event.request,{cache:"no-store"}).catch(()=>Response.error()));

@@ -527,7 +527,7 @@ body{padding-bottom:88px!important}
 
 </style>
 
-<link rel="stylesheet" href="./modern-ui.css?v=30.14">
+<link rel="stylesheet" href="./modern-ui.css?v=30.15">
 </head>
 <body>
 <div id="loadingScreen">
@@ -536,7 +536,7 @@ body{padding-bottom:88px!important}
     <h2>Res-Com HVAC QR</h2>
     <div class="loadingSpinner" aria-hidden="true"></div>
     <div id="loadingStatus">Opening Res-Com…</div>
-    <div id="loadingVersion" class="small">Installed v30.14</div>
+    <div id="loadingVersion" class="small">Installed v30.15</div>
   </div>
 </div>
 <script>
@@ -567,7 +567,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
   <div class="headerCopy">
     <h1>Res-Com HVAC QR</h1>
     <p>Service History At Your Fingertips.</p>
-    <span id="appVersionBadge">APP v30.14 • UPDATED Aug 19, 2026 6:10 PM</span>
+    <span id="appVersionBadge">APP v30.15 • UPDATED Aug 20, 2026 12:25 PM</span>
   </div>
 </header>
 <div id="signedUserBar" class="hidden">
@@ -703,10 +703,19 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
     
     <div class="manual-section">
-      <h3>Company Access — v30.14</h3>
+      <h3>Company Access — v30.15</h3>
       <p>Every Res-Com Admin and Tech signs in with their employee <b>email and 6-digit personal PIN</b>. The first App Account created becomes Admin automatically.</p>
       <p>The current <b>4-digit Company PIN</b> is an Admin-managed authorization code used when an employee creates an account or sets/resets a personal PIN. It is not the employee's normal sign-in PIN.</p>
       <p>Admins manage the Team list, roles, employee accounts, employee personal PINs, Staff Sign-In QR, and the Company PIN.</p>
+    </div>
+
+    <div class="manual-section" id="m-v3015">
+      <h3>Version 30.15 — Diagnostics, PIN Recovery, Offline Photos & QR Audit</h3>
+      <p><b>Diagnostics:</b> normal actions, screen navigation, user mistakes, warnings, successes, and real software bugs are classified separately. Sensitive PIN/token values are never logged.</p>
+      <p><b>Forgot PIN:</b> the old personal PIN cannot be recovered because only a secure hash is stored. FORGOT PIN creates a 15-minute one-time email reset code so the employee can choose a new PIN.</p>
+      <p><b>QR audit:</b> permanent equipment QR URLs and scan activity are saved to Airtable. Staff QR generation/use is audited without storing the readable QR secret.</p>
+      <p><b>Offline photos:</b> failed/offline photos are saved in a durable on-device queue and retry automatically. Camera and camera-roll/photo-library choices are separate.</p>
+      <p><b>Auto update:</b> update checks run on startup, resume, and periodically while the app is open.</p>
     </div>
 
     <div class="manual-section" id="m-temp-login-v3010">
@@ -972,6 +981,7 @@ window.__rescomLoadingWatchdog=setTimeout(function(){
 
 <section id="patchNotes" class="hidden">
   <div class="card">
+<div class="unit" id="rcPatch3015"><h3>Version 30.15 — Diagnostics, PIN Recovery, Offline Photos & QR Audit</h3><p><b>Released:</b> Aug 20, 2026 12:25 PM</p><p>• Separates software bugs from user mistakes, warnings, actions, navigation, successes, and system events.</p><p>• Adds repeated-mistake alerts for Admins.</p><p>• Adds one-time email PIN reset-code workflow.</p><p>• Adds permanent equipment QR registry/scan audit and Staff QR audit.</p><p>• Adds durable offline photo upload queue and camera-roll selection.</p><p>• Strengthens automatic app/service-worker updates.</p><p>• Existing printed QR URLs remain unchanged.</p></div>
 <div class="unit" id="rcPatch3014"><h3>Version 30.14 — Fast PIN / Fresh Cloud Reads</h3><p><b>Released:</b> Aug 19, 2026 6:10 PM</p><p>• Fixed the underlying stale-cloud-read problem that could make a newly changed PIN appear delayed on another phone.</p><p>• Service worker now bypasses caching for Airtable and all third-party requests.</p><p>• Airtable API GET requests use browser no-store mode.</p><p>• Sign In reuses the fresh account list already loaded on the screen instead of doing a second account download.</p><p>• Last Login is written in the background after successful PIN verification, so it no longer blocks entry into the app.</p><p>• Added immediate CHECKING PIN feedback before cryptographic PIN verification.</p><p>• Existing equipment QR links, Unit IDs, service history, and account PIN data are unchanged.</p></div>
 <div class="unit" id="rcPatch3013"><h3>Version 30.13 — Admin Give Employee PIN</h3><p><b>Released:</b> Aug 19, 2026 6:05 PM</p><p>• Added an Admin SET PIN button beside each other employee in Team.</p><p>• Admin can assign or replace a 6-digit personal PIN without signing in as that employee.</p><p>• Add Employee now has an optional 6-digit PIN field so an Admin can create an employee and give them a working PIN immediately.</p><p>• PIN saves use the v30.12 verified Airtable write path.</p><p>• Readable PINs are never stored in Airtable.</p><p>• Existing equipment QR links and service history are unchanged.</p></div>
 <div class="unit" id="rcPatch3012"><h3>Version 30.12 — PIN Save Verification Fix</h3><p><b>Released:</b> Aug 19, 2026 6:00 PM</p><p>• Fixed a false “PIN did not verify after saving” message caused by an immediate stale Airtable read.</p><p>• PIN saves are now verified against Airtable's PATCH response first.</p><p>• Added short read-back retries before treating cloud verification as delayed.</p><p>• A successful PIN write is no longer discarded just because the next account-list response is briefly stale.</p><p>• Existing employee accounts, equipment QR links, and service history are unchanged.</p></div>
@@ -1379,8 +1389,8 @@ function showQRHandoff(id){
 
 
 
-const APP_VERSION="30.14";
-const APP_BUILD="Aug 19, 2026 6:10 PM";
+const APP_VERSION="30.15";
+const APP_BUILD="Aug 20, 2026 12:25 PM";
 
 const BUG_LOG_KEY="rescom_bug_log_v27";
 let generatedLabelIds=[];
@@ -3065,7 +3075,7 @@ document.addEventListener("click",e=>{
 },true);
 
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){
-  navigator.serviceWorker.register("./service-worker.js?appv="+APP_VERSION).then(reg=>{
+  navigator.serviceWorker.register("./service-worker.js?appv="+APP_VERSION,{updateViaCache:"none"}).then(reg=>{
     reg.update().catch(()=>{});
     reg.addEventListener("updatefound",()=>{
       const w=reg.installing;
@@ -4285,11 +4295,182 @@ openAdminSetPinOverlayV313=function(acct){
   setTimeout(()=>{try{ov.scrollTop=0;$("v313AdminPin")?.focus({preventScroll:true})}catch(_){}},80);
 };
 
+/* =========================
+   RES-COM v30.15 DIAGNOSTICS / EMAIL PIN RESET / OFFLINE PHOTO QUEUE / QR AUDIT
+   ========================= */
+B.classification="fldBXUGNMqJ3WU2tA";
+B.eventKey="fldX1tiGkBvKPHnoF";
+B.userEmail="fldrRTFg175YAEspU";
+B.sessionId="fldPiOWTrEcZCEQYr";
+B.control="fldz3ikvBGlwcaui9";
+B.repeatCount="fldkD0fdowbCQVTWe";
+B.uxReview="fldOCCtgFBNPA1WtB";
+F.qrUrl="fldYQE636oTvaW9Tr";
+F.qrUpdated="flddcnYcXrDkrKlSO";
+F.lastQrScanAt="fldi7jl0ySef2F8ca";
+F.lastQrScanBy="fldp7uavpQeDhaymJ";
+F.qrScanCount="fldpzPoV8q303WqT7";
+F.qrSetup="fldr0MMW9vOnxBsU4";
+AF.staffQrGeneratedAt="fldler90PVEwFCQ30";
+AF.staffQrGeneratedBy="fldkux0MCqoCN33IG";
+AF.staffQrLastUsedAt="fld1gfbwZwdTW9HMR";
+AF.staffQrUseCount="fldAYjrt0BBwcun6L";
+const accountFromRecordBaseV315=accountFromRecord;
+accountFromRecord=function(r){const a=accountFromRecordBaseV315(r),f=r?.fields||{};a.staffQrGeneratedAt=f["Staff QR Generated At"]||f[AF.staffQrGeneratedAt]||"";a.staffQrGeneratedBy=f["Staff QR Generated By"]||f[AF.staffQrGeneratedBy]||"";a.staffQrLastUsedAt=f["Staff QR Last Used At"]||f[AF.staffQrLastUsedAt]||"";a.staffQrUseCount=Number(f["Staff QR Use Count"]||f[AF.staffQrUseCount]||0);return a};
+const PIN_RESET_TABLE_V315="tbl9B06kb0Kk7c8zX";
+const PRF_V315={id:"fldOPdNbdjxWzJvN7",requested:"fld8fV8916ZXBEu7X",accountId:"fldB9jHoujV7IkPyp",email:"fldAMNra6KykwiihP",code:"fldVJyNbSZjKbGFtO",expires:"fldIBocKwJ6RlYYSR",status:"fld4s1eipOAp2MLGK",used:"fldeCXXAmRtHbs5A8",device:"fld0VpraMrqvZhgn8",notes:"fldTuB9ZBLzGyzVeK"};
+const SESSION_ID_V315=sessionStorage.getItem("rescom_diag_session_v315")||("SES-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase());
+sessionStorage.setItem("rescom_diag_session_v315",SESSION_ID_V315);
+const currentScreenCoreV315=currentScreenName;
+currentScreenName=function(){if(document.getElementById("v315EmailResetOverlay"))return "emailPinReset";if(document.getElementById("v311PinResetOverlay"))return "pinReset";if(document.getElementById("v311SignupOverlay"))return "employeeSignup";if(document.getElementById("staffQrOverlayV308"))return "staffQrDisplay";const gate=$("pinGate");if(gate&&!gate.classList.contains("hidden"))return "signIn";return currentScreenCoreV315()};
+
+saveBugLog=function(items){try{localStorage.setItem(BUG_LOG_KEY,JSON.stringify((items||[]).slice(0,300)))}catch(e){}};
+function diagRepeatCountV315(eventKey){
+  const since=Date.now()-7*86400000;
+  return loadBugLog().filter(x=>x.eventKey===eventKey&&Date.parse(x.time||0)>=since).length+1;
+}
+function makeDiagEntryV315({classification="Action",category="Other",eventKey="",message="",action="",notes="",control="",unit="",userEmail="",prefix="EVT"}={}){
+  const repeat=eventKey?diagRepeatCountV315(eventKey):1;
+  return {code:bugCode(prefix),time:new Date().toISOString(),category,classification,eventKey,message:String(message||"").slice(0,4000),action:String(action||currentScreenName()).slice(0,500),notes:String(notes||"").slice(0,4000),control:String(control||"").slice(0,500),unit:String(unit||currentId||"").slice(0,200),technician:currentUser()?.name||"",userEmail:String(userEmail||currentUser()?.email||"").toLowerCase(),sessionId:SESSION_ID_V315,repeatCount:repeat,uxReview:classification==="User Mistake"&&repeat>=5,screen:currentScreenName(),version:APP_VERSION,build:APP_BUILD,device:deviceSummary(),cloudSaved:false};
+}
+async function uploadBugToAirtableV315(entry){
+  if(!token()||!navigator.onLine)return false;
+  try{
+    const open=["Bug","Warning"].includes(entry.classification||"Bug");
+    const fields={[B.code]:entry.code,[B.reported]:entry.time,[B.category]:entry.category||"Other",[B.version]:entry.version,[B.action]:entry.action||entry.screen||"",[B.message]:entry.message||"",[B.notes]:entry.notes||"",[B.unit]:entry.unit||"",[B.technician]:entry.technician||"",[B.device]:entry.device||"",[B.status]:open?"Open":"Ignored",[B.classification]:entry.classification||"Bug",[B.eventKey]:entry.eventKey||"",[B.userEmail]:entry.userEmail||null,[B.sessionId]:entry.sessionId||"",[B.control]:entry.control||"",[B.repeatCount]:entry.repeatCount||1,[B.uxReview]:!!entry.uxReview};
+    await api(BUG_TABLE,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})},{suppressBugLog:true});
+    entry.cloudSaved=true;const all=loadBugLog(),i=all.findIndex(x=>x.code===entry.code);if(i>=0){all[i]=entry;saveBugLog(all);renderBugLog()}return true;
+  }catch(_){return false}
+}
+uploadBugToAirtable=uploadBugToAirtableV315;
+let diagUploadTimerV315=null;
+function diagnosticFieldsV315(entry){const open=["Bug","Warning"].includes(entry.classification||"Bug");return {[B.code]:entry.code,[B.reported]:entry.time,[B.category]:entry.category||"Other",[B.version]:entry.version,[B.action]:entry.action||entry.screen||"",[B.message]:entry.message||"",[B.notes]:entry.notes||"",[B.unit]:entry.unit||"",[B.technician]:entry.technician||"",[B.device]:entry.device||"",[B.status]:open?"Open":"Ignored",[B.classification]:entry.classification||"Bug",[B.eventKey]:entry.eventKey||"",[B.userEmail]:entry.userEmail||null,[B.sessionId]:entry.sessionId||"",[B.control]:entry.control||"",[B.repeatCount]:entry.repeatCount||1,[B.uxReview]:!!entry.uxReview}}
+async function flushUnsavedDiagnosticsV315(){if(!token()||!navigator.onLine)return;const all=loadBugLog(),pending=all.filter(x=>!x.cloudSaved).slice(0,100);for(let i=0;i<pending.length;i+=10){const batch=pending.slice(i,i+10);try{await api(BUG_TABLE,{method:"POST",body:JSON.stringify({records:batch.map(x=>({fields:diagnosticFieldsV315(x)})),typecast:true})},{suppressBugLog:true});const codes=new Set(batch.map(x=>x.code));for(const x of all)if(codes.has(x.code))x.cloudSaved=true;saveBugLog(all)}catch(_){break}}renderBugLog()}
+function scheduleDiagnosticUploadV315(){clearTimeout(diagUploadTimerV315);diagUploadTimerV315=setTimeout(()=>flushUnsavedDiagnosticsV315().catch(()=>{}),850)}
+function logDiagnosticV315(classification,eventKey,message,control="",category="Other",notes="",userEmail="",unit=""){
+  try{const entry=makeDiagEntryV315({classification,eventKey,message,control,category,notes,userEmail,unit,prefix:classification==="Bug"?"BUG":classification==="User Mistake"?"USR":"EVT"});const all=loadBugLog();all.unshift(entry);saveBugLog(all);renderBugLog();scheduleDiagnosticUploadV315(entry);return entry}catch(_){return null}
+}
+logBug=function(category,message,action="",notes="",prefix="BUG",unit=""){
+  const opaque=String(message||"").trim()==="Script error.";
+  const cls=opaque?"Warning":(category==="Update"?"System":"Bug");
+  return logDiagnosticV315(cls,(opaque?"browser_opaque_script_error":"bug_"+String(category||"other").toLowerCase().replace(/[^a-z0-9]+/g,"_")),message,action,category||"Other",notes,currentUser()?.email||"",unit);
+};
+renderBugLog=function(){
+  const box=$("bugLogList");if(!box)return;const a=loadBugLog();if(!a.length){box.innerHTML="<p class='small'>No diagnostics have been recorded on this device yet.</p>";return}
+  box.innerHTML=a.slice(0,60).map(x=>`<div class="bug-entry"><div class="sectionTitleRow"><span class="bug-code">${esc(x.code)}</span><span class="bug-time">${esc(new Date(x.time).toLocaleString())}</span></div><div class="small"><b>${esc(x.classification||"Bug")}</b> • ${esc(x.category)} • ${esc(x.action||x.screen||"")}${x.cloudSaved?" • CLOUD SAVED":" • LOCAL"}</div><div class="bug-message">${esc(x.message)}</div>${x.eventKey?`<div class="small">Event: ${esc(x.eventKey)} • Repeat: ${esc(x.repeatCount||1)}</div>`:""}${x.notes?`<div class="small"><b>Notes:</b> ${esc(x.notes)}</div>`:""}${x.unit?`<div class="small mono">${esc(x.unit)}</div>`:""}</div>`).join("");
+};
+
+const showCoreV315=show;
+show=function(id){const before=currentScreenName();showCoreV315(id);if(id&&id!==before)logDiagnosticV315("Navigation","screen_"+id,"Opened screen: "+id,id,"Navigation")};
+function controlNameV315(el){return el?.id||el?.getAttribute?.("data-nav")||el?.name||String(el?.textContent||el?.getAttribute?.("aria-label")||el?.tagName||"").trim().replace(/\s+/g," ").slice(0,100)}
+function safeControlV315(el){const id=(el?.id||"").toLowerCase();const type=(el?.type||"").toLowerCase();return !(type==="password"||id.includes("pin")||id.includes("token")||id.includes("password"))}
+document.addEventListener("click",ev=>{const el=ev.target?.closest?.("button,a,[role='button']");if(!el||el.dataset?.diagIgnore==="yes")return;const c=controlNameV315(el);logDiagnosticV315("Action","action_"+currentScreenName()+"_"+c.toLowerCase().replace(/[^a-z0-9]+/g,"_").slice(0,80),"Selected "+c,c,"Button")},true);
+document.addEventListener("change",ev=>{const el=ev.target;if(!el||!el.matches?.("input,select,textarea"))return;const c=controlNameV315(el);let note="Field changed";if(safeControlV315(el)){if(el.tagName==="SELECT")note="Selected option: "+String(el.options?.[el.selectedIndex]?.text||"").slice(0,100);else if(["checkbox","radio"].includes((el.type||"").toLowerCase()))note="Selection: "+String(!!el.checked);else if((el.type||"").toLowerCase()==="file")note="Selected "+String(el.files?.length||0)+" file(s)"}logDiagnosticV315("Action","selection_"+currentScreenName()+"_"+c.toLowerCase().replace(/[^a-z0-9]+/g,"_").slice(0,80),note,c,"Other")},true);
+
+const loginCoreV315=loginAppAccountV30;
+loginAppAccountV30=async function(email,pin){
+  const e=String(email||"").trim().toLowerCase();logDiagnosticV315("Action","sign_in_attempt","Employee sign-in attempt","SIGN IN","Button","",e);
+  try{const acct=await loginCoreV315(email,pin);logDiagnosticV315("Success","sign_in_success","Employee signed in successfully","SIGN IN","Other","",acct?.email||e);return acct}
+  catch(err){const msg=String(err?.message||err);let cls="Bug",key="sign_in_error",cat="JavaScript";
+    if(/6-digit personal PIN|No Res-Com account|Incorrect personal PIN|does not have a personal PIN/i.test(msg)){cls="User Mistake";key=/Incorrect personal PIN/i.test(msg)?"sign_in_wrong_pin":/No Res-Com account/i.test(msg)?"sign_in_unknown_email":/does not have/i.test(msg)?"sign_in_pin_not_set":"sign_in_bad_pin_format";cat="Other"}
+    else if(/not active|not connected|cloud|network|fetch|Airtable/i.test(msg)){cls="Warning";key="sign_in_cloud_or_account_warning";cat="Airtable / Network"}
+    const entry=logDiagnosticV315(cls,key,msg,"SIGN IN",cat,"",e);const wrapped=new Error((cls==="User Mistake"?"SIGN-IN ISSUE: ":"SIGN-IN ERROR: ")+msg+(entry?.code?" ["+entry.code+"]":""));wrapped.cause=err;throw wrapped}
+};
+function recentSigninDiagnosticsHTMLV315(){const rows=loadBugLog().filter(x=>String(x.eventKey||"").startsWith("sign_in_")).slice(0,4);return rows.length?`<details class="unit"><summary><b>SIGN-IN HELP / RECENT ISSUES</b></summary>${rows.map(x=>`<div class="small"><b>${esc(x.classification||"")}</b> • ${esc(x.message||"")} <span class="mono">${esc(x.code||"")}</span></div>`).join("")}</details>`:`<div class="small">Sign-in diagnostics are active. Wrong PINs are recorded as user mistakes, not software bugs.</div>`}
+
+const accountGateHTMLCoreV315=accountGateHTMLV30;
+accountGateHTMLV30=function(mode,firstAdmin=false,msg=""){
+  let html=accountGateHTMLCoreV315(mode,firstAdmin,msg);
+  if(mode==="login"&&!firstAdmin){html=html.replace('<button class="outline" id="v311SetPinBtn"',`<button class="outline" id="v315EmailResetBtn" data-safe-bound="yes" type="button">FORGOT PIN? EMAIL RESET CODE</button><button class="outline" id="v311SetPinBtn"`);html=html.replace('<div id="v30GateMsg"',recentSigninDiagnosticsHTMLV315()+'<div id="v30GateMsg"')}
+  return html;
+};
+
+function pinResetRequestIdV315(){return "PR-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
+function resetCodeV315(){const a=crypto.getRandomValues(new Uint32Array(1));return String(a[0]%1000000).padStart(6,"0")}
+async function pinResetHashV315(acct,code){return sha256Text("RESCOM-PIN-EMAIL-V315|"+String(acct?.accountId||"")+"|"+String(code||""))}
+async function createEmailPinResetV315(email){
+  if(!token())throw new Error("This phone must be connected to Res-Com Cloud before requesting a reset code.");if(!navigator.onLine)throw new Error("An internet connection is required to email a reset code.");
+  email=String(email||"").trim().toLowerCase();if(!/^\S+@\S+\.\S+$/.test(email))throw new Error("Enter the email used for your Res-Com employee account.");const acct=await findAppAccountByEmailFastV314(email);if(!acct||acct.status!=="Active")throw new Error("No active Res-Com employee account was found for that email.");
+  const code=resetCodeV315(),expires=new Date(Date.now()+15*60*1000).toISOString(),hash=await pinResetHashV315(acct,code),rid=pinResetRequestIdV315(),now=new Date().toISOString();
+  await updateAccountV30(acct,{[AF.resetHash]:hash,[AF.resetExpires]:expires});
+  const fields={[PRF_V315.id]:rid,[PRF_V315.requested]:now,[PRF_V315.accountId]:acct.accountId,[PRF_V315.email]:acct.email,[PRF_V315.code]:code,[PRF_V315.expires]:expires,[PRF_V315.status]:"Requested",[PRF_V315.device]:deviceSummary(),[PRF_V315.notes]:"One-time reset code for PIN recovery. Requires Airtable Automation email delivery."};
+  const d=await api(PIN_RESET_TABLE_V315,{method:"POST",body:JSON.stringify({records:[{fields}],typecast:true})});
+  logDiagnosticV315("Action","pin_reset_email_requested","PIN reset email code requested","FORGOT PIN","Other","",acct.email);return {acct,requestRecordId:d.records?.[0]?.id||"",requestId:rid,expires};
+}
+function openEmailPinResetV315(prefill=""){
+  document.getElementById("v315EmailResetOverlay")?.remove();const ov=document.createElement("div");ov.id="v315EmailResetOverlay";ov.className="v308SignupOverlay";let request=null;
+  ov.innerHTML=`<div class="v308SignupCard"><button class="gray" id="v315EmailResetBack" data-safe-bound="yes" type="button">← BACK TO SIGN IN</button><h2>Forgot Personal PIN</h2><p class="small">Your old PIN cannot be read back because Res-Com stores only a secure hash. We can email a <b>one-time 6-digit reset code</b> to the employee email on the account.</p><label>Employee Email</label><input id="v315ResetEmail" type="email" value="${esc(prefill)}" autocomplete="email" autocapitalize="none"><button class="outline" id="v315RequestReset" data-safe-bound="yes" type="button">EMAIL RESET CODE</button><div id="v315ResetRequestMsg" class="v309ResetMsg"></div><hr><label>Reset Code From Email</label><input id="v315ResetCode" inputmode="numeric" maxlength="6" pattern="[0-9]*" autocomplete="one-time-code">${pinInputHTMLV311("v315NewPin","New 6-Digit Personal PIN")}${pinInputHTMLV311("v315NewPin2","Confirm New Personal PIN")}<button class="orange" id="v315FinishReset" data-safe-bound="yes" type="button">VERIFY CODE & SAVE NEW PIN</button><div id="v315ResetFinishMsg" class="v309ResetMsg"></div><div class="v308KeyboardSpacer"></div></div>`;
+  document.body.appendChild(ov);$("v315EmailResetBack")?.addEventListener("click",()=>ov.remove());
+  $("v315RequestReset")?.addEventListener("click",async()=>{const b=$("v315RequestReset"),m=$("v315ResetRequestMsg");b.disabled=true;b.textContent="REQUESTING…";m.textContent="";try{request=await createEmailPinResetV315($("v315ResetEmail")?.value);m.textContent="✓ RESET REQUEST CREATED. The Airtable email automation must be enabled for the code to arrive. The code expires in 15 minutes.";b.textContent="✓ CODE REQUESTED"}catch(e){m.textContent=e?.message||String(e);b.disabled=false;b.textContent="EMAIL RESET CODE"}});
+  $("v315FinishReset")?.addEventListener("click",async()=>{const b=$("v315FinishReset"),m=$("v315ResetFinishMsg");b.disabled=true;b.textContent="VERIFYING…";m.textContent="";try{const email=String($("v315ResetEmail")?.value||"").trim().toLowerCase(),code=String($("v315ResetCode")?.value||"").replace(/\D/g,"");if(code.length!==6)throw new Error("Enter the 6-digit reset code from the email.");const acct=await findAppAccountByEmailFastV314(email);if(!acct)throw new Error("Employee account not found.");if(!acct.resetHash||!acct.resetExpires||Date.parse(acct.resetExpires)<=Date.now())throw new Error("That reset code expired. Request a new code.");if((await pinResetHashV315(acct,code))!==acct.resetHash){logDiagnosticV315("User Mistake","pin_reset_wrong_code","Incorrect emailed PIN reset code","VERIFY RESET CODE","Other","",email);throw new Error("Incorrect reset code. Check the email and try again.")};const p=normalizePersonalPinV311($("v315NewPin")?.value),p2=normalizePersonalPinV311($("v315NewPin2")?.value);if(!validPersonalPinV311(p))throw new Error("Choose a 6-digit personal PIN.");if(p!==p2)throw new Error("The two new PIN entries do not match.");const fresh=await setPersonalPinV311(acct,p);if(request?.requestRecordId)try{await api(PIN_RESET_TABLE_V315,{method:"PATCH",body:JSON.stringify({records:[{id:request.requestRecordId,fields:{[PRF_V315.status]:"Used",[PRF_V315.used]:new Date().toISOString()}}],typecast:true})})}catch(_){}saveCurrentUser(fresh);markSessionGraceV308(15*60*1000);logDiagnosticV315("Success","pin_reset_success","Personal PIN reset successfully by emailed code","VERIFY RESET CODE","Other","",email);ov.remove();$("pinGate")?.classList.add("hidden");show("home");applyCurrentUserUI();try{await refreshSharedEquipment()}catch(_){}}catch(e){m.textContent=e?.message||String(e);b.disabled=false;b.textContent="VERIFY CODE & SAVE NEW PIN"}});
+  setTimeout(()=>$("v315ResetEmail")?.focus({preventScroll:true}),80);
+}
+const renderGateCoreV315=renderAccountGateV30;
+renderAccountGateV30=async function(msg=""){await renderGateCoreV315(msg);const b=$("v315EmailResetBtn");if(b&&!b.dataset.v315Bound){b.dataset.v315Bound="yes";b.addEventListener("click",()=>openEmailPinResetV315($("v311LoginEmail")?.value||""))}};
+
+// Durable offline photo queue (IndexedDB).
+const PHOTO_DB_V315="rescom_photo_queue_v315",PHOTO_STORE_V315="photos";
+function photoDbV315(){return new Promise((resolve,reject)=>{const r=indexedDB.open(PHOTO_DB_V315,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(PHOTO_STORE_V315))r.result.createObjectStore(PHOTO_STORE_V315,{keyPath:"id"})};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+async function photoStoreOpV315(mode,cb){const db=await photoDbV315();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE_V315,mode),s=tx.objectStore(PHOTO_STORE_V315);let val;try{val=cb(s)}catch(e){reject(e);return}tx.oncomplete=()=>resolve(val?.result);tx.onerror=()=>reject(tx.error)})}
+async function photoQueueAllV315(){const db=await photoDbV315();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE_V315,"readonly"),r=tx.objectStore(PHOTO_STORE_V315).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error)})}
+async function queuePhotoFilesV315(targetKind,unitId,entryId,fieldId,files){if(isGuestUserV305())return 0;let n=0;for(const file of Array.from(files||[])){const payload=await fileToUpload(file);const rec={id:"PQ-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8),targetKind,unitId,entryId:entryId||"",fieldId,payload,createdAt:new Date().toISOString()};await photoStoreOpV315("readwrite",s=>s.put(rec));n++}if(n)logDiagnosticV315("System","offline_photo_queued","Queued "+n+" photo(s) for automatic cloud upload","PHOTO QUEUE","Other","",currentUser()?.email||"",unitId);return n}
+async function deleteQueuedPhotoV315(id){return photoStoreOpV315("readwrite",s=>s.delete(id))}
+async function uploadPreparedV315(recordId,fieldId,payload){const res=await fetch(`https://content.airtable.com/v0/${BASE}/${recordId}/${fieldId}/uploadAttachment`,{method:"POST",headers:{"Authorization":"Bearer "+token(),"Content-Type":"application/json"},body:JSON.stringify(payload)});if(!res.ok){let msg="Photo upload error "+res.status;try{msg+=": "+JSON.stringify(await res.json())}catch(_){}throw new Error(msg)}return res.json()}
+async function findHistoryRecordByEntryV315(entryId){const p=new URLSearchParams({filterByFormula:`{Entry ID}='${formulaEscape(entryId)}'`,maxRecords:"1"});return (await api(HIST_TABLE+"?"+p.toString())).records?.[0]||null}
+async function flushPhotoQueueV315(){if(isGuestUserV305()||!token()||!navigator.onLine)return;const items=await photoQueueAllV315();if(!items.length)return;let done=0;for(const item of items){try{let rid="";if(item.targetKind==="equipment")rid=(await findRemoteEquipment(item.unitId))?.id||"";else rid=(await findHistoryRecordByEntryV315(item.entryId))?.id||"";if(!rid)continue;await uploadPreparedV315(rid,item.fieldId,item.payload);await deleteQueuedPhotoV315(item.id);done++}catch(e){logBug("Airtable / Network",e?.message||String(e),"Offline photo upload",item.unitId||item.entryId||"","PHOTO",item.unitId||"")}}if(done){setStatus("synced","✓ "+done+" QUEUED PHOTO"+(done===1?"":"S")+" UPLOADED");logDiagnosticV315("Success","offline_photo_uploaded","Uploaded "+done+" previously queued photo(s)","PHOTO QUEUE","Other")}}
+function selectedFilesV315(...ids){return ids.flatMap(id=>Array.from($(id)?.files||[]))}
+function addPhotoSourcesV315(oldId,cameraId,libraryId){const old=$(oldId);if(!old)return;old.id=cameraId;old.setAttribute("capture","environment");const wrap=document.createElement("div");wrap.className="v315PhotoLibrary";wrap.innerHTML=`<div class="small"><b>Camera Roll / Photo Library</b></div><input id="${libraryId}" type="file" accept="image/*" multiple><div class="small">Use TAKE PHOTO above for the camera, or choose existing pictures here.</div>`;old.insertAdjacentElement("afterend",wrap)}
+const setupCoreV315=setupForm;
+setupForm=function(u){setupCoreV315(u);addPhotoSourcesV315("f_photos","f_photos_camera","f_photos_library");const b=$("saveSetup");if(!b)return;b.onclick=async()=>{b.disabled=true;b.textContent="SAVING...";Object.assign(u,{assigned:true,type:$("f_type").value.trim()||"Other",site:$("f_site").value.trim(),accountEmail:$("f_account_email").value.trim(),accountPhone:$("f_account_phone").value.trim(),location:$("f_loc").value.trim(),mfr:$("f_mfr").value.trim(),model:$("f_model").value.trim(),serial:$("f_serial").value.trim(),thermo:$("f_thermo").value.trim(),install:$("f_install").value,warranty:$("f_warranty").value,due:$("f_due").value,notes:$("f_notes").value.trim(),accountRecordId:"",accountName:""});const files=selectedFilesV315("f_photos_camera","f_photos_library");const ok=await saveEquipment(u);if(files.length&&!isGuestUserV305()){if(ok){try{setStatus("pending","UPLOADING EQUIPMENT PHOTOS...");await uploadMany(currentRecordId,F.photos,files);setStatus("synced","✓ EQUIPMENT + PHOTOS SAVED")}catch(err){const n=await queuePhotoFilesV315("equipment",u.id,"",F.photos,files);alert("Equipment saved. "+n+" photo(s) were queued and will upload automatically when the connection is ready.")}}else{const n=await queuePhotoFilesV315("equipment",u.id,"",F.photos,files);setStatus("pending",n+" PHOTO(S) QUEUED FOR CLOUD UPLOAD")}}renderList();await renderDetail(await loadUnit(u.id))}}
+const renderDetailCoreV315=renderDetail;
+renderDetail=async function(u){await renderDetailCoreV315(u);addPhotoSourcesV315("detailPhotos","detailPhotosCamera","detailPhotosLibrary");const b=$("uploadDetailPhotos");if(b&&!isGuestUserV305()){b.onclick=async()=>{const files=selectedFilesV315("detailPhotosCamera","detailPhotosLibrary");if(!files.length){alert("Take a photo or choose one from the camera roll first.");return}try{let rid=u.recordId||currentRecordId;if(!rid&&navigator.onLine)rid=(await findRemoteEquipment(u.id))?.id||"";if(!navigator.onLine||!rid){const n=await queuePhotoFilesV315("equipment",u.id,"",F.photos,files);setStatus("pending",n+" PHOTO(S) QUEUED — WILL UPLOAD ONLINE");alert(n+" photo(s) saved to the offline upload queue.");return}await uploadMany(rid,F.photos,files);setStatus("synced","✓ PHOTOS SAVED TO CLOUD");await renderDetail(await loadUnit(u.id))}catch(err){const n=await queuePhotoFilesV315("equipment",u.id,"",F.photos,files);alert("Photo upload did not finish. "+n+" photo(s) are queued for automatic retry.")}}}}
+const historyFormCoreV315=window.historyForm;
+window.historyForm=function(kind){historyFormCoreV315(kind);addPhotoSourcesV315("h_photos","h_photos_camera","h_photos_library");const b=$("saveHist"),parts=kind==="Parts Replacement";if(!b)return;b.onclick=async()=>{b.disabled=true;b.textContent="SAVING...";const u=getLocal(currentId),tech=(currentUser()?.name||$("h_tech")?.value||"").trim();if(tech)addTechName(tech);const e={id:entryId(),date:$("h_date").value,tech,kind,notes:$("h_notes").value.trim(),part:parts?$("h_part").value.trim():"",partnotes:parts?$("h_notes").value.trim():""};const files=selectedFilesV315("h_photos_camera","h_photos_library"),result=await saveHistory(u,e);if(files.length&&!isGuestUserV305()){if(typeof result==="string"){try{await uploadMany(result,H.photos,files);setStatus("synced","✓ SERVICE + PHOTOS SAVED TO CLOUD")}catch(err){const n=await queuePhotoFilesV315("history",u.id,e.id,H.photos,files);alert("Service saved. "+n+" photo(s) are queued for automatic retry.")}}else{const n=await queuePhotoFilesV315("history",u.id,e.id,H.photos,files);setStatus("pending",n+" SERVICE PHOTO(S) QUEUED — WILL UPLOAD ONLINE")}}await renderDetail(await loadUnit(currentId))}}
+const flushQueueCoreV315=flushQueue;
+flushQueue=async function(){const r=await flushQueueCoreV315();try{await flushPhotoQueueV315()}catch(_){}try{await flushUnsavedDiagnosticsV315()}catch(_){}return r};
+
+// QR registry/audit. Equipment QR URLs are permanent. Staff QR secrets are never stored as readable URLs.
+const fromRecordCoreV315=fromRecord;
+fromRecord=function(r){const u=fromRecordCoreV315(r),f=r.fields||{};const explicit=f["QR Setup Complete"];u.assigned=explicit!==undefined?!!explicit:!!(f["Equipment Type"]||f["Equipment Type (Custom)"]||f["Manufacturer"]||f["Model Number"]||f["Serial Number"]||f["Customer / Site Name"]||f["Location"]);u.qrUrl=f["QR URL"]||appURL(u.id);u.qrScanCount=Number(f["QR Scan Count"]||0);return u};
+const remoteHistoryCoreV315=remoteHistory;
+remoteHistory=async function(recordId){
+  let offset="",found=[],unitId=currentId||"";do{const params=new URLSearchParams({pageSize:"100"});if(offset)params.set("offset",offset);const data=await api(HIST_TABLE+"?"+params.toString());for(const r of (data.records||[])){const links=r.fields["Equipment"]||[];const match=Array.isArray(links)&&links.some(x=>typeof x==="string"?(x===recordId||x===unitId):(x?.id===recordId||x?.name===unitId));if(match)found.push({rid:r.id,id:r.fields["Entry ID"]||"",date:r.fields["Date"]||"",tech:r.fields["Technician"]||"",kind:r.fields["Visit Type"]||"",notes:r.fields["Work Performed / Notes"]||"",part:r.fields["Part / Component"]||"",partnotes:r.fields["Part Notes"]||"",photos:r.fields["Service Photos"]||[],userEmail:r.fields["Company User Email"]||""})}offset=data.offset||""}while(offset);return found.sort((a,b)=>(b.date||"").localeCompare(a.date||""))
+};
+const saveEquipmentCoreV315=saveEquipment;
+saveEquipment=async function(u){
+  upsertLocal(u);setStatus("pending","SAVING...");if(isGuestUserV305()){setStatus("pending","GUEST • EQUIPMENT SAVED ON THIS DEVICE ONLY");return false}if(!token()||!navigator.onLine){enqueue({kind:"equipment",data:u});setStatus("pending","OFFLINE — WILL SYNC");return false}
+  try{const existing=await findRemoteEquipment(u.id),now=new Date().toISOString();const fields={[F.unit]:u.id,[F.type]:(['Gas Furnace','Boiler','Air Handler','Condenser','Heat Pump','Other'].includes(u.type)?u.type:'Other'),[F.customType]:u.type||'', [F.mfr]:u.mfr||'', [F.model]:u.model||'', [F.serial]:u.serial||'', [F.loc]:u.location||'', [F.thermo]:u.thermo||'', [F.site]:u.site||'', [F.install]:u.install||null,[F.warranty]:u.warranty||null,[F.due]:u.due||null,[F.archived]:!!u.archived,[F.account]:[],[F.accountEmail]:u.accountEmail||null,[F.customerPhone]:u.accountPhone||null,[F.lastUpdatedBy]:currentUser()?.email||null,[F.notes]:u.notes||'', [F.qrUrl]:appURL(u.id),[F.qrUpdated]:now,[F.qrSetup]:!!u.assigned};let out;if(existing){out=await api(EQUIP_TABLE,{method:'PATCH',body:JSON.stringify({records:[{id:existing.id,fields}],typecast:true})});currentRecordId=existing.id}else{out=await api(EQUIP_TABLE,{method:'POST',body:JSON.stringify({records:[{fields}],typecast:true})});currentRecordId=out.records?.[0]?.id||null}u.recordId=currentRecordId;u.qrUrl=appURL(u.id);upsertLocal(u);setStatus('synced','✓ SAVED & SYNCED');return true}catch(e){enqueue({kind:'equipment',data:u});setStatus('pending','SAVED LOCALLY — CLOUD SYNC PENDING');logBug('Airtable / Network',e?.message||String(e),'Save equipment',u.id,'NET',u.id);return false}
+};
+async function registerBlankQrsV315(ids){if(isGuestUserV305())return;if(!token()||!navigator.onLine){for(const id of ids)enqueue({kind:"equipment",data:blankUnit(id)});return}const now=new Date().toISOString();for(let i=0;i<ids.length;i+=10){const batch=ids.slice(i,i+10),records=batch.map(id=>({fields:{[F.unit]:id,[F.qrUrl]:appURL(id),[F.qrUpdated]:now,[F.qrSetup]:false,[F.qrScanCount]:0,[F.lastUpdatedBy]:currentUser()?.email||null}}));try{const d=await api(EQUIP_TABLE,{method:"POST",body:JSON.stringify({records,typecast:true})});for(const r of (d.records||[])){const id=r.fields?.["Unit ID"]||r.fields?.[F.unit];const u=getLocal(id)||blankUnit(id);u.recordId=r.id;u.qrUrl=appURL(id);upsertLocal(u)}}catch(e){for(const id of batch)enqueue({kind:"equipment",data:blankUnit(id)});logBug("Airtable / Network",e?.message||String(e),"Register blank QR labels",batch.join(","),"QR")}}}
+generateBlankLabels=async function(count){let n=Math.max(1,Math.min(50,parseInt(count||1,10)||1));if($("qrPrintQuantity"))$("qrPrintQuantity").value=String(n);const ids=[];for(let i=0;i<n;i++){const id=uid();upsertLocal(blankUnit(id));ids.push(id)}renderQrLabels(ids);renderList();show("labelScreen");registerBlankQrsV315(ids).then(()=>logDiagnosticV315("Success","equipment_qr_registered","Registered "+ids.length+" equipment QR label(s) in Airtable","GENERATE QR LABELS","QR / Scan")).catch(()=>{})};
+async function auditEquipmentQrScanV315(id){if(!id||!token()||!navigator.onLine)return;try{const r=await findRemoteEquipment(id);if(!r)return;const count=Number(r.fields?.["QR Scan Count"]||0)+1;await api(EQUIP_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:r.id,fields:{[F.lastQrScanAt]:new Date().toISOString(),[F.lastQrScanBy]:currentUser()?.email||null,[F.qrScanCount]:count,[F.qrUrl]:appURL(id),[F.qrUpdated]:new Date().toISOString()}}],typecast:true})});logDiagnosticV315("Success","equipment_qr_scan","Equipment QR opened successfully","EQUIPMENT QR","QR / Scan","",currentUser()?.email||"",id)}catch(e){logBug("QR / Scan",e?.message||String(e),"Equipment QR scan audit",id,"QR",id)}}
+const generateStaffQrCoreV315=generateStaffQrV308;
+generateStaffQrV308=async function(acct){const info=await generateStaffQrCoreV315(acct);Promise.resolve().then(()=>updateAccountV30(acct,{[AF.staffQrGeneratedAt]:new Date().toISOString(),[AF.staffQrGeneratedBy]:currentUser()?.email||null})).catch(()=>{});logDiagnosticV315("Success","staff_qr_generated","Generated one-use Staff Sign-In QR","SIGN-IN QR","QR / Scan","",currentUser()?.email||"");return info};
+const consumeStaffQrCoreV315=consumeStaffQrV308;
+consumeStaffQrV308=async function(){const acct=await consumeStaffQrCoreV315();if(acct){const next=(Number(acct.staffQrUseCount||0)||0)+1;Promise.resolve().then(()=>updateAccountV30(acct,{[AF.staffQrLastUsedAt]:new Date().toISOString(),[AF.staffQrUseCount]:next})).catch(()=>{});logDiagnosticV315("Success","staff_qr_sign_in","Staff Sign-In QR verified and signed in","STAFF QR","QR / Scan","",acct.email)}return acct};
+
+async function checkRepeatedMistakesV315(){const me=currentUser();if(!me||me.role!=="Admin"||isGuestUserV305(me)||!token()||!navigator.onLine)return;try{const p=new URLSearchParams({pageSize:"100"});const d=await api(BUG_TABLE+"?"+p.toString(),{}, {suppressBugLog:true});const since=Date.now()-7*86400000,groups=new Map();for(const r of (d.records||[])){const f=r.fields||{},cls=typeof f["Classification"]==="string"?f["Classification"]:f["Classification"]?.name;if(cls!=="User Mistake"||Date.parse(f["Reported At"]||0)<since)continue;const key=f["Event Key"]||f["Message"]||"unknown";if(!groups.has(key))groups.set(key,{count:0,users:new Set(),message:f["Message"]||key,recordId:r.id});const g=groups.get(key);g.count++;if(f["User Email"])g.users.add(String(f["User Email"]).toLowerCase())}const alerts=[...groups.entries()].filter(([,g])=>g.count>=8||(g.count>=5&&g.users.size>=2)).sort((a,b)=>b[1].count-a[1].count);document.getElementById("v315UxAlert")?.remove();if(!alerts.length)return;const [key,g]=alerts[0],home=$("home");if(!home)return;const box=document.createElement("div");box.id="v315UxAlert";box.className="unit v315UxAlert";box.innerHTML=`<b>⚠️ REPEATED USER MISTAKE</b><div>${esc(g.message)}</div><div class="small">${g.count} occurrence(s) across ${g.users.size||"multiple"} employee account(s) in the recent diagnostic history. If people keep making the same mistake, it may be time to change the wording or workflow.</div>`;(home.querySelector(".card")||home).prepend(box);try{await api(BUG_TABLE,{method:"PATCH",body:JSON.stringify({records:[{id:g.recordId,fields:{[B.uxReview]:true,[B.repeatCount]:g.count}}],typecast:true})},{suppressBugLog:true})}catch(_){}}catch(_){}}
+
+// Auto-update: check at startup/resume and auto-reload once when a new service worker takes control.
+let autoReloadedV315=false;
+if("serviceWorker" in navigator){navigator.serviceWorker.addEventListener("controllerchange",()=>{if(autoReloadedV315)return;autoReloadedV315=true;sessionStorage.setItem("rescom_sw_reload_v315","1");location.reload()});window.addEventListener("load",()=>navigator.serviceWorker.getRegistration().then(r=>r?.update()).catch(()=>{}));}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkForAppUpdate().catch(()=>{});navigator.serviceWorker?.getRegistration?.().then(r=>r?.update()).catch(()=>{});flushQueue().catch(()=>{});checkRepeatedMistakesV315().catch(()=>{})}});
+setInterval(()=>{if(navigator.onLine){checkForAppUpdate().catch(()=>{});navigator.serviceWorker?.getRegistration?.().then(r=>r?.update()).catch(()=>{})}},5*60*1000);
+
+const bootCoreV315=bootResComV30;
+bootResComV30=async function(){
+  logDiagnosticV315("System","app_session_start","Res-Com app session started","APP START","Other");
+  const q=new URLSearchParams(location.search),staff=!!q.get("staff"),requested=(q.get("unit")||q.get("equipment")||"").trim().toUpperCase();
+  if(staff){try{hideLoadingScreen()}catch(_){};await renderAccountGateV30("Staff Sign-In QR detected. Verifying…");setTimeout(()=>{flushQueue().catch(()=>{});checkRepeatedMistakesV315().catch(()=>{})},500);return}
+  await bootCoreV315();if(requested)setTimeout(()=>auditEquipmentQrScanV315(requested),400);setTimeout(()=>{flushQueue().catch(()=>{});checkRepeatedMistakesV315().catch(()=>{})},700)
+};
+
+
 async function clearOldResComCachesV314(){
   if(!("caches" in window))return;
   try{
     const keys=await caches.keys();
-    await Promise.all(keys.filter(k=>k.startsWith("rescom-qr")&&!k.includes("v30-14")).map(k=>caches.delete(k)));
+    await Promise.all(keys.filter(k=>k.startsWith("rescom-qr")&&!k.includes("v30-15")).map(k=>caches.delete(k)));
   }catch(_){}
 }
 
@@ -4317,5 +4498,5 @@ async function clearOldResComCachesV314(){
   <button type="button" id="navBugs" data-nav="bugs">🐞 BUGS</button>
 </nav>
 
-<script src="./modern-ui.js?v=30.14"></script>
+<script src="./modern-ui.js?v=30.15"></script>
 </body></html>

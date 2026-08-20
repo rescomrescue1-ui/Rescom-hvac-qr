@@ -1,5 +1,5 @@
 {
-  "version": "30.14",
-  "build": "Aug 19, 2026 6:10 PM",
-  "notes": "Fast PIN / Fresh Cloud Reads: fixes the older PIN-delay source by preventing service-worker caching of Airtable/cloud GET responses, using browser no-store reads, reusing the already-loaded account list for PIN sign-in, and moving Last Login bookkeeping to the background without changing equipment QR links or PIN security."
+  "version": "30.15",
+  "build": "Aug 20, 2026 12:25 PM",
+  "notes": "Diagnostics + PIN recovery + QR audit + offline photos: classifies bugs versus user mistakes, records navigation/actions, flags repeated UX mistakes for Admin review, adds email reset-code workflow, registers/audits equipment and Staff QR activity in Airtable, queues photos durably offline, adds separate camera and camera-roll choices, fixes Staff QR scanning while already signed in, and strengthens automatic updates."
 }

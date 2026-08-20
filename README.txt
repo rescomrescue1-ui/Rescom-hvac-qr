@@ -1,9 +1,24 @@
-Res-Com HVAC QR v30.14 — Fast PIN / Fresh Cloud Reads
+RES-COM HVAC QR — v30.15
+Diagnostics • Email PIN Reset • Offline Photo Queue • QR Audit • Auto Update
 
-This release fixes the PIN delay at the cloud/cache layer. Older Res-Com service workers used cache-first behavior for every GET request, which could also cache Airtable account responses. That could leave another phone looking at an older PIN/account record after an Admin had already changed it.
+IMPORTANT
+Keep the SAME GitHub Pages repository/path so every printed equipment QR label remains valid:
+https://rescomrescue1-ui.github.io/Rescom-hvac-qr/
 
-v30.14 never caches Airtable or other third-party cloud requests. Airtable GETs also use browser no-store mode. Sign In reuses the account list that is already on the login screen, and a correct PIN opens the app before the non-critical Last Login update finishes. PIN hashing/security is unchanged.
+WHAT'S NEW
+- Bug diagnostics distinguish actual bugs from user mistakes and normal actions/navigation.
+- Admin repeated-mistake alerts help identify confusing workflows.
+- Forgot PIN uses a 15-minute one-time email reset code; existing PINs remain non-recoverable by design.
+- Equipment QR URLs/scans and Staff QR audit data are synchronized to Airtable.
+- Staff QR can be consumed correctly even when another account is already signed in.
+- Offline equipment/service photos persist in IndexedDB and retry later.
+- Separate camera and camera-roll/photo-library choices.
+- Stronger automatic app/service-worker update checks.
 
-UPLOAD: unzip this package and upload the files to the SAME GitHub repository, branch, root, and Pages path. Replace files with matching names. Do not move or rename the site.
+EMAIL RESET NOTE
+The included AIRTABLE_PIN_RESET_EMAIL_SETUP.txt describes the one-time Airtable Automation required for actual reset-code email delivery.
 
-IMPORTANT AFTER UPLOAD: open the normal Res-Com website once while online, wait about 5 seconds so v30.14 can activate and delete the old service-worker cache, close it completely, then reopen the Home Screen app. Confirm APP v30.14 before testing a newly assigned PIN on another phone.
+DEPLOYMENT
+Upload the CONTENTS of this folder to the root of the existing Rescom-hvac-qr GitHub repository on main.
+Do not rename the repository or GitHub Pages path.
+After upload, open the normal Res-Com URL online, wait a few seconds, close it, and reopen the Home Screen app. Confirm APP v30.15.

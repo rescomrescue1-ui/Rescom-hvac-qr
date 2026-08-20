@@ -1,0 +1,34 @@
+RES-COM v30.15 — ONE-TIME AIRTABLE EMAIL AUTOMATION SETUP
+
+The app cannot recover or email an employee's existing personal PIN because only a secure PIN hash is stored.
+Instead, v30.15 creates a 15-minute one-time reset code in the PIN Reset Requests table.
+
+To make the email arrive automatically, create ONE Airtable Automation in the existing
+"Res-Com Equipment Service Records" base:
+
+1. Open Airtable → Automations → Create automation.
+2. Trigger: "When record created".
+3. Table: "PIN Reset Requests".
+4. Add a condition if offered: Status = Requested.
+5. Action: "Send email".
+6. To: use the record's Email field.
+7. Subject: Res-Com Personal PIN Reset Code
+8. Suggested message:
+
+   A Res-Com personal PIN reset was requested.
+
+   Reset code: {Reset Code}
+   Expires: {Expires At}
+
+   Open the Res-Com app, tap FORGOT PIN? EMAIL RESET CODE, enter this code,
+   and choose a new 6-digit personal PIN.
+
+   If you did not request this reset, ignore this email and tell a Res-Com Admin.
+
+9. Turn the automation ON.
+10. Test it once with your own employee email before company-wide use.
+
+Security notes:
+- Do not email the employee's actual personal PIN. The app does not know it.
+- Reset codes expire after 15 minutes and are one-use.
+- Staff Sign-In QR uses separate fields and does not interfere with PIN reset codes.

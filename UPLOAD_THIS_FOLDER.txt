@@ -1,15 +1,15 @@
-RES-COM HVAC QR v30.14
-
-Upload these files to the SAME GitHub repository / main branch / root used by the existing Res-Com app.
+UPLOAD RES-COM HVAC QR v30.15
 
 1. Unzip this package.
-2. GitHub → Add file → Upload files.
-3. Upload/replace these files at the repo root.
-4. Commit the upload.
-5. Do NOT rename or move the repository or Pages path.
-6. Open the normal Res-Com website once online and wait about 5 seconds.
-7. Close it completely, reopen the Home Screen app, and confirm APP v30.14.
+2. Open the EXISTING GitHub repository: Rescom-hvac-qr
+3. Stay on branch: main
+4. Add file → Upload files
+5. Upload the CONTENTS of this folder into the repository ROOT.
+6. Replace matching files and commit.
+7. DO NOT change the repository name or GitHub Pages path.
+8. Open https://rescomrescue1-ui.github.io/Rescom-hvac-qr/ once while online.
+9. Wait several seconds, close the browser/Home Screen app, then reopen it.
+10. Confirm the app shows APP v30.15.
 
-The reopen matters for v30.14 because the new service worker deletes older caches that could contain stale Airtable account/PIN responses.
-
-Existing printed equipment QR codes keep the same URLs.
+For Forgot PIN email delivery, complete AIRTABLE_PIN_RESET_EMAIL_SETUP.txt once in Airtable.
+Do not delete the existing Home Screen app first; it may contain local/offline data and the device's cloud connection.

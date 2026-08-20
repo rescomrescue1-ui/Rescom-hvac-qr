@@ -1,4 +1,4 @@
-/* Res-Com HVAC QR v30.13 — Admin Give Employee PIN */
+/* Res-Com HVAC QR v30.15 — Diagnostics / PIN Recovery / Offline Photos / QR Audit */
 /* Res-Com HVAC QR v30 — Modern Field UI */
 :root{
   --rc-bg:#f4f7fb;
@@ -472,3 +472,9 @@ body[data-theme="light"] .guestLocalNote{border-color:rgba(0,0,0,.22)}
 /* v30.11 personal PIN: auth forms reuse the keyboard-safe full-screen v308SignupOverlay. */
 /* v30.12: PIN save verification uses Airtable PATCH response + read-back retry; no visual regression changes. */
 #v311SignupOverlay input[inputmode="numeric"],#v311PinResetOverlay input[inputmode="numeric"],#pinGate input[inputmode="numeric"]{font-variant-numeric:tabular-nums;letter-spacing:.12em}
+
+/* v30.15 — explicit photo sources + diagnostics alert */
+.v315PhotoLibrary{margin-top:10px;padding-top:10px;border-top:1px solid rgba(127,127,127,.3)}
+.v315PhotoLibrary input[type="file"]{width:100%;margin-top:6px}
+.v315UxAlert{border-left:5px solid #e6212a;margin-bottom:12px}
+#v315UxAlert b{display:block;margin-bottom:5px}
