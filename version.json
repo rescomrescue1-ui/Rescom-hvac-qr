@@ -1,5 +1,5 @@
 {
-  "version": "30.16.6",
-  "build": "Aug 20, 2026 8:30 PM",
-  "notes": "Blank QR printing now always creates exactly 4 labels per sheet. Quantity options were removed so the 4-up print format stays consistent."
+  "version": "30.16.7",
+  "build": "Aug 20, 2026 3:04 PM",
+  "notes": "Signed-in Res-Com employees can open equipment without entering the 4-digit Company PIN. Company PIN remains for account creation and personal-PIN reset authorization."
 }

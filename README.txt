@@ -1,3 +1,9 @@
+Res-Com HVAC QR v30.16.7
+
+- Signed-in employees open equipment directly without the 4-digit Company PIN.
+- Company PIN remains for employee account creation and personal-PIN reset authorization.
+- Existing QR links, equipment/history data, and the fixed 4-label print sheet are unchanged.
+
 Res-Com HVAC QR v30.16.6
 
 - Blank QR printing now always creates exactly 4 labels per sheet.

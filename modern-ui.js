@@ -1,9 +1,9 @@
-/* Res-Com HVAC QR v30.16.5 — Final Stabilization */
+/* Res-Com HVAC QR v30.16.7 — Signed-In Equipment Access */
 (() => {
   "use strict";
 
-  const MODERN_VERSION = "30.16.6";
-  const MODERN_BUILD = "Aug 20, 2026 2:35 PM";
+  const MODERN_VERSION = "30.16.7";
+  const MODERN_BUILD = "Aug 20, 2026 3:04 PM";
   const THEME_KEY = "rescom_theme_v30";
   let bugUploadBusy = false;
   let deferredInstallPrompt = null;

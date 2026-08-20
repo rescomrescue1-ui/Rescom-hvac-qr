@@ -1,0 +1,8 @@
+RES-COM HVAC QR — VERSION 30.16.7
+Released: Aug 20, 2026 3:04 PM
+
+SIGNED-IN EQUIPMENT ACCESS
+- A signed-in Res-Com employee no longer has to enter the 4-digit Company PIN to open equipment.
+- Opening/searching/scanning a QR goes directly to the equipment record after employee sign-in.
+- The 4-digit Company PIN remains available for employee account creation and personal-PIN reset authorization.
+- Existing QR URLs, Unit IDs, Airtable equipment/service history, and the fixed 4-label print sheet are unchanged.
