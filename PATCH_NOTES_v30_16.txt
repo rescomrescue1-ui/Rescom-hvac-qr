@@ -1,0 +1,11 @@
+Res-Com HVAC QR v30.16 — Safe Release Control
+
+- Added Developer Access.
+- Kai Wu and Paul Straface are configured as Developers in Airtable.
+- Candidate files are separated from the approved team release.
+- Developer Release Center can release v30.16 or roll team back to v30.15.
+- Normal equipment QR links stay permanent.
+- Guest Mode is disabled for Res-Com-only access.
+- MORE -> MANUAL gets a direct hard-bound route.
+- No intentional mid-job forced reload when a candidate is uploaded.
+- Existing PINs, equipment, service history, Staff QR, diagnostics and offline photo queue remain compatible.

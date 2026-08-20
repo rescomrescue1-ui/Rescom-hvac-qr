@@ -1,4 +1,4 @@
-const CACHE = "rescom-qr-v30-15-diagnostics-email-pin-offline-photos-1225";
+const CACHE = "rescom-qr-v30-16-diagnostics-email-pin-offline-photos-1225";
 const CORE = [
   "./index.html",
   "./version.json",

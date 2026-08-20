@@ -22,3 +22,7 @@ DEPLOYMENT
 Upload the CONTENTS of this folder to the root of the existing Rescom-hvac-qr GitHub repository on main.
 Do not rename the repository or GitHub Pages path.
 After upload, open the normal Res-Com URL online, wait a few seconds, close it, and reopen the Home Screen app. Confirm APP v30.15.
+
+
+v30.16 TRANSITION: Upload the ENTIRE zip contents to the existing repository root. The root becomes a stable release launcher. Do not upload only releases/30.16. Current team release stays v30.15 until a Developer approves v30.16.
+Developer preview: open the normal app URL with ?candidate=1.

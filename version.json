@@ -1,5 +1,5 @@
 {
-  "version": "30.15",
-  "build": "Aug 20, 2026 12:25 PM",
-  "notes": "Diagnostics + PIN recovery + QR audit + offline photos: classifies bugs versus user mistakes, records navigation/actions, flags repeated UX mistakes for Admin review, adds email reset-code workflow, registers/audits equipment and Staff QR activity in Airtable, queues photos durably offline, adds separate camera and camera-roll choices, fixes Staff QR scanning while already signed in, and strengthens automatic updates."
+  "version": "30.16",
+  "build": "Aug 20, 2026 12:43 PM",
+  "notes": "Safe staged releases, Developer Access, Res-Com-only access, Manual routing fix, rollback transition."
 }
